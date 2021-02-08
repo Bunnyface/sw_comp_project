@@ -1,2 +1,9 @@
 *.class
 *.log
+
+# IDE folders
+.metals
+.vscode
+
+# Generated files
+playground/target
