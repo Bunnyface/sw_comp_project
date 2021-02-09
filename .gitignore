@@ -1,5 +1,6 @@
 *.class
 *.log
+<<<<<<< HEAD
 
 # IDE folders
 .metals
@@ -8,3 +9,6 @@
 # Generated files
 playground/target
 playground/project/target
+=======
+.DS_Store
+>>>>>>> initialize angular portion of project
