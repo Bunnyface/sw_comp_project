@@ -24,7 +24,10 @@
               "src/assets"
             ],
             "styles": [
+<<<<<<< HEAD
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+=======
+>>>>>>> initialize angular portion of project
               "src/styles.css"
             ],
             "scripts": []
