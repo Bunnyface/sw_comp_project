@@ -10,12 +10,15 @@ build-scala:
 	--tag scala \
 	.
 
+<<<<<<< HEAD
 build-postgres:
 	docker build \
 	--file docker/postgres.dockerfile \
 	--tag postgres \
 	.
 
+=======
+>>>>>>> Rearrange some files
 make run-helloworld:
 	docker run \
 	-d \
