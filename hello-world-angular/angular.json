@@ -25,9 +25,13 @@
             ],
             "styles": [
 <<<<<<< HEAD
+<<<<<<< HEAD
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
 =======
 >>>>>>> initialize angular portion of project
+=======
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+>>>>>>> create dropdown that shows mock data
               "src/styles.css"
             ],
             "scripts": []
