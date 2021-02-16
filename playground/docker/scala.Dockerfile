@@ -12,7 +12,7 @@ RUN \
   
 WORKDIR /HelloWorld
 
-ADD . /HelloWorld
+ADD try_container/ /HelloWorld
 
 CMD sbt run
 
