@@ -11,14 +11,20 @@ build-scala:
 	.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Add postgres stuff
 build-postgres:
 	docker build \
 	--file docker/postgres.dockerfile \
 	--tag postgres \
 	.
 
+<<<<<<< HEAD
 =======
 >>>>>>> Rearrange some files
+=======
+>>>>>>> Add postgres stuff
 make run-helloworld:
 	docker run \
 	-d \
