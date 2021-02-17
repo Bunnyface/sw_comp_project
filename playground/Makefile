@@ -10,6 +10,12 @@ build-scala:
 	--tag scala \
 	.
 
+build-postgres:
+	docker build \
+	--file docker/postgres.dockerfile \
+	--tag postgres \
+	.
+
 make run-helloworld:
 	docker run \
 	-d \
