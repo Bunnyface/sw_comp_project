@@ -12,7 +12,7 @@ RUN \
   
 WORKDIR /HelloWorld
 
-ADD try_container/ /HelloWorld
+ADD scala/ /HelloWorld
 
 CMD sbt run
 

@@ -1,0 +1,27 @@
+services:
+  angular:
+    image: angular_main
+    hostname: angular
+    ports:
+      - 80:80
+    networks:
+      - sw_network
+
+  scala:
+    image: scala_main
+    hostname: scala
+    ports:
+      - 8081:8081
+    networks:
+      - sw_network
+
+  postgres:
+    image: postgres
+    hostname: postgres
+    networks:
+      - sw_network
+
+networks:
+  sw_network:
+    driver: bridge
+    name: sw_network
