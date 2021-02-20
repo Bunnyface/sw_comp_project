@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'SW component manager API'
+  description: 'The API for Software release component management software.'
+  contact:
+    name: Kaisa
+    email: kaisa.sormunen@tuni.fi
+
+paths:
+  /releases:
+    post:
+      description: Get infromation of all releases in the db.
+      responses:
+        200:
+          description: Successfull pull of release data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        401:
+          description: User has not been authenticated.
+        403:
+          description: User is not authorized to view the results.
+        404:
+          description: No releases were found in the database.
+
+
+  /releases/{releaseName}:
+    post:
+      description: Get information of releases from db.
+      parameters:
+        - name: releaseName
+          in: path
+          required: true
+          description: Define one release to get.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull pull of release data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        400:
+          description: The given resourceName is invalid.
+        401:
+          description: User has not been authenticated.
+        403:
+            description: User is not authorized to view the results.
+        404:
+          description: A release with the specified releasenName was not found.
+    put:
+      description: Create a new release to database.
+      parameters:
+        - name: releaseName
+          in: path
+          required: true
+          description: Name to use while creating a new release to database.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        201:
+          description: Resource created.
+        400:
+          description: The given releaseName is invalid.
+        401:
+          description: User has not been authenticated.
+        403:
+          description: User is not authorized to create new releases.
+        409:
+          description: The given releaseName is already in use.
