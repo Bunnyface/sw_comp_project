@@ -27,7 +27,6 @@ paths:
         404:
           description: No releases were found in the database.
 
-
   /releases/{releaseName}:
     post:
       description: Get information of releases from db.
@@ -82,3 +81,38 @@ paths:
           description: User is not authorized to create new releases.
         409:
           description: The given releaseName is already in use.
+
+  /releases/compare/{releaseName1}:{releaseName2}:
+    post:
+      description: Compare two different releases and their packages.
+
+      parameters:
+        - name: releaseName1
+          in: path
+          required: true
+          description: Name to use retrieving and comparing release packages.
+          schema:
+            type: string
+
+        - name: releaseName2
+          in: path
+          required: true
+          description: Name to use retrieving and comparing release packages.
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successfull retrieval and comparison of data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        400:
+          description: One or both of the given releaseName are invalid.
+        401:
+          description: User has not been authenticated.
+        403:
+          description: User is not authorized to create new releases.
