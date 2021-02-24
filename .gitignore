@@ -1,6 +1,10 @@
 *.class
 *.log
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+.DS_Store
+>>>>>>> 24a3b59f77554e0d318fce69870f34d901c8075e
 
 # IDE folders
 .metals
@@ -8,7 +12,11 @@
 
 # Generated files
 playground/target
+<<<<<<< HEAD
 playground/project/target
 =======
 .DS_Store
 >>>>>>> initialize angular portion of project
+=======
+playground/project/target
+>>>>>>> 24a3b59f77554e0d318fce69870f34d901c8075e
