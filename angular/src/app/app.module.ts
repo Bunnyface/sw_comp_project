@@ -8,6 +8,9 @@ import { ReleasesComponent } from './releases/releases.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReleaseDetailComponent } from './release-detail/release-detail.component';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,9 +21,14 @@ import { ReleaseDetailComponent } from './release-detail/release-detail.componen
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+
+    // remove when server is ready
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false }
+    )
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
