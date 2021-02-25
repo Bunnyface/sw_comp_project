@@ -10,12 +10,14 @@ import { ReleaseDetailComponent } from './release-detail/release-detail.componen
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
+import { DataInputComponent } from './data-input/data-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ReleasesComponent,
-    ReleaseDetailComponent
+    ReleaseDetailComponent,
+    DataInputComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataInputComponent implements OnInit {
 
-
   constructor() { }
 
   ngOnInit(): void {
