@@ -20,3 +20,4 @@ build-all:
 	make build-scala
 	make build-postgres
 	make build-angular
+

@@ -2,12 +2,14 @@ package client
 
 import java.sql.{Connection, DriverManager, ResultSet}
 
+
 class Client {
   var connection: Connection = null;
 
   def connect(dbname: String, dbuser: String, passwd: String) {
+    val psqlHost = sys.env("PSQLHOST");
     classOf[org.postgresql.Driver];
-    val connString = f"jdbc:postgresql://localhost:5432/$dbname%s";
+    val connString = f"jdbc:postgresql://$psqlHost%s/$dbname%s";
     connection = DriverManager.getConnection(connString, dbuser, passwd);
   }
 
