@@ -17,7 +17,6 @@ export class ConfigService {
     return this.http.get<String[]>(this.releasesUrl)
       .pipe(catchError(this.handleError<String[]>('getReleases', [])));
   }
-
   getComparison(): Observable<any[]> {
     return this.http.get<any[]>(this.comparisonUrl)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
