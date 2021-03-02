@@ -2,6 +2,7 @@ val finchVersion = "0.26.0"
 val circeVersion = "0.10.1"
 val scalatestVersion = "3.0.5"
 val postgresqlVersion = "42.2.18"
+val sprayVersion = "1.3.6"
 
 lazy val root = (project in file("."))
   .settings(
@@ -14,6 +15,7 @@ lazy val root = (project in file("."))
       "com.github.finagle" %% "finchx-circe"  % finchVersion,
       "io.circe" %% "circe-generic" % circeVersion,
       "org.scalatest"      %% "scalatest"    % scalatestVersion % "test",
-      "org.postgresql" % "postgresql" % postgresqlVersion
+      "org.postgresql" % "postgresql" % postgresqlVersion,
+      "io.spray" %%  "spray-json" % sprayVersion
     )
   )

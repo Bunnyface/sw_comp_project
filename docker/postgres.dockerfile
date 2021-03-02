@@ -1,2 +1,2 @@
 FROM postgres:latest
-COPY postgres/*.sql /docker-entrypoint-initdb.d/
+COPY playground/sql_inserts/comparison_function/*.sql /docker-entrypoint-initdb.d/
