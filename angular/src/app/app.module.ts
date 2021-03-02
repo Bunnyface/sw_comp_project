@@ -11,13 +11,16 @@ import { ReleaseDetailComponent } from './release-detail/release-detail.componen
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { DataInputComponent } from './data-input/data-input.component';
+import { CompareComponent } from './compare/compare.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     ReleasesComponent,
     ReleaseDetailComponent,
-    DataInputComponent
+    DataInputComponent,
+    CompareComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,9 @@ import { DataInputComponent } from './data-input/data-input.component';
     // remove when server is ready
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

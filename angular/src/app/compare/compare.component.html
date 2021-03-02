@@ -1,0 +1,16 @@
+<h2>Compare releases</h2>
+
+<form #compare="ngForm" (ngSubmit)="onSubmit(compare.value)">
+    <div class="form-group mb-2">
+        <label for="release1" class="form-label">Release</label>
+        <select class="form-control" id="release1" ngModel name="firstRelease">
+            <option *ngFor="let release of releases" [ngValue]="release.name">{{release.name}}</option>
+        </select>
+
+        <label for="release2" class="form-label">Compare with</label>
+        <select class="form-control" id="release2" ngModel name="secondRelease">
+            <option *ngFor="let release of releases" [ngValue]="release.name">{{release.name}}</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Valitse</button>
+</form>
