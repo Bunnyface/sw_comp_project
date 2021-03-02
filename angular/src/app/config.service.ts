@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map, tap } from 'rxjs/operators';
 
 import { Release } from './release';
 
@@ -15,6 +15,16 @@ export class ConfigService {
 
   getReleases(): Observable<Release[]> {
     return this.http.get<Release[]>(this.releasesUrl)
+      .pipe(catchError(this.handleError<Release[]>('getReleases', [])));
+  }
+
+  // Error handling
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.log(error); // log to console
+      console.log(`${operation} failed: ${error.message}`); // user-friendly message
+      return of(result as T); // return a dafe value to keep app running
+    }
   }
 
   constructor(private http: HttpClient) { }
