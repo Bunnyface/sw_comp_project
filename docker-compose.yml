@@ -21,7 +21,9 @@ services:
     image: postgres
     hostname: postgres
     environment:
-      - POSTGRES_PASSWORD=testpass
+      POSTGRES_USER: scalauser
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: defaultdb
     networks:
       - sw_network
 
