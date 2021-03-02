@@ -7,7 +7,8 @@ import { ReleasesComponent } from './releases/releases.component';
 const routes: Routes = [
   { path: 'releases', component: ReleasesComponent },
   { path: 'compare', component: CompareComponent },
-  { path: 'insert', component: DataInputComponent }
+  { path: 'insert', component: DataInputComponent },
+  { path: '', redirectTo: 'releases', pathMatch: 'full'}
 ]
 
 @NgModule({
