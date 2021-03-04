@@ -12,6 +12,9 @@ import spray.json._
 import DefaultJsonProtocol._
 import client.Client
 
+import io.circe._
+import io.circe.syntax._
+
 object Main extends App {
 
   case class Message(hello: String)
@@ -63,9 +66,15 @@ object Main extends App {
     Ok(jsonString.parseJson);
   }
 
+  def releases: Endpoint[IO, Json] = get("releases"){
+    var names = retrieveFunctions.queryNames();
+    val namesAsJson = names.asJson
+    Ok(namesAsJson);
+  }
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: comparison)
+    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
     .toService
 
   Await.ready(Http.server.serve(":8081", service))
