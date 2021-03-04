@@ -8,7 +8,12 @@ import io.finch._
 import io.finch.catsEffect._
 import io.finch.circe._
 import io.circe.generic.auto._
+import spray.json._
+import DefaultJsonProtocol._
 import client.Client
+
+import io.circe._
+import io.circe.syntax._
 
 object Main extends App {
 
@@ -48,9 +53,28 @@ object Main extends App {
       Ok("Your id wasn't found.");
   }
 
+  def comparison: Endpoint[IO, spray.json.JsValue] = get("comparison" :: path[String]) { s: String =>
+    var releases = s.split(":")
+    val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
+    var start = "{"
+    var end = "}"
+    var beef = ""
+    for ((k,v) <- theMap) {
+      beef += "\"" +  k + "\"" + ":[\"" + v.mkString("\",\"") + "\"],";
+    }
+    val jsonString = start + beef.substring(0, beef.length - 1) + end;
+    Ok(jsonString.parseJson);
+  }
+
+  def releases: Endpoint[IO, Json] = get("releases"){
+    var names = retrieveFunctions.queryNames();
+    val namesAsJson = names.asJson
+    Ok(namesAsJson);
+  }
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello)
+    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
     .toService
 
   Await.ready(Http.server.serve(":8081", service))

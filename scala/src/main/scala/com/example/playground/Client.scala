@@ -10,7 +10,7 @@ class Client {
     val psqlHost = sys.env("PSQLHOST");
     classOf[org.postgresql.Driver];
     val connString = f"jdbc:postgresql://$psqlHost%s/$dbname%s";
-    connection = DriverManager.getConnection(connString, dbuser, passwd);
+    connection = DriverManager.getConnection(connString, "scalauser", "example");
   }
 
   def execute(query: String) {
