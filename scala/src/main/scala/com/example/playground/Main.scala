@@ -96,6 +96,12 @@ object Main extends App {
     allowsHeaders = headers => Some(headers)
   )
 
+  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
+    var relInfo = retrieveFunctions.queryRelease(relName);
+    val relInfoAsJson = relInfo.asJson;
+    Ok(relInfoAsJson);
+  }
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases :+: releaseInfo)
