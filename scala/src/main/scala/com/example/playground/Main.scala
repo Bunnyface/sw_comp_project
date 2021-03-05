@@ -68,13 +68,19 @@ object Main extends App {
 
   def releases: Endpoint[IO, Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
-    val namesAsJson = names.asJson
+    val namesAsJson = names.asJson;
     Ok(namesAsJson);
+  }
+
+  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
+    var relInfo = retrieveFunctions.queryRelease(relName);
+    val relInfoAsJson = relInfo.asJson;
+    Ok(relInfoAsJson);
   }
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
+    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases :+: releaseInfo)
     .toService
 
   Await.ready(Http.server.serve(":8081", service))
