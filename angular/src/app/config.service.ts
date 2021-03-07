@@ -10,12 +10,17 @@ import { Release } from './release';
 })
 export class ConfigService {
 
-  // url for mock-server
-  private releasesUrl = 'api/releases';
+  private releasesUrl = 'http://scala/release';
+  private comparisonUrl = 'http://scala/comparison'
 
-  getReleases(): Observable<Release[]> {
-    return this.http.get<Release[]>(this.releasesUrl)
-      .pipe(catchError(this.handleError<Release[]>('getReleases', [])));
+  getReleases(): Observable<String[]> {
+    return this.http.get<String[]>(this.releasesUrl)
+      .pipe(catchError(this.handleError<String[]>('getReleases', [])));
+  }
+
+  getComparison(): Observable<any[]> {
+    return this.http.get<any[]>(this.comparisonUrl)
+    .pipe(catchError(this.handleError<any>('getComparison', [])));
   }
 
   // Error handling

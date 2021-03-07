@@ -8,8 +8,6 @@ import { ReleasesComponent } from './releases/releases.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReleaseDetailComponent } from './release-detail/release-detail.component';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
 import { DataInputComponent } from './data-input/data-input.component';
 import { CompareComponent } from './compare/compare.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,12 +25,6 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     NgbModule,
     FormsModule,
-
-    // remove when server is ready
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
-
     AppRoutingModule
   ],
   providers: [],
