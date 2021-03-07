@@ -71,7 +71,7 @@ object Main extends App {
     val namesAsJson = names.asJson
     Ok(namesAsJson);
   }
-
+  /*
   def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
     val response = sendFunctions.insert(s);
     Ok(response);
@@ -81,7 +81,7 @@ object Main extends App {
     val response = sendFunctions.update(s);
     Ok(response);
   }
-
+  */
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
