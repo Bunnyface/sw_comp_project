@@ -23,11 +23,6 @@ services:
     environment: 
       POSTGRES_PASSWORD: test
   
-  adminer:
-    restart: always
-    networks:
-      - sw_network
-
 networks:
   sw_network:
     driver: bridge
