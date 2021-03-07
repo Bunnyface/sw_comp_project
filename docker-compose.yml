@@ -36,6 +36,10 @@ networks:
     driver: bridge
     name: sw_network
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> testing
+=======
+
+>>>>>>> 01fc1bf9b4802639fe0e386aadad0907214bb1e9
