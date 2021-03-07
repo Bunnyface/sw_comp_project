@@ -28,8 +28,19 @@ services:
       POSTGRES_DB: defaultdb
     networks:
       - sw_network
+    environment: 
+      POSTGRES_PASSWORD: test
+  
+  adminer:
+    restart: always
+    networks:
+      - sw_network
 
 networks:
   sw_network:
     driver: bridge
     name: sw_network
+<<<<<<< HEAD
+=======
+
+>>>>>>> testing
