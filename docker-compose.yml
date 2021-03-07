@@ -4,6 +4,8 @@ services:
     hostname: angular
     ports:
       - 80:80
+    volumes:
+      - ./angular_dev/hello-world-angular:/usr/share/nginx/html
     networks:
       - sw_network
 
