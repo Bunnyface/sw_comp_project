@@ -82,12 +82,7 @@ object Main extends App {
     Ok(response);
   }
   */
-  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
-    var relInfo = retrieveFunctions.queryRelease(relName);
-    val relInfoAsJson = relInfo.asJson;
-    Ok(relInfoAsJson);
-  }
-
+  
   def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
     val relInfoAsJson = relInfo.asJson;
