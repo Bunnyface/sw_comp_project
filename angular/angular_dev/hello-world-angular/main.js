@@ -45,7 +45,7 @@ function ReleasesComponent_option_9_Template(rf, ctx) { if (rf & 1) {
 class ReleasesComponent {
     constructor(configService) {
         this.configService = configService;
-        this.releases = [];
+        this.releases = {};
     }
     getReleases() {
         this.configService.getReleases().subscribe(releases => this.releases = releases);
@@ -490,7 +490,7 @@ class ConfigService {
     }
     getReleases() {
         return this.http.get(this.releasesUrl)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((res) => res.json()), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
     }
     getComparison() {
         return this.http.get(this.comparisonUrl)
