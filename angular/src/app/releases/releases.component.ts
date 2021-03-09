@@ -9,7 +9,7 @@ import { ConfigService } from '../config.service';
 })
 export class ReleasesComponent implements OnInit {
 
-  releases: String[] = [];
+  releases: any = {};
 
   selectedRelease: Release;
 

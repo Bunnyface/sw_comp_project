@@ -13,9 +13,10 @@ export class ConfigService {
   private releasesUrl = 'http://scala/release';
   private comparisonUrl = 'http://scala/comparison'
 
-  getReleases(): Observable<String[]> {
-    return this.http.get<String[]>(this.releasesUrl)
-      .pipe(catchError(this.handleError<String[]>('getReleases', [])));
+  getReleases(): Observable<any> {
+    return this.http.get<any>(this.releasesUrl)
+      .pipe(map((res: Response) => res.json()),
+      catchError(this.handleError<String[]>('getReleases', [])));
   }
 
   getComparison(): Observable<any[]> {
