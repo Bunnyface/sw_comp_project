@@ -27,32 +27,6 @@ object Main extends App {
     Ok("Hello, World!");
   }
 
-  def hello: Endpoint[IO, String] = get("hello" :: path[String]) { s: String =>
-    val client = new Client();
-
-    // Set up a PostgreSQL db with user default_user and password 123.
-    client.connect("testdb", "default_user", "123");
-
-    // Create a "users" table with id and name columns for this to work.
-    // Id column has to be SERIAL (autoincrement type).
-    var userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
-
-    if (!userData.next()) {
-      client.execute(f"INSERT INTO users (name) VALUES ('$s%s');");
-      userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
-    }
-    else
-      userData.previous();
-    client.close();
-
-    if (userData.next()) {
-      val userId = userData.getInt("id");
-      Ok(f"Hello, $s%s! Your id is: $userId%d");
-    }
-    else
-      Ok("Your id wasn't found.");
-  }
-
   def comparison: Endpoint[IO, spray.json.JsValue] = get("comparison" :: path[String]) { s: String =>
     var releases = s.split(":")
     val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
@@ -71,20 +45,20 @@ object Main extends App {
     val namesAsJson = names.asJson
     Ok(namesAsJson);
   }
-  /*
+  
   def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
-    val response = sendFunctions.insert(s);
+    val response = sendFunctions.queryInsert(s);
     Ok(response);
   }
 
   def update: Endpoint[IO, Int] = get("update" :: path[String]) { s: String =>
-    val response = sendFunctions.update(s);
+    val response = sendFunctions.queryUpdate(s);
     Ok(response);
   }
-  */
+  
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
+    .serve[Application.Json](helloWorld :+: comparison :+: releases :+: insert :+: update)
     .toService
 
   Await.ready(Http.server.serve(":8081", service))

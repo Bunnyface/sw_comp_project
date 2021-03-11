@@ -6,11 +6,18 @@ import java.sql.{Connection, DriverManager, ResultSet}
 class Client {
   var connection: Connection = null;
 
-  def connect(dbname: String, dbuser: String, passwd: String) {
-    val psqlHost = sys.env("PSQLHOST");
+  def connect(dbname: String, dbuser: String = null, passwd: String = null) {
     classOf[org.postgresql.Driver];
-    val connString = f"jdbc:postgresql://$psqlHost%s/$dbname%s";
-    connection = DriverManager.getConnection(connString, "scalauser", "example");
+
+    if (dbuser != null && passwd != null){
+      val connString = f"jdbc:postgresql://localhost:5432/$dbname%s";
+      connection = DriverManager.getConnection(connString, dbuser, passwd);
+    }
+    else {
+      val (host, user, password) = getConnectionData();
+      val connString = f"jdbc:postgresql://$host%s/$dbname%s";
+      connection = DriverManager.getConnection(connString, user, password);
+    }
   }
 
   def execute(query: String) {
@@ -38,11 +45,16 @@ class Client {
   }
 
   def close() {
-    if (connection != null) {
+    if (connection != null) 
       connection.close();
-    }
-    else {
+    else 
       println("Connection was not established.");
-    }
+  }
+
+  def getConnectionData(): (String, String, String) = {
+    val host = sys.env("PSQLHOST");
+    val user = sys.env("PSQLUSER");
+    val passwd = sys.env("PSQLPASSWD");
+    return (host, user, passwd);
   }
 }
