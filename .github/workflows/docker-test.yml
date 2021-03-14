@@ -1,0 +1,23 @@
+name: Docker Tests
+
+on:
+  push:
+    branches: [ $default-branch, ci ]
+  pull_request:
+    branches: [ $default-branch, ci ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test building Docker images
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Run tests
+      run: |
+        if [ -f docker-compose.test.yml ]; then
+          docker-compose --file docker-compose.yml --file docker-compose.test.yml build
+          docker-compose --file docker-compose.yml --file docker-compose.test.yml run sut
+        else
+          docker-compose build
+        fi
