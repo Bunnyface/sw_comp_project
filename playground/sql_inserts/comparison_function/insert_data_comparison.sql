@@ -1,11 +1,14 @@
-INSERT INTO releases VALUES ('First', '0.1');
-INSERT INTO releases VALUES ('Second', '0.2');
-INSERT INTO releases VALUES ('Third', '0.3');
+INSERT INTO "Module"(
+	id, "Name")
+	VALUES (1, 'TestModule');
+  
+INSERT INTO "Component"(
+	id, "Name", "URL", "Version", "License", "Copyright")
+	VALUES (1, 'TestComponent', 'testurl', 'Version 1', 'TestLicence', 'TestCopyright'),
+		   (2, 'DemoComponent', 'testurl2', 'Version 1', 'TestLicence', 'TestCopyright' );
+  
 
-INSERT INTO componentTable VALUES ('Java', '1.2');
-INSERT INTO componentTable VALUES ('Scala', '3.2');
-
-INSERT INTO junctionTable VALUES ('First', 'Java');
-INSERT INTO junctionTable VALUES ('First', 'Scala');
-INSERT INTO junctionTable VALUES ('Second', 'Scala');
-INSERT INTO junctionTable VALUES ('Third', 'Java');
+INSERT INTO "ModuleComponent"(
+	"Module_id", "Component_id", "UsageType", "Date", "TextOne", "TextTwo", "TextThree", "CommentOne", "CommentTwo")
+	VALUES (1, 1, 'For fun', '2021-01-01', 'Text One', 'Text Two', 'Text Three', 'Comment One', 'Comment two'),
+			(1,2, 'Also for fun','2021-01-01','Text One 1', 'Text 2', 'Text 3', 'Comment 1', 'Comment 2');
