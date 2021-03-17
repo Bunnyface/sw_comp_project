@@ -485,12 +485,12 @@ __webpack_require__.r(__webpack_exports__);
 class ConfigService {
     constructor(http) {
         this.http = http;
-        this.releasesUrl = 'http://scala/release';
+        this.releasesUrl = 'http://172.18.0.2:8081/releases';
         this.comparisonUrl = 'http://scala/comparison';
     }
     getReleases() {
         return this.http.get(this.releasesUrl)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((res) => res.json()), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
     }
     getComparison() {
         return this.http.get(this.comparisonUrl)

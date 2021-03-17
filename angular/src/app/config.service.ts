@@ -10,13 +10,12 @@ import { Release } from './release';
 })
 export class ConfigService {
 
-  private releasesUrl = 'http://scala/release';
+  private releasesUrl = 'http://172.18.0.2:8081/releases';
   private comparisonUrl = 'http://scala/comparison'
 
   getReleases(): Observable<any> {
     return this.http.get<any>(this.releasesUrl)
-      .pipe(map((res: Response) => res.json()),
-      catchError(this.handleError<String[]>('getReleases', [])));
+      .pipe(catchError(this.handleError<String[]>('getReleases', [])));
   }
 
   getComparison(): Observable<any[]> {
