@@ -45,7 +45,7 @@ function ReleasesComponent_option_9_Template(rf, ctx) { if (rf & 1) {
 class ReleasesComponent {
     constructor(configService) {
         this.configService = configService;
-        this.releases = {};
+        this.releases = [];
     }
     getReleases() {
         this.configService.getReleases().subscribe(releases => this.releases = releases);
@@ -208,9 +208,9 @@ function CompareComponent_option_8_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const release_r3 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", release_r3.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", release_r3);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](release_r3.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](release_r3);
 } }
 function CompareComponent_option_12_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "option", 9);
@@ -218,27 +218,33 @@ function CompareComponent_option_12_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const release_r4 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", release_r4.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", release_r4);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](release_r4.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](release_r4);
 } }
 class CompareComponent {
     constructor(configService) {
         this.configService = configService;
+        this.releases = [];
     }
-    getComparison() {
-        this.configService.getComparison().subscribe(releases => this.releases = releases);
-        console.log(this.releases);
+    getReleases() {
+        this.configService.getReleases().subscribe(releases => this.releases = releases);
+    }
+    getComparison(first, second) {
+        this.configService.getComparison(first, second).subscribe(res => console.log(res));
     }
     onSubmit(data) {
-        console.log(data.firstRelease, data.secondRelease);
+        console.log(data.first, data.second);
+        const first = data.first;
+        const second = data.second;
+        this.getComparison(first, second);
     }
     ngOnInit() {
-        this.getComparison();
+        this.getReleases();
     }
 }
 CompareComponent.ɵfac = function CompareComponent_Factory(t) { return new (t || CompareComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_1__["ConfigService"])); };
-CompareComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: CompareComponent, selectors: [["app-compare"]], decls: 15, vars: 2, consts: [[3, "ngSubmit"], ["compare", "ngForm"], [1, "form-group", "mb-2"], ["for", "release1", 1, "form-label"], ["id", "release1", "ngModel", "", "name", "firstRelease", 1, "form-control"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["for", "release2", 1, "form-label"], ["id", "release2", "ngModel", "", "name", "secondRelease", 1, "form-control"], ["type", "submit", 1, "btn", "btn-success", "mb-2"], [3, "ngValue"]], template: function CompareComponent_Template(rf, ctx) { if (rf & 1) {
+CompareComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: CompareComponent, selectors: [["app-compare"]], decls: 15, vars: 2, consts: [[3, "ngSubmit"], ["compare", "ngForm"], [1, "form-group", "mb-2"], ["for", "first", 1, "form-label"], ["id", "first", "ngModel", "", "name", "first", 1, "form-control"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["for", "second", 1, "form-label"], ["id", "second", "ngModel", "", "name", "second", 1, "form-control"], ["type", "submit", 1, "btn", "btn-success", "mb-2"], [3, "ngValue"]], template: function CompareComponent_Template(rf, ctx) { if (rf & 1) {
         const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "h2");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Compare releases");
@@ -486,14 +492,23 @@ class ConfigService {
     constructor(http) {
         this.http = http;
         this.releasesUrl = 'http://localhost:8081/releases';
-        this.comparisonUrl = 'http://scala/comparison';
+        this.comparisonUrl = 'http://localhost:8081/comparison';
     }
+    // Get all releases
     getReleases() {
         return this.http.get(this.releasesUrl)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
     }
-    getComparison() {
-        return this.http.get(this.comparisonUrl)
+    // Get details of selected release
+    getRelease(name) {
+        const url = `${this.releasesUrl}/${name}`;
+        return this.http.get(url)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError(`getRelease id=${name}`)));
+    }
+    // Get comparison of two selected releases
+    getComparison(first, second) {
+        const url = `${this.comparisonUrl}/${first}:${second}`;
+        return this.http.get(url)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComparison', [])));
     }
     // Error handling

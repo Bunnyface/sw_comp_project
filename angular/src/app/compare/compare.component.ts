@@ -9,21 +9,27 @@ import { ConfigService } from '../config.service';
 })
 export class CompareComponent implements OnInit {
 
-  releases: any;
+  releases: any = [];
 
-  getComparison(): void {
-    this.configService.getComparison().subscribe(releases => this.releases = releases);
-    console.log(this.releases);
+  getReleases(): void {
+    this.configService.getReleases().subscribe(releases => this.releases = releases);
+  }
+
+  getComparison(first: string, second: string): void {
+    this.configService.getComparison(first, second).subscribe(res => console.log(res));
   }
 
   onSubmit(data) {
-    console.log(data.firstRelease, data.secondRelease)
+    console.log(data.first, data.second)
+    const first = data.first;
+    const second = data.second;
+    this.getComparison(first, second);
   }
 
   constructor(private configService: ConfigService) { }
 
   ngOnInit(): void {
-    this.getComparison();
+    this.getReleases();
   }
 
 }
