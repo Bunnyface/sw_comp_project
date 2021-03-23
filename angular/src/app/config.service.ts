@@ -10,7 +10,7 @@ import { Release } from './release';
 })
 export class ConfigService {
 
-  private releasesUrl = 'http://172.18.0.2:8081/releases';
+  private releasesUrl = 'http://localhost:8081/releases';
   private comparisonUrl = 'http://scala/comparison'
 
   getReleases(): Observable<any> {

@@ -14,9 +14,6 @@ export class CompareComponent implements OnInit {
   getComparison(): void {
     this.configService.getComparison().subscribe(releases => this.releases = releases);
     console.log(this.releases);
-
-  getReleases(): void {
-    this.configService.getReleases().subscribe(releases => this.releases = releases);
   }
 
   onSubmit(data) {
@@ -27,7 +24,6 @@ export class CompareComponent implements OnInit {
 
   ngOnInit(): void {
     this.getComparison();
-    this.getReleases();
   }
 
 }

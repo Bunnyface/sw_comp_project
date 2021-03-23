@@ -485,7 +485,7 @@ __webpack_require__.r(__webpack_exports__);
 class ConfigService {
     constructor(http) {
         this.http = http;
-        this.releasesUrl = 'http://172.18.0.2:8081/releases';
+        this.releasesUrl = 'http://localhost:8081/releases';
         this.comparisonUrl = 'http://scala/comparison';
     }
     getReleases() {

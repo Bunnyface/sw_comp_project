@@ -1,12 +1,12 @@
 services:
   angular:
-    image: swcomp/angular
-    build: ./angular
-    hostname: angular
+    image: swcomp/angular_nginx
+    build: ./angular_dev
+    hostname: angular_dev
     ports:
       - 80:80
     volumes:
-      - ./angular/angular_dev/hello-world-angular:/usr/share/nginx/html:Z
+      - ./angular_dev/hello-world-angular:/usr/share/nginx/html:Z
     networks:
       - sw_network
     depends_on:
@@ -35,7 +35,6 @@ services:
       POSTGRES_DB: defaultdb
     networks:
       - sw_network
-
   
 networks:
   sw_network:
