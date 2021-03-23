@@ -1,6 +1,7 @@
 package com.example.playground
 
 import cats.effect.IO
+import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.util.Await
@@ -66,12 +67,12 @@ object Main extends App {
     Ok(jsonString.parseJson);
   }
 
-  def releases: Endpoint[IO, Json] = get("releases"){
+  def releases: Endpoint[IO,Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
     val namesAsJson = names.asJson
     Ok(namesAsJson);
   }
-  /*
+/*
   def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
     val response = sendFunctions.insert(s);
     Ok(response);
@@ -81,11 +82,18 @@ object Main extends App {
     val response = sendFunctions.update(s);
     Ok(response);
   }
-  */
+*/
+  val policy: Cors.Policy = Cors.Policy(
+    allowsOrigin = _ => Some("*"),
+    allowsMethods= _ => Some(Seq("GET", "POST", "PUT")),
+    allowsHeaders = headers => Some(headers)
+  )
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
     .toService
 
-  Await.ready(Http.server.serve(":8081", service))
+  val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
+  Await.ready(Http.server.serve(":8081", corsService))
 }

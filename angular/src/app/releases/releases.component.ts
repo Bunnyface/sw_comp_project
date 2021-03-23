@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Release } from '../release';
-import { RELEASES } from '../mock-releases';
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'app-releases',
@@ -9,17 +9,23 @@ import { RELEASES } from '../mock-releases';
 })
 export class ReleasesComponent implements OnInit {
 
-  releases = RELEASES;
+  releases: any = {};
 
   selectedRelease: Release;
 
-  onSubmit(data) {
-    console.log("form submitted", data.releaseId)
-    this.selectedRelease = this.releases[data.releaseId];
+  getReleases(): void {
+    this.configService.getReleases().subscribe(releases => this.releases = releases);
+    console.log(this.releases);
   }
 
-  constructor() { }
+  onSubmit(data) {
+    console.log("form submitted", data.releaseId)
+    // this.selectedRelease = this.releases[data.releaseId];
+  }
+
+  constructor(private configService: ConfigService) { }
 
   ngOnInit(): void {
+    this.getReleases();
   }
 }
