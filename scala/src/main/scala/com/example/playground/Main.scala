@@ -72,7 +72,7 @@ object Main extends App {
     val namesAsJson = names.asJson;
     Ok(namesAsJson);
   }
-/*
+  /*
   def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String =>
     val response = sendFunctions.insert(s);
     Ok(response);
