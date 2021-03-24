@@ -54,7 +54,7 @@ object Main extends App {
       Ok("Your id wasn't found.");
   }
 
-  def comparison: Endpoint[IO, spray.json.JsValue] = get("comparison" :: path[String]) { s: String =>
+  def compare: Endpoint[IO, spray.json.JsValue] = get("releases/compare" :: path[String]) { s: String =>
     var releases = s.split(":")
     val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
     var start = "{"
@@ -91,7 +91,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: comparison :+: releases)
+    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
