@@ -11,14 +11,25 @@ import { Release } from './release';
 export class ConfigService {
 
   private releasesUrl = 'http://localhost:8081/releases';
-  private comparisonUrl = 'http://scala/comparison'
+  private comparisonUrl = 'http://localhost:8081/comparison'
 
+  // Get all releases
   getReleases(): Observable<any> {
     return this.http.get<any>(this.releasesUrl)
       .pipe(catchError(this.handleError<String[]>('getReleases', [])));
   }
-  getComparison(): Observable<any[]> {
-    return this.http.get<any[]>(this.comparisonUrl)
+
+  // Get details of selected release
+  getRelease(name: string): Observable<any> {
+    const url = `${this.releasesUrl}/${name}`;
+    return this.http.get<any>(url)
+      .pipe(catchError(this.handleError<any>(`getRelease id=${name}`)));
+  }
+
+  // Get comparison of two selected releases
+  getComparison(first: string, second: string): Observable<any> {
+    const url = `${this.comparisonUrl}/${first}:${second}`
+    return this.http.get<any>(url)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
   }
 

@@ -69,29 +69,37 @@ object Main extends App {
 
   def releases: Endpoint[IO,Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
-    val namesAsJson = names.asJson
+    val namesAsJson = names.asJson;
     Ok(namesAsJson);
   }
-/*
-  def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
+  /*
+  def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String =>
     val response = sendFunctions.insert(s);
     Ok(response);
   }
 
-  def update: Endpoint[IO, Int] = get("update" :: path[String]) { s: String =>
+  def update: Endpoint[IO, Int] = get("update" :: path[String]){ s: String =>
     val response = sendFunctions.update(s);
     Ok(response);
   }
 */
+
+  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
+    var relInfo = retrieveFunctions.queryRelease(relName);
+    val relInfoAsJson = relInfo.asJson;
+    Ok(relInfoAsJson);
+  }
+
   val policy: Cors.Policy = Cors.Policy(
     allowsOrigin = _ => Some("*"),
     allowsMethods= _ => Some(Seq("GET", "POST", "PUT")),
     allowsHeaders = headers => Some(headers)
   )
 
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases)
+    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases :+: releaseInfo)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
