@@ -54,6 +54,6 @@ object retrieveFunctions{
 
   sqlClient.close();
 
-  return Map("Release info" -> releaseInfo, "Release components" -> releaseComponents);
+  return Map("info" -> releaseInfo, "components" -> releaseComponents);
   }
 }

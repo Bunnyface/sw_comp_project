@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Release } from '../release'
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'app-release-detail',
@@ -8,7 +9,7 @@ import { Release } from '../release'
 })
 export class ReleaseDetailComponent implements OnInit {
 
-  @Input() release: Release;
+  @Input() release: any;
   constructor() { }
 
   ngOnInit(): void {

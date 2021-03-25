@@ -5,7 +5,7 @@
 <form #release="ngForm" (ngSubmit)="onSubmit(release.value)">
     <div class="form-group mb-2">
         <label for="release" class="form-label">Release</label>
-        <select class="form-control" id="release" ngModel name="releaseId">
+        <select class="form-control" id="release" ngModel name="release">
             <option *ngFor="let release of releases" [ngValue]="release">{{release}}</option>
         </select>
     </div>
