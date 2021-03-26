@@ -72,17 +72,16 @@ object Main extends App {
     val namesAsJson = names.asJson;
     Ok(namesAsJson);
   }
-  /*
-  def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String =>
-    val response = sendFunctions.insert(s);
+  
+  def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
+    val response = sendFunctions.queryInsert(s);
     Ok(response);
   }
 
-  def update: Endpoint[IO, Int] = get("update" :: path[String]){ s: String =>
-    val response = sendFunctions.update(s);
+  def update: Endpoint[IO, Int] = get("update" :: path[String]) { s: String =>
+    val response = sendFunctions.queryUpdate(s);
     Ok(response);
   }
-*/
 
   def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
@@ -95,7 +94,6 @@ object Main extends App {
     allowsMethods= _ => Some(Seq("GET", "POST", "PUT")),
     allowsHeaders = headers => Some(headers)
   )
-
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
