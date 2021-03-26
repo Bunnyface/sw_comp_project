@@ -20,6 +20,8 @@ services:
       - 8081:8081
     environment:
       - PSQLHOST=postgres:5432
+      - PSQLUSER=scalauser
+      - PSQLPASSWD=example
     networks:
       - sw_network
     depends_on:
