@@ -1,9 +1,21 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <h1>Hi</h1>
+      <h1>{{title}}</h1>
     </div>
   </div>
-  
-  <app-releases></app-releases>
+  <div class="row">
+    <ul class="nav">
+      <li class="nav-item">
+        <a routerLink="/releases" class="nav-link active">Releases</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/compare" class="nav-link">Compare</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/insert" class="nav-link">Insert</a>
+      </li>
+    </ul>
+  </div>
+  <router-outlet></router-outlet>
 </div>

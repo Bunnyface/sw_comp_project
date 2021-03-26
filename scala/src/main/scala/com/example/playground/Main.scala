@@ -1,6 +1,7 @@
 package com.example.playground
 
 import cats.effect.IO
+import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.util.Await
@@ -27,7 +28,33 @@ object Main extends App {
     Ok("Hello, World!");
   }
 
-  def comparison: Endpoint[IO, spray.json.JsValue] = get("comparison" :: path[String]) { s: String =>
+  def hello: Endpoint[IO, String] = get("hello" :: path[String]) { s: String =>
+    val client = new Client();
+
+    // Set up a PostgreSQL db with user default_user and password 123.
+    client.connect("testdb", "default_user", "123");
+
+    // Create a "users" table with id and name columns for this to work.
+    // Id column has to be SERIAL (autoincrement type).
+    var userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
+
+    if (!userData.next()) {
+      client.execute(f"INSERT INTO users (name) VALUES ('$s%s');");
+      userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
+    }
+    else
+      userData.previous();
+    client.close();
+
+    if (userData.next()) {
+      val userId = userData.getInt("id");
+      Ok(f"Hello, $s%s! Your id is: $userId%d");
+    }
+    else
+      Ok("Your id wasn't found.");
+  }
+
+  def compare: Endpoint[IO, spray.json.JsValue] = get("releases/compare" :: path[String]) { s: String =>
     var releases = s.split(":")
     val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
     var start = "{"
@@ -40,9 +67,9 @@ object Main extends App {
     Ok(jsonString.parseJson);
   }
 
-  def releases: Endpoint[IO, Json] = get("releases"){
+  def releases: Endpoint[IO,Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
-    val namesAsJson = names.asJson
+    val namesAsJson = names.asJson;
     Ok(namesAsJson);
   }
   
@@ -55,11 +82,24 @@ object Main extends App {
     val response = sendFunctions.queryUpdate(s);
     Ok(response);
   }
-  
+
+  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
+    var relInfo = retrieveFunctions.queryRelease(relName);
+    val relInfoAsJson = relInfo.asJson;
+    Ok(relInfoAsJson);
+  }
+
+  val policy: Cors.Policy = Cors.Policy(
+    allowsOrigin = _ => Some("*"),
+    allowsMethods= _ => Some(Seq("GET", "POST", "PUT")),
+    allowsHeaders = headers => Some(headers)
+  )
+
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: comparison :+: releases :+: insert :+: update)
+    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases :+: releaseInfo)
     .toService
 
-  Await.ready(Http.server.serve(":8081", service))
+  val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
+  Await.ready(Http.server.serve(":8081", corsService))
 }

@@ -1,28 +1,17 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 build-scala:
-	docker build \
-	--file docker/scala.Dockerfile \
-	--tag scala_main \
-	.
+	docker build scala --tag swcomp/scala_main
 
 build-postgres:
-	docker build \
-	--file docker/postgres.dockerfile \
-	--tag postgres \
-	.
+	docker build postgres --tag swcomp/postgres
 
 build-angular:
-	docker build \
-	--file docker/angular.Dockerfile \
-	--tag angular_main \
-	.
+	docker build angular --tag swcomp/angular_build
 
-build-angular_build:
-	docker build \
-	--file docker/angular_build.Dockerfile \
-	--tag angular_build \
-	.
+build-angular_nginx:
+	docker build angular_dev \
+	--tag swcomp/angular_nginx
 
 build-all:
 	make build-scala
@@ -30,7 +19,7 @@ build-all:
 	make build-angular
 
 update-angular_build:
-	docker run --name angular_build -v $(ROOT_DIR)/angular:/app angular_build npm run build
+	docker run --name angular_build -v $(ROOT_DIR)/angular:/app swcomp/angular_build npm run build
 	docker cp angular_build:/app/dist/hello-world-angular ./angular_dev
 	docker rm angular_build
 

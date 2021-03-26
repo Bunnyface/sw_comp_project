@@ -1,16 +1,20 @@
 services:
   angular:
-    image: angular_main
-    hostname: angular
+    image: swcomp/angular_nginx
+    build: ./angular_dev
+    hostname: angular_dev
     ports:
       - 80:80
     volumes:
-      - ./angular_dev/hello-world-angular:/usr/share/nginx/html
+      - ./angular_dev/hello-world-angular:/usr/share/nginx/html:Z
     networks:
       - sw_network
+    depends_on:
+      - "scala"
 
   scala:
-    image: scala_main
+    image: swcomp/scala
+    build: ./scala
     hostname: scala
     ports:
       - 8081:8081
@@ -18,9 +22,12 @@ services:
       - PSQLHOST=postgres:5432
     networks:
       - sw_network
+    depends_on:
+      - "postgres"
 
   postgres:
-    image: postgres
+    image: swcomp/postgres
+    build: ./postgres
     hostname: postgres
     environment:
       POSTGRES_USER: scalauser
@@ -28,8 +35,9 @@ services:
       POSTGRES_DB: defaultdb
     networks:
       - sw_network
-
+  
 networks:
   sw_network:
     driver: bridge
     name: sw_network
+

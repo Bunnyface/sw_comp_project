@@ -8,19 +8,26 @@ import { ReleasesComponent } from './releases/releases.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReleaseDetailComponent } from './release-detail/release-detail.component';
 
+import { DataInputComponent } from './data-input/data-input.component';
+import { CompareComponent } from './compare/compare.component';
+import { AppRoutingModule } from './app-routing.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     ReleasesComponent,
-    ReleaseDetailComponent
+    ReleaseDetailComponent,
+    DataInputComponent,
+    CompareComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -1,0 +1,9 @@
+services:
+  sut:
+    build: ./tests/integration
+    depends_on:
+      - "angular"
+      - "scala"
+      - "postgres"
+    networks:
+      - sw_network

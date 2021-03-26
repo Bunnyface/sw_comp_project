@@ -24,4 +24,36 @@ object retrieveFunctions{
   sqlClient.close();
   return stream.toList;
   }
+
+  def queryRelease(releaseName: String): Map[String, Array[String]]= {
+  val releaseInQuotes = s"\'" + releaseName + "\'";
+  val versionQuery = s"""SELECT name, version FROM releases WHERE name = $releaseInQuotes""";
+  val componentQuery = s"""SELECT componentName FROM junctionTable WHERE releasename=$releaseInQuotes""";
+
+  var sqlClient = new Client();
+
+  sqlClient.connect("defaultdb", "scalauser", "example");
+
+  var resSetVersion = sqlClient.fetch(versionQuery);
+
+  val streamVer = new Iterator[String] {
+    def hasNext = resSetVersion.next()
+    def next() = resSetVersion.getString(1) + ", " + resSetVersion.getString(2)
+  }.toStream
+
+  val releaseInfo = streamVer(0).split(", ");
+
+  var resSetComps = sqlClient.fetch(componentQuery);
+
+  val streamComp = new Iterator[String] {
+    def hasNext = resSetComps.next()
+    def next() = resSetComps.getString(1)
+  }.toStream
+
+  val releaseComponents = streamComp.toArray;
+
+  sqlClient.close();
+
+  return Map("info" -> releaseInfo, "components" -> releaseComponents);
+  }
 }
