@@ -2,7 +2,7 @@ services:
   angular:
     image: swcomp/angular_nginx
     build: ./angular_dev
-    hostname: angular_dev
+    hostname: angular
     ports:
       - 80:80
     volumes:
