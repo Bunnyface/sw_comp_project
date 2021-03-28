@@ -13,11 +13,18 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Run tests
+    - name: Start docker-compose
+      run: |
+        docker-compose --file docker-compose.yml up
+    - name: Run tests for index page
       run: |
         if [ -f docker-compose.test.yml ]; then
-          docker-compose --file docker-compose.yml --file docker-compose.test.yml build
           docker-compose --file docker-compose.yml --file docker-compose.test.yml run sut
         else
           docker-compose build
         fi
+    - name: Build images for scala tests
+      run: docker build tests/integration/scala/ --tag pytest_image
+    - name: Run scala integration tests
+      run: docker run -it --network sw_network pytest_image pytest scala_integration_test.py
+
