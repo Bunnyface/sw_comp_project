@@ -26,5 +26,5 @@ jobs:
     - name: Build images for scala tests
       run: docker build tests/integration/scala/ --tag pytest_image
     - name: Run scala integration tests
-      run: docker run --network sw_network pytest_image pytest scala_integration_test.py
+      run: docker-compose --file docker-compose.yml --file docker-compose.test.yml run scala_test
 
