@@ -1,5 +1,5 @@
 #!/bin/sh
-if curl angular | grep -q "Software Component Management"; then
+if curl angular | grep -q "Software Component Manager"; then
     echo "Test passed! :-)"
     exit 0
 else
