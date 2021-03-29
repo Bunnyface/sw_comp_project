@@ -16,6 +16,19 @@ import client.Client
 import io.circe._
 import io.circe.syntax._
 
+case class InsertRequest(
+  table: String, 
+  data: Array[String]
+);
+
+case class UpdateRequest(
+  table: String, 
+  newValCol: String, 
+  newVal: String, 
+  condCol: String, 
+  condVal: String
+);
+
 object Main extends App {
 
   case class Message(hello: String)
@@ -73,13 +86,17 @@ object Main extends App {
     Ok(namesAsJson);
   }
   
-  def insert: Endpoint[IO, Int] = get("insert" :: path[String]) { s: String => 
-    val response = sendFunctions.queryInsert(s);
+  def insert: Endpoint[IO, Int] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
+    val response = sendFunctions.queryInsert(req.table, req.data);
     Ok(response);
   }
 
-  def update: Endpoint[IO, Int] = get("update" :: path[String]) { s: String =>
-    val response = sendFunctions.queryUpdate(s);
+  def update: Endpoint[IO, Int] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
+    val response = 
+      sendFunctions.queryUpdate(
+        req.table, 
+        f"${req.newValCol}='${req.newVal}'", 
+        f"${req.condCol}='${req.condVal}'");
     Ok(response);
   }
 
@@ -97,7 +114,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases :+: releaseInfo)
+    .serve[Application.Json](helloWorld :+: hello :+: compare :+: insert :+: update :+: releases :+: releaseInfo)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
