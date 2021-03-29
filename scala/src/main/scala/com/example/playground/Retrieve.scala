@@ -5,55 +5,52 @@ import scala.collection.immutable.Stream
 import java.sql.{ResultSet}
 
 
-
 object retrieveFunctions{
+  def get(
+    table: String,
+    columns: String = "*",
+    cond: String = null
+  ): List[IndexedSeq[String]] = {
+    val query = if (cond == null) {
+      f"SELECT $columns%s FROM $table%s"
+    } else {
+      f"SELECT $columns%s FROM $table%s WHERE $cond%s"
+    }
+
+    val sqlClient = new Client();
+    sqlClient.connect("postgres");
+
+    val result = sqlClient.fetch(query);
+    val metaData = result.getMetaData();
+    val colLength = metaData.getColumnCount();
+
+    val tableValues = new Iterator[IndexedSeq[String]] {
+      def hasNext = result.next()
+      def next() = {
+        for (i <- 1 to colLength)
+          yield result.getString(i)
+      }
+    }.toStream
+
+    return tableValues.toList;
+  }
+
   def queryNames(): List[String] = {
-  var queryBase = "SELECT name FROM releases";
-
-  var sqlClient = new Client();
-
-  sqlClient.connect("defaultdb", "scalauser", "example");
-
-  var resSet = sqlClient.fetch(queryBase);
-
-  val stream = new Iterator[String] {
-    def hasNext = resSet.next()
-    def next() = resSet.getString(1)
-  }.toStream
-
-  sqlClient.close();
-  return stream.toList;
+    val resList = get("releases", "name");
+    return resList.map(row => row(0));
   }
 
   def queryRelease(releaseName: String): Map[String, Array[String]]= {
-  val releaseInQuotes = s"\'" + releaseName + "\'";
-  val versionQuery = s"""SELECT name, version FROM releases WHERE name = $releaseInQuotes""";
-  val componentQuery = s"""SELECT componentName FROM junctionTable WHERE releasename=$releaseInQuotes""";
+    val versionData = get(
+      "releases", "name, version", f"name='$releaseName%s'"
+    )(0);
 
-  var sqlClient = new Client();
+    val componentData = get("junctionTable", "componentName", f"releasename='$releaseName%s'")
+      .map(row => row(0));
 
-  sqlClient.connect("defaultdb", "scalauser", "example");
-
-  var resSetVersion = sqlClient.fetch(versionQuery);
-
-  val streamVer = new Iterator[String] {
-    def hasNext = resSetVersion.next()
-    def next() = resSetVersion.getString(1) + ", " + resSetVersion.getString(2)
-  }.toStream
-
-  val releaseInfo = streamVer(0).split(", ");
-
-  var resSetComps = sqlClient.fetch(componentQuery);
-
-  val streamComp = new Iterator[String] {
-    def hasNext = resSetComps.next()
-    def next() = resSetComps.getString(1)
-  }.toStream
-
-  val releaseComponents = streamComp.toArray;
-
-  sqlClient.close();
-
-  return Map("info" -> releaseInfo, "components" -> releaseComponents);
+    return Map(
+      "info" -> versionData.toArray, 
+      "components" -> componentData.toArray
+    );
   }
 }
