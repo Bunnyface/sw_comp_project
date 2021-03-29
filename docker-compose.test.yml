@@ -2,8 +2,15 @@ services:
   sut:
     build: ./tests/integration
     depends_on:
-      - "angular"
-      - "scala"
-      - "postgres"
+      angular:
+        condition: service_started
     networks:
       - sw_network
+  scala_test:
+    build: ./tests/integration/scala
+    depends_on:
+      scala:
+        condition: service_healthy
+    networks:
+      - sw_network
+

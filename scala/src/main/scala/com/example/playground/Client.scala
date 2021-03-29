@@ -8,13 +8,12 @@ class Client {
 
   def connect(dbname: String, dbuser: String = null, passwd: String = null) {
     classOf[org.postgresql.Driver];
-
+    val (host, user, password) = getConnectionData();
     if (dbuser != null && passwd != null){
-      val connString = f"jdbc:postgresql://localhost:5432/$dbname%s";
+      val connString = f"jdbc:postgresql://$host%s/$dbname%s";
       connection = DriverManager.getConnection(connString, dbuser, passwd);
     }
     else {
-      val (host, user, password) = getConnectionData();
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
       connection = DriverManager.getConnection(connString, user, password);
     }
