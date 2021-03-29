@@ -54,17 +54,11 @@ object Main extends App {
       Ok("Your id wasn't found.");
   }
 
-  def compare: Endpoint[IO, spray.json.JsValue] = get("releases/compare" :: path[String]) { s: String =>
+  def compare: Endpoint[IO, Json] = get("compareReleases" :: path[String]) { s: String =>
+    println("GOT HERE");
     var releases = s.split(":")
     val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
-    var start = "{"
-    var end = "}"
-    var beef = ""
-    for ((k,v) <- theMap) {
-      beef += "\"" +  k + "\"" + ":[\"" + v.mkString("\",\"") + "\"],";
-    }
-    val jsonString = start + beef.substring(0, beef.length - 1) + end;
-    Ok(jsonString.parseJson);
+    Ok(theMap.asJson);
   }
 
   def releases: Endpoint[IO,Json] = get("releases"){
@@ -97,7 +91,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: compare :+: releases :+: releaseInfo)
+    .serve[Application.Json](helloWorld :+: hello :+: releaseInfo :+: releases :+: compare )
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)

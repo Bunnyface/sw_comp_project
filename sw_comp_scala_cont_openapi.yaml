@@ -82,7 +82,7 @@ paths:
         409:
           description: The given releaseName is already in use.
 
-  /releases/compare/{releaseName1}:{releaseName2}:
+  /compareReleases/{releaseName1}:{releaseName2}:
     post:
       description: Compare two different releases and their packages.
 
