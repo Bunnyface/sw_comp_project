@@ -18,7 +18,7 @@ object retrieveFunctions{
     }
 
     val sqlClient = new Client();
-    sqlClient.connect("postgres");
+    sqlClient.connect("defaultdb");
 
     val result = sqlClient.fetch(query);
     val metaData = result.getMetaData();

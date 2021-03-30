@@ -9,7 +9,7 @@ object sendFunctions {
     val query = f"INSERT INTO $table%s VALUES ($row%s);";
 
     var sqlClient = new Client();
-    sqlClient.connect("postgres");
+    sqlClient.connect("defaultdb");
 
     try {
         sqlClient.execute(query);
@@ -23,7 +23,7 @@ object sendFunctions {
 
   def queryUpdate(table: String, newVal: String, condition: String): Int = {
     val sqlClient = new Client();
-    sqlClient.connect("postgres");
+    sqlClient.connect("defaultdb");
     
     val query = f"UPDATE $table%s SET $newVal%s WHERE $condition%s;";
 
