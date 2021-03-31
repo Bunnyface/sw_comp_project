@@ -10,7 +10,7 @@ SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
 DB_NAME = "defaultdb"
 DB_USER = os.getenv('PSQLUSER')
-DB_HOST = os.getenv('PSQLHOST')
+DB_HOST = os.getenv('PSQLHOST').split(":")[0]
 DB_PASSWD = os.getenv('PSQLPASSWD')
 
 
