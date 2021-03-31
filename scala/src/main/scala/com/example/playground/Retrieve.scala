@@ -1,6 +1,5 @@
 package com.example.playground
 
-import client.Client
 import scala.collection.immutable.Stream
 import java.sql.{ResultSet}
 

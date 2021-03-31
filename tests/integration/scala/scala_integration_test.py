@@ -6,7 +6,7 @@ import logging
 import asyncio
 import asyncpg
 
-SCALAURL = "http://localhost:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
+SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
 DB_NAME = "defaultdb"
 DB_USER = os.getenv('PSQLUSER')
@@ -116,7 +116,7 @@ def test_insert():
     perform_test(
         "/insert",
         "POST",
-        Expected(201, 1),
+        Expected(201, payload["data"]),
         "Inserting a new release",
         payload
     )
@@ -138,7 +138,7 @@ def test_insert():
     perform_test(
         "/insert",
         "POST",
-        Expected(201, 0),
+        Expected(400, ""),
         "Inserting an incorrectly formatted new release",
         payload
     )
@@ -146,7 +146,7 @@ def test_insert():
     perform_test(
         "/releases/new",
         "GET",
-        Expected(500, ""),
+        Expected(404, ""),
         "Trying to get a nonexistent component",
     )
 
@@ -163,23 +163,22 @@ def test_update():
         "condCol": "name",
         "condVal": "newName"
     }
-    perform_test(
-        "/update",
-        "POST",
-        Expected(200, 1),
-        "Updating components' version",
-        payload
-    )
-
     exp = {
         "components": [], 
         "info": ["newName", "2.1"]
     }
     perform_test(
+        "/update",
+        "POST",
+        Expected(201, exp),
+        "Updating components' version",
+        payload
+    )
+    perform_test(
         "/releases/newName",
         "GET",
         Expected(200, exp),
-        "Updating components' version",
+        "Getting updated components' version",
     )
 
     # Test 2: Trying to update a component's version incorrectly.
@@ -193,16 +192,15 @@ def test_update():
     perform_test(
         "/update",
         "POST",
-        Expected(200, 0),
-        "Updating components' version",
+        Expected(400, ''),
+        "Updating components' version using incorrect data",
         payload
     )
-
     perform_test(
         "/releases/newName",
         "GET",
         Expected(200, exp),
-        "Updating components' version",
+        "Trying to get incorrectly updated components' version",
     )
 
     close_db_connection(conn)
