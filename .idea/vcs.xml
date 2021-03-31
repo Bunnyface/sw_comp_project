@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/wso2/docker-is-5.11.0" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/wso2/docker-is-5.11.0/docker-is-5.11.0" vcs="" />
+    <mapping directory="$PROJECT_DIR$/wso2/docker-is-5.11.0adsf/docker-is-5.11.0" vcs="" />
   </component>
 </project>
