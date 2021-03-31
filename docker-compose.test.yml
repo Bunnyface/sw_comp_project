@@ -11,6 +11,10 @@ services:
     depends_on:
       scala:
         condition: service_healthy
+    environment:
+      - PSQLHOST=postgres:5432
+      - PSQLUSER=scalauser
+      - PSQLPASSWD=example
     networks:
       - sw_network
 
