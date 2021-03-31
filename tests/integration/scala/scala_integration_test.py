@@ -10,7 +10,7 @@ SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
 DB_NAME = "defaultdb"
 DB_USER = os.getenv('PSQLUSER')
-DB_HOST = os.getenv('PSQLHOST').split(":")[0]
+DB_HOST = os.getenv('PSQLHOST')
 DB_PASSWD = os.getenv('PSQLPASSWD')
 
 
@@ -30,7 +30,7 @@ def get_db_connection():
 def close_db_connection(conn):
     async def run():
         await conn.close()
-    return asyncio.get_event_loop().run_until_complete(run())
+    asyncio.get_event_loop().run_until_complete(run())
 
 def fetch(conn, query, mode="row"):
     async def run():
@@ -47,18 +47,26 @@ def perform_request(url, method, payload=None):
     if method == "GET":
         return requests.get(SCALAURL + url)
     elif method == "POST":
-        return requests.post(SCALAURL + url, payload)
+        return requests.post(SCALAURL + url, json=payload)
     elif method == "PUT":
-        return requests.put(SCALAURL + url, payload)    
+        return requests.put(SCALAURL + url, json=payload)    
+
+def parse_to_json(data):
+    try:
+        return json.loads(data)
+    except json.decoder.JSONDecodeError:
+        return data
 
 def perform_test(url, method, expected, message=None, payload=None):
     if message:
         logging.info(message)
     else:
         logging.info(f"Performing tests on {url}...")
+    
     received = perform_request(url, method, payload)
+    body = parse_to_json(received.text)
     assert(expected.code == received.status_code)
-    assert(expected.body == json.loads(received.text))
+    assert(expected.body == body)
 
 # --------------- Tests ---------------
 
@@ -97,5 +105,36 @@ def test_releases_all_ok():
             Expected(200, exp),
             f"Sending request for release info on {name}"
         )
+
+    # Test 3: Insert a new component
+    payload = {"table": "releases", "data": ["newName", "3.2.1"]}
+    perform_test(
+        "/insert",
+        "POST",
+        Expected(200, 1),
+        "Inserting a new release",
+        payload
+    )
+
+    exp = {
+        "components": [], 
+        "info": payload["data"]
+    }
+    perform_test(
+        "/releases/newName",
+        "GET",
+        Expected(200, exp),
+        "Fetching a newly created release"
+    )
+
+    # Test 4: Insert a new component to a nonexistent table
+    payload["table"] = "rel_eases"
+    perform_test(
+        "/insert",
+        "POST",
+        Expected(200, 0),
+        "Inserting a new release",
+        payload
+    )
 
     close_db_connection(conn)
