@@ -6,7 +6,7 @@ import logging
 import asyncio
 import asyncpg
 
-SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
+SCALAURL = "http://localhost:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
 DB_NAME = "defaultdb"
 DB_USER = os.getenv('PSQLUSER')
@@ -70,7 +70,7 @@ def perform_test(url, method, expected, message=None, payload=None):
 
 # --------------- Tests ---------------
 
-def test_releases_all_ok():
+def test_releases():
     conn = get_db_connection()
 
     # Test 1: Fetch all the release names.
@@ -106,12 +106,17 @@ def test_releases_all_ok():
             f"Sending request for release info on {name}"
         )
 
-    # Test 3: Insert a new component
+    close_db_connection(conn)
+
+def test_insert():
+    conn = get_db_connection()
+
+    # Test 1: Insert a new component
     payload = {"table": "releases", "data": ["newName", "3.2.1"]}
     perform_test(
         "/insert",
         "POST",
-        Expected(200, 1),
+        Expected(201, 1),
         "Inserting a new release",
         payload
     )
@@ -127,14 +132,77 @@ def test_releases_all_ok():
         "Fetching a newly created release"
     )
 
-    # Test 4: Insert a new component to a nonexistent table
+    # Test 2: Insert a new component to a nonexistent table
     payload["table"] = "rel_eases"
+    payload["data"] = ["new", "1.2"]
     perform_test(
         "/insert",
         "POST",
-        Expected(200, 0),
-        "Inserting a new release",
+        Expected(201, 0),
+        "Inserting an incorrectly formatted new release",
         payload
+    )
+
+    perform_test(
+        "/releases/new",
+        "GET",
+        Expected(500, ""),
+        "Trying to get a nonexistent component",
+    )
+
+    close_db_connection(conn)
+
+def test_update():
+    conn = get_db_connection()
+
+    # Test 1: Updating component's version.
+    payload = {
+        "table": "releases",
+        "newValCol": "version",
+        "newVal": "2.1",
+        "condCol": "name",
+        "condVal": "newName"
+    }
+    perform_test(
+        "/update",
+        "POST",
+        Expected(200, 1),
+        "Updating components' version",
+        payload
+    )
+
+    exp = {
+        "components": [], 
+        "info": ["newName", "2.1"]
+    }
+    perform_test(
+        "/releases/newName",
+        "GET",
+        Expected(200, exp),
+        "Updating components' version",
+    )
+
+    # Test 2: Trying to update a component's version incorrectly.
+    payload = {
+        "table": "releases",
+        "newValCol": "ver_sion",
+        "newVal": "123.123.123",
+        "condCol": "na_me",
+        "condVal": "newName"
+    }
+    perform_test(
+        "/update",
+        "POST",
+        Expected(200, 0),
+        "Updating components' version",
+        payload
+    )
+
+    perform_test(
+        "/releases/newName",
+        "GET",
+        Expected(200, exp),
+        "Updating components' version",
     )
 
     close_db_connection(conn)

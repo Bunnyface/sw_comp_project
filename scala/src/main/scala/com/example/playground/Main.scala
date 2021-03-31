@@ -76,13 +76,15 @@ object Main extends App {
 
   def releases: Endpoint[IO,Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
-    val namesAsJson = names.asJson;
-    Ok(namesAsJson);
+    Ok(names.asJson);
   }
   
   def insert: Endpoint[IO, Int] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
     val response = sendFunctions.queryInsert(req.table, req.data);
-    Ok(response);
+    if (response)
+      Created;
+    else
+      BadRequest;
   }
 
   def update: Endpoint[IO, Int] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
@@ -91,13 +93,18 @@ object Main extends App {
         req.table, 
         f"${req.newValCol}='${req.newVal}'", 
         f"${req.condCol}='${req.condVal}'");
-    Ok(response);
+    if (response)
+      Created;
+    else
+      BadRequest;
   }
 
   def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
-    val relInfoAsJson = relInfo.asJson;
-    Ok(relInfoAsJson);
+    if (relInfo == null)
+      BadRequest;
+    else
+      Ok(relInfo.asJson);
   }
 
   val policy: Cors.Policy = Cors.Policy(

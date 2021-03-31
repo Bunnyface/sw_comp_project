@@ -41,10 +41,11 @@ object retrieveFunctions{
   }
 
   def queryRelease(releaseName: String): Map[String, Array[String]]= {
-    val versionData = get(
-      "releases", "name, version", f"name='$releaseName%s'"
-    )(0);
+    val fetched = get("releases", "name, version", f"name='$releaseName%s'");
+    if (fetched.length == 0)
+      return null;
 
+    val versionData = fetched(0);
     val componentData = get("junctionTable", "componentName", f"releasename='$releaseName%s'")
       .map(row => row(0));
 
