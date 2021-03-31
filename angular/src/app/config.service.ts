@@ -9,28 +9,35 @@ import { Release } from './release';
   providedIn: 'root'
 })
 export class ConfigService {
-
-  private releasesUrl = 'http://localhost:8081/releases';
-  private comparisonUrl = 'http://localhost:8081/comparison'
+  
+  private url = 'http://localhost:8081';
 
   // Get all releases
   getReleases(): Observable<any> {
-    return this.http.get<any>(this.releasesUrl)
+    const url = `${this.url}/releases`;
+    return this.http.get<any>(url)
       .pipe(catchError(this.handleError<String[]>('getReleases', [])));
   }
 
   // Get details of selected release
   getRelease(name: string): Observable<any> {
-    const url = `${this.releasesUrl}/${name}`;
+    const url = `${this.url}/releases/${name}`;
     return this.http.get<any>(url)
       .pipe(catchError(this.handleError<any>(`getRelease id=${name}`)));
   }
 
   // Get comparison of two selected releases
   getComparison(first: string, second: string): Observable<any> {
-    const url = `${this.comparisonUrl}/${first}:${second}`
+    const url = `${this.url}/comparison/${first}:${second}`
     return this.http.get<any>(url)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
+  }
+
+  // Insert release
+  addRelease(release: JSON): Observable<any> {
+    const url = `${this.url}/insert`;
+    return this.http.post(url, release)
+    .pipe(catchError(this.handleError<any>('addRelease')));
   }
 
   // Error handling
