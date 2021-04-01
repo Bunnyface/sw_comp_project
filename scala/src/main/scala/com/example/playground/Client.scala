@@ -1,4 +1,4 @@
-package client
+package com.example.playground
 
 import java.sql.{Connection, DriverManager, ResultSet}
 

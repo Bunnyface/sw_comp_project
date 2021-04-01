@@ -11,60 +11,31 @@ import io.finch.circe._
 import io.circe.generic.auto._
 import spray.json._
 import DefaultJsonProtocol._
-import client.Client
 
 import io.circe._
 import io.circe.syntax._
 
-case class InsertRequest(
-  table: String, 
-  data: Array[String]
-);
 
-case class UpdateRequest(
-  table: String, 
-  newValCol: String, 
-  newVal: String, 
-  condCol: String, 
-  condVal: String
-);
 
 object Main extends App {
 
   case class Message(hello: String)
 
+  case class InsertRequest(
+    table: String, 
+    data: Array[String]
+  );
+
+  case class UpdateRequest(
+    table: String, 
+    newValCol: String, 
+    newVal: String, 
+    condCol: String, 
+    condVal: String
+  );
+
   def healthcheck: Endpoint[IO, String] = get(pathEmpty) {
     Ok("OK")
-  }
-
-  def helloWorld: Endpoint[IO, String] = get("hello") {
-    Ok("Hello, World!");
-  }
-
-  def hello: Endpoint[IO, String] = get("hello" :: path[String]) { s: String =>
-    val client = new Client();
-
-    // Set up a PostgreSQL db with user default_user and password 123.
-    client.connect("testdb", "default_user", "123");
-
-    // Create a "users" table with id and name columns for this to work.
-    // Id column has to be SERIAL (autoincrement type).
-    var userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
-
-    if (!userData.next()) {
-      client.execute(f"INSERT INTO users (name) VALUES ('$s%s');");
-      userData = client.fetch(f"SELECT * FROM users WHERE name='$s%s';");
-    }
-    else
-      userData.previous();
-    client.close();
-
-    if (userData.next()) {
-      val userId = userData.getInt("id");
-      Ok(f"Hello, $s%s! Your id is: $userId%d");
-    }
-    else
-      Ok("Your id wasn't found.");
   }
 
   def compare: Endpoint[IO, Json] = get("compareReleases" :: path[String]) { s: String =>
@@ -76,28 +47,32 @@ object Main extends App {
 
   def releases: Endpoint[IO,Json] = get("releases"){
     var names = retrieveFunctions.queryNames();
-    val namesAsJson = names.asJson;
-    Ok(namesAsJson);
+    Ok(names.asJson);
   }
   
-  def insert: Endpoint[IO, Int] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
+  def insert: Endpoint[IO, Json] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
     val response = sendFunctions.queryInsert(req.table, req.data);
-    Ok(response);
+    if (response != null)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
   }
 
-  def update: Endpoint[IO, Int] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
+  def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
     val response = 
-      sendFunctions.queryUpdate(
-        req.table, 
-        f"${req.newValCol}='${req.newVal}'", 
-        f"${req.condCol}='${req.condVal}'");
-    Ok(response);
+      sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
+    if (response != null)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Release not found"));
   }
 
   def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
-    val relInfoAsJson = relInfo.asJson;
-    Ok(relInfoAsJson);
+    if (relInfo == null)
+      NotFound(new Exception("Release not found"));
+    else
+      Ok(relInfo.asJson);
   }
 
   val policy: Cors.Policy = Cors.Policy(
@@ -108,7 +83,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](helloWorld :+: hello :+: compare :+: insert :+: update :+: releases :+: releaseInfo)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)

@@ -1,7 +1,6 @@
 package com.example.playground
 
 import scala.collection.mutable.ListBuffer
-import client.Client
 
 object compFunction{
   def compareTwoReleases(releaseNameOne: String, releaseNameTwo: String): Map[String, Array[String]] = {

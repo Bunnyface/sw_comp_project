@@ -12,7 +12,7 @@ services:
       scala:
         condition: service_healthy
     environment:
-      - PSQLHOST=postgres:5432
+      - PSQLHOST=postgres
       - PSQLUSER=scalauser
       - PSQLPASSWD=example
     networks:
