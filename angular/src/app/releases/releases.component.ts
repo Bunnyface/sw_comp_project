@@ -10,14 +10,14 @@ import { ConfigService } from '../config.service';
 export class ReleasesComponent implements OnInit {
 
   releases: any = [];
-  selectedRelease: any;
+  selectedRelease: string;
 
   getReleases(): void {
     this.configService.getReleases().subscribe(res => this.releases = res);
   }
 
   getRelease(releaseName: string): void {
-    this.configService.getRelease(releaseName).subscribe(res => this.selectedRelease = res);
+    this.configService.getRelease(releaseName).subscribe(res => this.selectedRelease = JSON.stringify(res));
   }
 
   onSubmit(data) {

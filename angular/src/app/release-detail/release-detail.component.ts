@@ -9,7 +9,7 @@ import { ConfigService } from '../config.service';
 })
 export class ReleaseDetailComponent implements OnInit {
 
-  @Input() release: any;
+  @Input() release: string;
   constructor() { }
 
   ngOnInit(): void {
