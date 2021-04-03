@@ -2,21 +2,27 @@ package com.example.playground
 
 
 object sendFunctions {
-  def queryInsert(table: String, data: Array[String]): Array[String] = {
-    val row = "'" + data.mkString("', '") + "'";
-    val query = f"INSERT INTO $table%s VALUES ($row%s);";
+  def queryInsert(table: String, data: Array[Array[String]]): Array[Array[String]] = {
+    if (data == null || data.length == 0)
+      return null;
 
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
- 
-    try {
-        sqlClient.execute(query);
-        sqlClient.close();
-        return data;
-    } catch {
-        case _: Throwable => sqlClient.close();
-    }
-    return null;
+
+    val result: Array[Array[String]] = data.map(array => {
+      val row = "'" + array.mkString("', '") + "'";
+      val query = f"INSERT INTO $table%s VALUES ($row%s);"; 
+
+      try {
+        val res = sqlClient.execute(query);
+        array;
+      } catch {
+        case _: Throwable => null;
+      }
+    }).filter(row => row != null);
+
+    sqlClient.close();
+    return result;
   }
 
   def queryUpdate(
