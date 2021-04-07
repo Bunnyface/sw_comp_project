@@ -77,7 +77,7 @@ def test_releases():
     exp = [x[0] for x in fetch(conn, "SELECT name FROM releases;", "all")]
     perform_test(
         "/releases", 
-        "GET", 
+        "POST", 
         Expected(200, exp),
         "Sending request for releases"
     )
@@ -112,10 +112,10 @@ def test_insert():
     conn = get_db_connection()
 
     # Test 1: Insert a new component
-    payload = {"table": "releases", "data": ["newName", "3.2.1"]}
+    payload = {"data": [["newName", "3.2.1"]]}
     perform_test(
-        "/insert",
-        "POST",
+        "/insert/releases",
+        "PUT",
         Expected(201, payload["data"]),
         "Inserting a new release",
         payload
@@ -123,7 +123,7 @@ def test_insert():
 
     exp = {
         "components": [], 
-        "info": payload["data"]
+        "info": payload["data"][0]
     }
     perform_test(
         "/releases/newName",
@@ -132,12 +132,38 @@ def test_insert():
         "Fetching a newly created release"
     )
 
-    # Test 2: Insert a new component to a nonexistent table
+    # Test 2: Insert multiple new elements
+    payload = {"data": [
+        ["name1", "3.2.1"], 
+        ["name2", "2.2.2"],
+        ["name3", "1.1.1"]
+    ]}
+    perform_test(
+        "/insert/releases",
+        "PUT",
+        Expected(201, payload["data"]),
+        "Inserting a new release",
+        payload
+    )
+
+    for i in range(len(payload["data"])):
+        exp = {
+            "components": [], 
+            "info": payload["data"][i]
+        }
+        perform_test(
+            "/releases/{}".format(payload["data"][i][0]),
+            "GET",
+            Expected(200, exp),
+            "Fetching a newly created release"
+        )
+
+    # Test 3: Insert a new component to a nonexistent table
     payload["table"] = "rel_eases"
     payload["data"] = ["new", "1.2"]
     perform_test(
-        "/insert",
-        "POST",
+        "/insert/releases",
+        "PUT",
         Expected(400, ""),
         "Inserting an incorrectly formatted new release",
         payload
@@ -201,6 +227,48 @@ def test_update():
         "GET",
         Expected(200, exp),
         "Trying to get incorrectly updated components' version",
+    )
+
+    close_db_connection(conn)
+
+def test_compare():
+    conn = get_db_connection()
+
+    payload = {"first": "First", "second": "Second"}
+    exp = {"same": ["Scala"], "ex_first": ["Java"], "ex_second": []}
+    perform_test(
+        "/compareReleases",
+        "POST",
+        Expected(200, exp),
+        "Compare two releases",
+        payload
+    )
+
+    payload = {"first": "First"}
+    perform_test(
+        "/compareReleases",
+        "POST",
+        Expected(400, ''),
+        "Send only one release to Compare endpoint",
+        payload
+    )
+
+    payload = {"first": 123, "second": "Second"}
+    perform_test(
+        "/compareReleases",
+        "POST",
+        Expected(400, ''),
+        "Send incorrect component name to Compare endpoint",
+        payload
+    )
+
+    payload = {}
+    perform_test(
+        "/compareReleases",
+        "POST",
+        Expected(400, ''),
+        "Send empty payload to Compare endpoint",
+        payload
     )
 
     close_db_connection(conn)
