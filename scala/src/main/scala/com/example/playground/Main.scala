@@ -71,7 +71,7 @@ object Main extends App {
       BadRequest(new Exception("Table not found or data is corrupted"));
   }
 
-  def update: Endpoint[IO, Json] = post("u" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
+  def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
     val response = 
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
     if (response != null)
