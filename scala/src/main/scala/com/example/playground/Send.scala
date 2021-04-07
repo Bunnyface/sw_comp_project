@@ -4,7 +4,7 @@ package com.example.playground
 object sendFunctions {
   def queryInsert(table: String, data: Array[Array[String]]): Array[Array[String]] = {
     if (data == null || data.length == 0)
-      return null;
+      return Array();
 
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");

@@ -13,9 +13,9 @@ object compareFunctions {
     val sameComp = getSame(firstSet, secondSet);
 
     return Map(
-      "Same components" -> sameComp.toArray, 
-      "Exclusive to first" -> getExclusive(firstSet, sameComp).toArray, 
-      "Exclusive to second" -> getExclusive(secondSet, sameComp).toArray
+      "same" -> sameComp.toArray, 
+      "ex_first" -> getExclusive(firstSet, sameComp).toArray, 
+      "ex_second" -> getExclusive(secondSet, sameComp).toArray
     );
   }
 
