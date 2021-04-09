@@ -20,9 +20,8 @@ export class ReleasesComponent implements OnInit {
     this.configService.getRelease(releaseName).subscribe(res => this.selectedRelease = JSON.stringify(res));
   }
 
-  onSubmit(data) {
-    console.log("form submitted", data.release)
-    this.getRelease(data.release);
+  onSelect(release): void {
+    this.getRelease(release);
   }
 
   constructor(private configService: ConfigService) { }
