@@ -9,7 +9,7 @@ import { Release } from './release';
   providedIn: 'root'
 })
 export class ConfigService {
-  
+
   private url = 'http://localhost:8081';
 
   // Get all releases
@@ -22,14 +22,16 @@ export class ConfigService {
   // Get details of selected release
   getRelease(name: string): Observable<any> {
     const url = `${this.url}/releases/${name}`;
-    return this.http.get<any>(url)
+    const body = {};
+    return this.http.post(url,null)
       .pipe(catchError(this.handleError<any>(`getRelease id=${name}`)));
   }
 
   // Get comparison of two selected releases
   getComparison(first: string, second: string): Observable<any> {
     const url = `${this.url}/compareReleases/${first}:${second}`
-    return this.http.get<any>(url)
+    const body = {};
+    return this.http.post(url, null)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
   }
 
