@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.identity.developer.language-server" label="Language server on Identity Server Feature" provider-name="%providerName" version="0.5.10">
+  <description>This feature contains the bundles required for the Language server and Debug sever</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+</feature>

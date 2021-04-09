@@ -26,3 +26,9 @@ update-angular_build:
 remove-all-images:
 	docker rmi -f $(docker images -a -q)
 
+backup-wso2:
+	sudo chmod -R 777 wso2/.
+	docker container cp sw_comp_project_identity-server_1:/home/wso2carbon/wso2is-5.11.0/repository/. wso2/repository
+	docker container cp sw_comp_project_identity-server_1:/home/wso2carbon/wso2is-5.11.0/backup/. wso2/backup
+	sudo chmod -R 777 wso2/.
+
