@@ -9,27 +9,30 @@ import { Release } from './release';
   providedIn: 'root'
 })
 export class ConfigService {
-  
+
   private url = 'http://localhost:8081';
 
   // Get all releases
   getReleases(): Observable<any> {
     const url = `${this.url}/releases`;
-    return this.http.get<any>(url)
-      .pipe(catchError(this.handleError<String[]>('getReleases', [])));
+    const body = {};
+    return this.http.post(url,null)
+      .pipe(catchError(this.handleError<any>('getReleases', [])));
   }
 
   // Get details of selected release
   getRelease(name: string): Observable<any> {
     const url = `${this.url}/releases/${name}`;
-    return this.http.get<any>(url)
+    const body = {};
+    return this.http.post(url,null)
       .pipe(catchError(this.handleError<any>(`getRelease id=${name}`)));
   }
 
   // Get comparison of two selected releases
   getComparison(first: string, second: string): Observable<any> {
     const url = `${this.url}/compareReleases/${first}:${second}`
-    return this.http.get<any>(url)
+    const body = {};
+    return this.http.post(url, null)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
   }
 
