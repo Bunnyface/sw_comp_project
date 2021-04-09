@@ -41,9 +41,6 @@ services:
     build: ./wso2
     ports:
       - 9443:9443
-    volumes:
-      #- ./wso2/mountDirectories/conf:/home/wso2carbon/wso2is-5.11.0/repository/conf
-      - ./wso2/mountDirectories/conf-volume:/home/wso2carbon/wso2-config-volume
 
 
 networks:
