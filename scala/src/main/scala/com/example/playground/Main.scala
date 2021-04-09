@@ -22,15 +22,15 @@ object Main extends App {
   case class Message(hello: String)
 
   case class InsertRequest(
-    table: String, 
+    table: String,
     data: Array[String]
   );
 
   case class UpdateRequest(
-    table: String, 
-    newValCol: String, 
-    newVal: String, 
-    condCol: String, 
+    table: String,
+    newValCol: String,
+    newVal: String,
+    condCol: String,
     condVal: String
   );
 
@@ -38,19 +38,19 @@ object Main extends App {
     Ok("OK")
   }
 
-  def compare: Endpoint[IO, Json] = get("compareReleases" :: path[String]) { s: String =>
+  def compare: Endpoint[IO, Json] = post("compareReleases" :: path[String]) { s: String =>
     println("GOT HERE");
     var releases = s.split(":")
     val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
     Ok(theMap.asJson);
   }
 
-  def releases: Endpoint[IO,Json] = get("releases"){
+  def releases: Endpoint[IO,Json] = post("releases"){
     var names = retrieveFunctions.queryNames();
     Ok(names.asJson);
   }
-  
-  def insert: Endpoint[IO, Json] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
+
+  def insert: Endpoint[IO, Json] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest =>
     val response = sendFunctions.queryInsert(req.table, req.data);
     if (response != null)
       Created(response.asJson);
@@ -59,7 +59,7 @@ object Main extends App {
   }
 
   def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
-    val response = 
+    val response =
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
     if (response != null)
       Created(response.asJson);
@@ -67,7 +67,7 @@ object Main extends App {
       BadRequest(new Exception("Release not found"));
   }
 
-  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
+  def releaseInfo: Endpoint[IO, Json] = post("releases" :: path[String]){ relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
     if (relInfo == null)
       NotFound(new Exception("Release not found"));
