@@ -1,14 +1,17 @@
 <div>
     <h2>Releases</h2>
 </div>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let release of releases" [ngValue]="release">
+            <td (click)="onSelect(release)">{{release}}</td>
+        </tr>
+    </tbody>
+</table>
 
-<form #release="ngForm" (ngSubmit)="onSubmit(release.value)">
-    <div class="form-group mb-2">
-        <label for="release" class="form-label">Release</label>
-        <select class="form-control" id="release" ngModel name="release">
-            <option *ngFor="let release of releases" [ngValue]="release">{{release}}</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-success mb-2">Valitse</button>
-</form>
 <app-release-detail [release]="selectedRelease"></app-release-detail>
