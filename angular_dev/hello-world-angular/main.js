@@ -403,19 +403,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataInputComponent", function() { return DataInputComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config.service */ "wxHw");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-
 
 
 class DataInputComponent {
     constructor(configService) {
         this.configService = configService;
+        this.file = null;
     }
+    // Read the contents of the file and add data to database.
     onFileSelected(event) {
-        const file = event.target.files[0];
+        this.file = event.target.files[0];
         var data = '';
         var jsonData;
-        if (file) {
+        if (this.file) {
             const reader = new FileReader();
             reader.onload = (event) => {
                 data = event.target.result;
@@ -423,30 +423,31 @@ class DataInputComponent {
                 jsonData = JSON.parse(data);
                 this.configService.addRelease(jsonData).subscribe(res => console.log(res));
             };
-            reader.readAsText(file);
+            reader.readAsText(this.file);
         }
     }
     ngOnInit() {
     }
 }
 DataInputComponent.ɵfac = function DataInputComponent_Factory(t) { return new (t || DataInputComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_1__["ConfigService"])); };
-DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 8, vars: 0, consts: [[1, "form-group", "mb-2"], ["for", "file"], ["type", "file", "accept", ".json", "name", "file", "id", "file", 1, "form-control", 3, "change"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
+DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 7, vars: 1, consts: [[1, "form-group"], ["type", "file", "accept", ".json", "id", "file", 1, "form-control", 3, "change"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h2");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Insert data");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "form");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "label", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6, "File");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "input", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function DataInputComponent_Template_input_change_7_listener($event) { return ctx.onFileSelected($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function DataInputComponent_Template_input_change_4_listener($event) { return ctx.onFileSelected($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "p");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgForm"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.file ? "File uploaded." : "");
+    } }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
 
 
 /***/ }),
@@ -508,32 +509,33 @@ __webpack_require__.r(__webpack_exports__);
 class ConfigService {
     constructor(http) {
         this.http = http;
-        this.releasesUrl = 'http://localhost:8081/releases';
-        this.comparisonUrl = 'http://localhost:8081/comparison';
-        this.insertUrl = 'http://localhost:8081/insert';
-        // Test url
-        this.testUrl = 'http://httpbin.org/post';
+        this.url = 'http://localhost:8081';
     }
     // Get all releases
     getReleases() {
-        return this.http.get(this.releasesUrl)
+        const url = `${this.url}/releases`;
+        const body = {};
+        return this.http.post(url, null)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
     }
     // Get details of selected release
     getRelease(name) {
-        const url = `${this.releasesUrl}/${name}`;
-        return this.http.get(url)
+        const url = `${this.url}/releases/${name}`;
+        const body = {};
+        return this.http.post(url, null)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError(`getRelease id=${name}`)));
     }
     // Get comparison of two selected releases
     getComparison(first, second) {
-        const url = `${this.comparisonUrl}/${first}:${second}`;
-        return this.http.get(url)
+        const url = `${this.url}/comparison/${first}:${second}`;
+        const body = {};
+        return this.http.post(url, null)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComparison', [])));
     }
     // Insert release
     addRelease(release) {
-        return this.http.post(this.insertUrl, release)
+        const url = `${this.url}/insert`;
+        return this.http.post(url, release)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('addRelease')));
     }
     // Error handling
