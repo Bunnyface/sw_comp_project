@@ -1,5 +1,5 @@
 CREATE TABLE "Component" (
-  "id" int PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "Name" varchar,
   "URL" varchar,
   "Version" varchar,
@@ -8,7 +8,7 @@ CREATE TABLE "Component" (
 );
 
 CREATE TABLE "SubComponent" (
-  "id" int PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "Name" varchar,
   "URL" varchar,
   "Version" varchar,
@@ -23,7 +23,7 @@ CREATE TABLE "CompSubComp" (
 );
 
 CREATE TABLE "Module" (
-  "id" int PRIMARY KEY,
+  "id" serial PRIMARY KEY,
   "Name" varchar
 );
 

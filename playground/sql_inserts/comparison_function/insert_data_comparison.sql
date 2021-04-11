@@ -1,17 +1,17 @@
 INSERT INTO "Module"(
-	id, "Name")
-	VALUES (1, 'TestModule'),
-			(2, 'DemoModule');
+	 "Name")
+	VALUES ('TestModule'),
+			('DemoModule');
   
 INSERT INTO "Component"(
-	id, "Name", "URL", "Version", "License", "Copyright")
-	VALUES (1, 'TestComponent', 'testurl', 'Version 1', 'TestLicence', 'TestCopyright'),
-		   (2, 'DemoComponent', 'testurl2', 'Version 1', 'TestLicence', 'TestCopyright' );
+	"Name", "URL", "Version", "License", "Copyright")
+	VALUES ('TestComponent', 'testurl', 'Version 1', 'TestLicence', 'TestCopyright'),
+		   ('DemoComponent', 'testurl2', 'Version 1', 'TestLicence', 'TestCopyright' );
 
 INSERT INTO "SubComponent"(
-	id, "Name", "URL", "Version", "License", "Copyright")
-	VALUES (1, 'TestSubComponent', 'testurl', 'Version 1', 'TestLicence', 'TestCopyright'),
-		   (2, 'DemoSubComponent', 'testurl2', 'Version 1', 'TestLicence', 'TestCopyright' );
+	"Name", "URL", "Version", "License", "Copyright")
+	VALUES ('TestSubComponent', 'testurl', 'Version 1', 'TestLicence', 'TestCopyright'),
+		   ('DemoSubComponent', 'testurl2', 'Version 1', 'TestLicence', 'TestCopyright' );
 
 INSERT INTO "ModuleComponent"(
 	"Module_id", "Component_id", "UsageType", "Date", "ModCompAttrValue1", "ModCompAttrValue2", "ModCompAttrValue3", "CommentOne", "CommentTwo")
