@@ -499,19 +499,35 @@ class ConfigService {
     // Get all releases
     getReleases() {
         const url = `${this.url}/releases`;
+<<<<<<< HEAD
         return this.http.get(url)
+=======
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> update angular_build
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
     }
     // Get details of selected release
     getRelease(name) {
         const url = `${this.url}/releases/${name}`;
+<<<<<<< HEAD
         return this.http.get(url)
+=======
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> update angular_build
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError(`getRelease id=${name}`)));
     }
     // Get comparison of two selected releases
     getComparison(first, second) {
+<<<<<<< HEAD
         const url = `${this.url}/compareReleases/${first}:${second}`;
         return this.http.get(url)
+=======
+        const url = `${this.url}/comparison/${first}:${second}`;
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> update angular_build
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComparison', [])));
     }
     // Insert release
