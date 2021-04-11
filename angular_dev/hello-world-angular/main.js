@@ -427,6 +427,8 @@ DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function DataInputComponent_Template_input_change_4_listener($event) { return ctx.onFileSelected($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "p");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "p");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
@@ -502,26 +504,37 @@ class ConfigService {
     getReleases() {
         const url = `${this.url}/releases`;
 <<<<<<< HEAD
-        return this.http.get(url)
-=======
-        const body = {};
-        return this.http.post(url, null)
->>>>>>> update angular_build
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
-    }
-    // Get details of selected release
-    getRelease(name) {
-        const url = `${this.url}/releases/${name}`;
 <<<<<<< HEAD
         return this.http.get(url)
 =======
         const body = {};
         return this.http.post(url, null)
 >>>>>>> update angular_build
+=======
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> 408de48088d1cd40855d2c465ad9926e5c296f84
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getReleases', [])));
+    }
+    // Get details of selected release
+    getRelease(name) {
+        const url = `${this.url}/releases/${name}`;
+<<<<<<< HEAD
+<<<<<<< HEAD
+        return this.http.get(url)
+=======
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> update angular_build
+=======
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> 408de48088d1cd40855d2c465ad9926e5c296f84
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError(`getRelease id=${name}`)));
     }
     // Get comparison of two selected releases
     getComparison(first, second) {
+<<<<<<< HEAD
 <<<<<<< HEAD
         const url = `${this.url}/compareReleases/${first}:${second}`;
         return this.http.get(url)
@@ -530,6 +543,11 @@ class ConfigService {
         const body = {};
         return this.http.post(url, null)
 >>>>>>> update angular_build
+=======
+        const url = `${this.url}/comparison/${first}:${second}`;
+        const body = {};
+        return this.http.post(url, null)
+>>>>>>> 408de48088d1cd40855d2c465ad9926e5c296f84
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComparison', [])));
     }
     // Insert release
