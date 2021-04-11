@@ -1,7 +1,7 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 build-scala:
-	docker build scala --tag swcomp/scala_main
+	docker build scala --tag swcomp/scala
 
 build-postgres:
 	docker build postgres --tag swcomp/postgres
