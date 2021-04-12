@@ -2,16 +2,22 @@ package com.example.playground
 
 
 object sendFunctions {
-  def queryInsert(table: String, data: Array[Array[String]]): Array[Array[String]] = {
+  def queryInsert(
+    table: String,
+    columns: Array[String],
+    data: Array[Array[String]]
+  ): Array[Array[String]] = {
     if (data == null || data.length == 0)
       return Array();
 
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
 
+    val columnString = columns.mkString(", ");
+
     val result: Array[Array[String]] = data.map(array => {
       val row = "'" + array.mkString("', '") + "'";
-      val query = f"INSERT INTO $table%s VALUES ($row%s);"; 
+      val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s);"; 
 
       try {
         val res = sqlClient.execute(query);
@@ -31,7 +37,7 @@ object sendFunctions {
     newVal: String,
     condCol: String,
     condVal: String
-  ): Map[String, Array[String]] = {
+  ): retrieveFunctions.Module = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
 

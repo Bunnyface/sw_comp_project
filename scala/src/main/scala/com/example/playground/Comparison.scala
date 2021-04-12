@@ -1,9 +1,9 @@
 package com.example.playground
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ArrayBuffer
 
 object compareFunctions {
-  def compare(firstName: String, secondName: String): Map[String, Array[String]] = {
+  def compare(firstName: String, secondName: String): Map[String, Array[Array[String]]] = {
     val firstSet = getComponents(firstName);
     val secondSet = getComponents(secondName);
 
@@ -19,21 +19,31 @@ object compareFunctions {
     );
   }
 
-  def getComponents(name: String): List[String] = {
+  def getComponents(name: String): Array[Array[String]] = {
     val data = retrieveFunctions
       .get(
-        "releases AS r, junctionTable AS jt, componentTable AS ct", 
-        "cname", 
-        f"r.name = jt.releasename AND ct.cname=jt.componentname AND name='$name%s'")
-      .map(row => row(0));
-    return data.toList;
+        "module AS m, module_component AS mc, component AS c", 
+        "c.name, c.version", 
+        f"m.id = mc.module_id AND c.id = mc.comp_id AND m.name='$name%s'")
+      .map(row => row.map(v => v.toString()).toArray);
+    
+    if (data.length > 0)
+      return data.toArray;
+    
+    return Array();
   }
 
-  def getSame(first: List[String], second: List[String]): List[String] = {
+  def getSame(
+    first: Array[Array[String]], 
+    second: Array[Array[String]]
+  ): Array[Array[String]] = {
     return first.filter(row => second.contains(row));
   }
 
-  def getExclusive(first: List[String], second: List[String]): List[String] = {
+  def getExclusive(
+    first: Array[Array[String]], 
+    second: Array[Array[String]]
+  ): Array[Array[String]] = {
     return first.filter(row => !second.contains(row));
   }
 }

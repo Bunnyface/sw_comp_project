@@ -27,6 +27,7 @@ object Main extends App {
   );
 
   case class InsertRequest (
+    columns: Array[String],
     data: Array[Array[String]]
   );
 
@@ -55,7 +56,7 @@ object Main extends App {
       Ok(relInfo.asJson);
   }
 
-  def compare: Endpoint[IO, Json] = post("compareReleases" :: jsonBody[CompareRequest]) { req: CompareRequest =>
+  def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     val response = compareFunctions.compare(req.first, req.second);
     if (response != null) 
       Ok(response.asJson);
@@ -64,7 +65,7 @@ object Main extends App {
   }
   
   def insert: Endpoint[IO, Json] = put("insert" :: path[String] :: jsonBody[InsertRequest]) { (table: String, req: InsertRequest) => 
-    val response = sendFunctions.queryInsert(table, req.data);
+    val response = sendFunctions.queryInsert(table, req.columns, req.data);
     if (response.length != 0)
       Created(response.asJson);
     else
