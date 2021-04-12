@@ -1,14 +1,4 @@
-FROM openjdk:8
-
-ENV SBT_VERSION 1.2.6
-
-RUN \
-  curl -L -o sbt-$SBT_VERSION.deb http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
-  dpkg -i sbt-$SBT_VERSION.deb && \
-  rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install sbt && \
-  sbt sbtVersion
+FROM hseeberger/scala-sbt:8u222_1.3.5_2.13.1
   
 WORKDIR /HelloWorld
 

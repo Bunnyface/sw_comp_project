@@ -19,11 +19,16 @@ import io.circe.syntax._
 
 object Main extends App {
 
-  case class Message(hello: String)
+  case class Message(hello: String);
 
-  case class InsertRequest(
-    table: String, 
-    data: Array[String]
+  case class CompareRequest(
+    first: String,
+    second: String
+  );
+
+  case class InsertRequest (
+    columns: Array[String],
+    data: Array[Array[String]]
   );
 
   case class UpdateRequest(
@@ -38,21 +43,30 @@ object Main extends App {
     Ok("OK")
   }
 
-  def compare: Endpoint[IO, Json] = get("compareReleases" :: path[String]) { s: String =>
-    println("GOT HERE");
-    var releases = s.split(":")
-    val theMap = compFunction.compareTwoReleases(releases(0), releases(1))
-    Ok(theMap.asJson);
+  def releases: Endpoint[IO, Json] = post("releases") {
+    val response = retrieveFunctions.queryNames();
+    Ok(response.asJson);
   }
 
-  def releases: Endpoint[IO,Json] = get("releases"){
-    var names = retrieveFunctions.queryNames();
-    Ok(names.asJson);
+  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]) { relName: String =>
+    var relInfo = retrieveFunctions.queryRelease(relName);
+    if (relInfo == null)
+      NotFound(new Exception("Release not found"));
+    else
+      Ok(relInfo.asJson);
+  }
+
+  def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
+    val response = compareFunctions.compare(req.first, req.second);
+    if (response != null) 
+      Ok(response.asJson);
+    else
+      NotFound(new Exception("One of the requested releases was not found"));
   }
   
-  def insert: Endpoint[IO, Json] = post("insert" :: jsonBody[InsertRequest]) { req: InsertRequest => 
-    val response = sendFunctions.queryInsert(req.table, req.data);
-    if (response != null)
+  def insert: Endpoint[IO, Json] = put("insert" :: path[String] :: jsonBody[InsertRequest]) { (table: String, req: InsertRequest) => 
+    val response = sendFunctions.queryInsert(table, req.columns, req.data);
+    if (response.length != 0)
       Created(response.asJson);
     else
       BadRequest(new Exception("Table not found or data is corrupted"));
@@ -65,14 +79,6 @@ object Main extends App {
       Created(response.asJson);
     else
       BadRequest(new Exception("Release not found"));
-  }
-
-  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]){ relName: String =>
-    var relInfo = retrieveFunctions.queryRelease(relName);
-    if (relInfo == null)
-      NotFound(new Exception("Release not found"));
-    else
-      Ok(relInfo.asJson);
   }
 
   val policy: Cors.Policy = Cors.Policy(
