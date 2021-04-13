@@ -10,18 +10,9 @@ import { ConfigService } from '../config.service';
 export class ReleasesComponent implements OnInit {
 
   releases: any = [];
-  selectedRelease: string;
 
   getReleases(): void {
     this.configService.getReleases().subscribe(res => this.releases = res);
-  }
-
-  getRelease(releaseName: string): void {
-    this.configService.getRelease(releaseName).subscribe(res => this.selectedRelease = JSON.stringify(res));
-  }
-
-  onSelect(release): void {
-    this.getRelease(release);
   }
 
   constructor(private configService: ConfigService) { }

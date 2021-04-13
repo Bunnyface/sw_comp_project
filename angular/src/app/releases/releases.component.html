@@ -1,7 +1,7 @@
 <div>
     <h2>Releases</h2>
 </div>
-<table class="table table-bordered table-hover">
+<table class="table table-sm table-hover">
     <thead class="thead-dark">
         <tr>
             <th scope="col">Name</th>
@@ -9,9 +9,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let release of releases" [ngValue]="release">
-            <td (click)="onSelect(release)">{{release}}</td>
+            <td routerLink="/releases/{{release}}">{{release}}</td>
         </tr>
     </tbody>
 </table>
-
-<app-release-detail [release]="selectedRelease"></app-release-detail>

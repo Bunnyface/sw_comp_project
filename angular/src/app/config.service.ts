@@ -15,7 +15,7 @@ export class ConfigService {
   // Get all releases
   getReleases(): Observable<any> {
     const url = `${this.url}/releases`;
-    return this.http.get<any>(url)
+    return this.http.post<any>(url, null)
       .pipe(catchError(this.handleError<String[]>('getReleases', [])));
   }
 
