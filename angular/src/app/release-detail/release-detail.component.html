@@ -1,5 +1,53 @@
-<div *ngIf="release" class="row">
+<!-- Module info-->
+<div class="row">
     <div class="col">
-        <code>{{release}}</code>
+        <h3>Module info</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table table-sm table-hover module-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let value of release.info">
+                    <td>{{value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Module components-->
+<div class="row">
+    <div class="col">
+        <h3>Module components</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table table-sm table-hover module-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Component</th>
+                    <th scole="col">Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let component of release.components">
+                    <td *ngFor="let value of component">{{value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Go back -->
+<div class="row">
+    <div class="col">
+        <button (click)="goBack()" class="btn btn-primary">Back to modules</button>
     </div>
 </div>

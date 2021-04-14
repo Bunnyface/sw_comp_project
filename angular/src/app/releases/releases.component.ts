@@ -10,19 +10,9 @@ import { ConfigService } from '../config.service';
 export class ReleasesComponent implements OnInit {
 
   releases: any = [];
-  selectedRelease: string;
 
   getReleases(): void {
     this.configService.getReleases().subscribe(res => this.releases = res);
-  }
-
-  getRelease(releaseName: string): void {
-    this.configService.getRelease(releaseName).subscribe(res => this.selectedRelease = JSON.stringify(res));
-  }
-
-  onSubmit(data) {
-    console.log("form submitted", data.release)
-    this.getRelease(data.release);
   }
 
   constructor(private configService: ConfigService) { }
