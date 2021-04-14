@@ -32,10 +32,10 @@ object Main extends App {
   );
 
   case class UpdateRequest(
-    table: String, 
-    newValCol: String, 
-    newVal: String, 
-    condCol: String, 
+    table: String,
+    newValCol: String,
+    newVal: String,
+    condCol: String,
     condVal: String
   );
 
@@ -48,7 +48,7 @@ object Main extends App {
     Ok(response.asJson);
   }
 
-  def releaseInfo: Endpoint[IO, Json] = get("releases" :: path[String]) { relName: String =>
+  def releaseInfo: Endpoint[IO, Json] = post("releases" :: path[String]) { relName: String =>
     var relInfo = retrieveFunctions.queryRelease(relName);
     if (relInfo == null)
       NotFound(new Exception("Release not found"));
@@ -58,13 +58,13 @@ object Main extends App {
 
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     val response = compareFunctions.compare(req.first, req.second);
-    if (response != null) 
+    if (response != null)
       Ok(response.asJson);
     else
       NotFound(new Exception("One of the requested releases was not found"));
   }
-  
-  def insert: Endpoint[IO, Json] = put("insert" :: path[String] :: jsonBody[InsertRequest]) { (table: String, req: InsertRequest) => 
+
+  def insert: Endpoint[IO, Json] = put("insert" :: path[String] :: jsonBody[InsertRequest]) { (table: String, req: InsertRequest) =>
     val response = sendFunctions.queryInsert(table, req.columns, req.data);
     if (response.length != 0)
       Created(response.asJson);
@@ -73,7 +73,7 @@ object Main extends App {
   }
 
   def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
-    val response = 
+    val response =
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
     if (response != null)
       Created(response.asJson);
