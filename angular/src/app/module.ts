@@ -1,4 +1,5 @@
 export interface Module {
-    info: [];
+    id: number,
+    name: string;
     components: [];
 }
