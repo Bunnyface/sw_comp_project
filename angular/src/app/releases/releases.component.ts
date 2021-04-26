@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Release } from '../release';
+import { Module } from '../module';
 import { ConfigService } from '../config.service';
 
 @Component({
@@ -9,15 +9,15 @@ import { ConfigService } from '../config.service';
 })
 export class ReleasesComponent implements OnInit {
 
-  releases: any = [];
+  modules: any = [];
 
-  getReleases(): void {
-    this.configService.getReleases().subscribe(res => this.releases = res);
+  getModules(): void {
+    this.configService.getModules().subscribe(res => this.modules = res);
   }
 
   constructor(private configService: ConfigService) { }
 
   ngOnInit(): void {
-    this.getReleases();
+    this.getModules();
   }
 }
