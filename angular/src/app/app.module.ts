@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule , FormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ReleasesComponent } from './releases/releases.component';
@@ -11,6 +11,9 @@ import { ReleaseDetailComponent } from './release-detail/release-detail.componen
 import { DataInputComponent } from './data-input/data-input.component';
 import { CompareComponent } from './compare/compare.component';
 import { AppRoutingModule } from './app-routing.module';
+import { InsertModuleComponent } from './insert-module/insert-module.component';
+import { InsertComponentComponent } from './insert-component/insert-component.component';
+import { ComponentsComponent } from './components/components.component';
 
 @NgModule({
   declarations: [
@@ -18,12 +21,16 @@ import { AppRoutingModule } from './app-routing.module';
     ReleasesComponent,
     ReleaseDetailComponent,
     DataInputComponent,
-    CompareComponent
+    CompareComponent,
+    InsertModuleComponent,
+    InsertComponentComponent,
+    ComponentsComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
+    ReactiveFormsModule,
     FormsModule,
     AppRoutingModule
   ],

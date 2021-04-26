@@ -6,11 +6,11 @@ import { ReleaseDetailComponent } from './release-detail/release-detail.componen
 import { ReleasesComponent } from './releases/releases.component';
 
 const routes: Routes = [
-  { path: 'releases/:name', component: ReleaseDetailComponent },
-  { path: 'releases', component: ReleasesComponent },
+  { path: 'modules/:name', component: ReleaseDetailComponent },
+  { path: 'modules', component: ReleasesComponent },
   { path: 'compare', component: CompareComponent },
   { path: 'insert', component: DataInputComponent },
-  { path: '', redirectTo: 'releases', pathMatch: 'full' }
+  { path: '', redirectTo: 'modules', pathMatch: 'full' }
 ]
 
 @NgModule({

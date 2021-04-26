@@ -1,4 +1,4 @@
-export interface Release {
+export interface Module {
     info: [];
     components: [];
 }
