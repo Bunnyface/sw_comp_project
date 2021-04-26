@@ -60,6 +60,11 @@ object Main extends App {
     Ok(retrieveFunctions.retrieveEverything());
   }
 
+  def components: Endpoint[IO, Json] = post("components") {
+    val response = retrieveFunctions.queryComponents();
+    Ok(response.asJson);
+  }
+
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     val response = compareFunctions.compare(req.first, req.second);
     if (response != null)
