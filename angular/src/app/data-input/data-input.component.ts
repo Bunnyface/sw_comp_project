@@ -22,8 +22,8 @@ export class DataInputComponent implements OnInit {
       reader.onload = (event) => {
         data = event.target.result as string;
         console.log(data);
-        jsonData = JSON.parse(data)
-        this.configService.addRelease(jsonData).subscribe(res => console.log(res));
+        jsonData = JSON.parse(data);
+        this.configService.insert("releases", jsonData).subscribe(res => console.log(res));
       }
       reader.readAsText(this.file);
     }
