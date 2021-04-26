@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Release } from '../release'
+import { Module } from '../module'
 import { ConfigService } from '../config.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,7 +12,8 @@ import { Location } from '@angular/common';
 })
 export class ReleaseDetailComponent implements OnInit {
 
-  release: Release;
+  module: Module;
+  edit: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -20,16 +21,26 @@ export class ReleaseDetailComponent implements OnInit {
     private location: Location
   ) { }
 
-  ngOnInit(): void {
-    this.getRelease();
-  }
-
   getRelease(): void {
     const name = this.route.snapshot.paramMap.get('name');
-    this.configService.getRelease(name).subscribe(res => this.release = res)
+    this.configService.getRelease(name).subscribe(res => this.module = res)
+  }
+
+  onEdit(): void {
+    if (this.edit) {
+      this.edit = false;
+    }
+    else {
+      this.edit = true;
+    }
   }
 
   goBack(): void {
     this.location.back();
   }
+
+  ngOnInit(): void {
+    this.getRelease();
+  }
+
 }
