@@ -6,7 +6,8 @@ import java.sql.{ResultSet}
 
 object retrieveFunctions{
   case class Module(
-    info: Array[String],
+    id: Int,
+    name: String,
     components: Array[Array[String]]
   );
 
@@ -44,6 +45,11 @@ object retrieveFunctions{
     return resList.map(row => row(0).toString());
   }
 
+  def queryComponents(): List[Array[String]] = {
+    val resList = get("component", "id, name");
+    return resList.map(row => row.map(v => v.toString()).toArray).toList;
+  }
+
   def queryRelease(moduleName: String): Module = {
     val fetched = try {
       get("module", "*", f"name='$moduleName%s'")(0);
@@ -62,7 +68,8 @@ object retrieveFunctions{
     ).map(row => row.map(v => v.toString()).toArray);
 
     return Module(
-      Array(fetched(1).toString()),
+      moduleID,
+      fetched(1).toString(),
       componentData.toArray
     );
   }

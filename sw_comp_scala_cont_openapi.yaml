@@ -13,7 +13,7 @@ paths:
       description: Get infromation of all releases in the db.
       responses:
         200:
-          description: Successfull pull of release data.
+          description: Successful pull of release data.
           content:
             application/json:
               schema:
@@ -116,3 +116,22 @@ paths:
           description: User has not been authenticated.
         403:
           description: User is not authorized to create new releases.
+
+  /components:
+      post:
+        description: Get names of all components in the db.
+        responses:
+          200:
+            description: Successful pull of component data.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: string
+          401:
+            description: User has not been authenticated.
+          403:
+            description: User is not authorized to view the results.
+          404:
+            description: No components were found in the database.

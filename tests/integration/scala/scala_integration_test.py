@@ -85,9 +85,14 @@ def test_releases():
     # Test 2: Fetch all the components individually.
     names = list(exp)
     for name in names:
-        name_version = fetch(
+        module_id = fetch(
+            conn,
+            f"SELECT id FROM modules WHERE name='{name}';",
+            "row"
+        )
+        name = fetch(
             conn, 
-            f"SELECT name, version FROM releases WHERE name='{name}';", 
+            f"SELECT name FROM releases WHERE name='{name}';", 
             "row"
         )
         components = fetch(
@@ -96,7 +101,8 @@ def test_releases():
             "all"
         )
         exp = {
-            "info": name_version, 
+            "id": module_id,
+            "name": name,
             "components": [x[0] for x in components]
         }
         perform_test(
@@ -105,6 +111,20 @@ def test_releases():
             Expected(200, exp),
             f"Sending request for release info on {name}"
         )
+
+    close_db_connection(conn)
+
+def test_components():
+    conn = get_db_connection()
+
+    # Test 1: Fetch all the component ids and names
+    exp = [x[0] for x in fetch(conn, "SELECT id, name FROM component;", "all")]
+    perform_test(
+        "/components", 
+        "POST", 
+        Expected(200, exp),
+        "Sending request for components"
+    )
 
     close_db_connection(conn)
 

@@ -56,6 +56,11 @@ object Main extends App {
       Ok(relInfo.asJson);
   }
 
+  def components: Endpoint[IO, Json] = post("components") {
+    val response = retrieveFunctions.queryComponents();
+    Ok(response.asJson);
+  }
+
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     val response = compareFunctions.compare(req.first, req.second);
     if (response != null)
@@ -89,7 +94,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: components)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
