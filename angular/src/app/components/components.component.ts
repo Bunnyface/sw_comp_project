@@ -29,6 +29,7 @@ export class ComponentsComponent implements OnInit {
 
   onSubmit() {
     this.addComponent(this.newComponent.value);
+    this.newComponent.reset();
   }
 
   // Add selected component to module
@@ -36,7 +37,6 @@ export class ComponentsComponent implements OnInit {
     const path = "module_component";
     const body = this.formatBody(component);
     this.configService.insert(path, body).subscribe();
-    console.log(body);
   }
 
   // Format the request body to fit insert endpoint
