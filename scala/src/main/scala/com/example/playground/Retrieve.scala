@@ -35,7 +35,7 @@ object retrieveFunctions{
           yield result.getObject(i)
       }
     }.toStream
-
+    sqlClient.close()
     return tableValues.toList;
   }
 

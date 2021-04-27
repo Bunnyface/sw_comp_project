@@ -40,19 +40,22 @@ object sendFunctions {
   ): retrieveFunctions.Module = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
-
+    println("Sending update query");
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
     val query = f"UPDATE $table%s SET $change%s WHERE $condition%s;";
 
     try {
         sqlClient.execute(query);
-        val created = retrieveFunctions.queryRelease(condVal);
+        val created = retrieveFunctions.queryRelease(newVal);
         sqlClient.close();
         return created;
     } catch {
-        case _: Throwable => sqlClient.close();
+        case _: Throwable =>
+          println("Caught error");
+          sqlClient.close();
     }
+    println("RETURNING NULL");
     return null;
   }
 }
