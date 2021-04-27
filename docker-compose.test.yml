@@ -22,10 +22,3 @@ services:
       - COMP_TABLE=component
     networks:
       - sw_network
-  scala_unit_test:
-    build: ./scalatest
-    volumes:
-      - ./scala:/HelloWorld
-    networks:
-      - sw_network
-
