@@ -16,6 +16,8 @@ services:
     image: swcomp/scala
     build: ./scala
     hostname: scala
+    volumes:
+      - ./scala:/HelloWorld
     ports:
       - 8081:8081
     environment:
@@ -42,9 +44,8 @@ services:
       POSTGRES_DB: defaultdb
     networks:
       - sw_network
-  
+
 networks:
   sw_network:
     driver: bridge
     name: sw_network
-
