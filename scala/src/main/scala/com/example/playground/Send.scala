@@ -41,19 +41,27 @@ object sendFunctions {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
     println("Sending update query");
+
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
-    val query = f"UPDATE $table%s SET $change%s WHERE $condition%s;";
+    val query = f"UPDATE $table%s SET $change%s, row_version=row_version+1 WHERE $condition%s RETURNING version;";
+
+    val version = retrieveFunctions.get(table, "row_version", condition)(0)(0).asInstanceOf[Int];
 
     try {
-        sqlClient.execute(query);
-        val created = retrieveFunctions.queryRelease(newVal);
-        sqlClient.close();
-        return created;
+      val updatedVersion = sqlClient.execute(query).getInt(0);
+      if (updatedVersion - version != 1) {
+        sqlClient.rollback();
+        throw new Exception("Update wasn't successful, performing the rollback..");
+      }
+
+      val created = retrieveFunctions.queryRelease(condVal);
+      sqlClient.close();
+      return created;
     } catch {
-        case _: Throwable =>
-          println("Caught error");
-          sqlClient.close();
+      case _: Throwable => 
+        println("Caught error");
+        sqlClient.close();
     }
     println("RETURNING NULL");
     return null;
