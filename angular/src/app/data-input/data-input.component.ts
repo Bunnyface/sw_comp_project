@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '../config.service';
 
 @Component({
@@ -8,26 +9,37 @@ import { ConfigService } from '../config.service';
 })
 export class DataInputComponent implements OnInit {
   
-  public file: File | null = null;
+  private files: File[] = []; 
+  fileForm = new FormGroup({
+    file: new FormControl('')
+  })
 
-  // Read the contents of the file and add data to database.
   onFileSelected(event): void {
+    this.files.push(event.target.files[0]);
+  }
 
-    this.file = event.target.files[0];
+  onSubmit() {
     var data: string = '';
     var jsonData;
-
-    if (this.file) {
+    if (this.files) {
       const reader = new FileReader();
       reader.onload = (event) => {
         data = event.target.result as string;
-        console.log(data);
         jsonData = JSON.parse(data);
-        this.configService.insert("releases", jsonData).subscribe(res => console.log(res));
+        this.addData(jsonData);
       }
-      reader.readAsText(this.file);
+      
+      this.files.forEach(file => reader.readAsText(file));
+      
     }
+    this.fileForm.reset();
+    this.files.splice(0, this.files.length);
+  }
 
+  addData(body): void {
+    const path = ''; // TODO: add path when endpoint is ready
+    // this.configService.insert(path, body).subscribe();
+    console.log(body);
   }
 
   constructor(private configService: ConfigService) { }

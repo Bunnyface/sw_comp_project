@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col">
+        <h3>New component</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form [formGroup]="component" (ngSubmit)="onSubmit()">
+            <div class="form-group mb-2">
+                <label for="name">Name:</label>
+                <input type="text" formControlName="name" class="form-control">
+            </div>
+            <div class="form-group mb-2">
+                <label for="name">Url:</label>
+                <input type="text" formControlName="url" class="form-control">
+            </div>
+            <div class="form-group mb-2">
+                <label for="name">Version:</label>
+                <input type="text" formControlName="version" class="form-control">
+            </div>
+            <div class="form-group mb-2">
+                <label for="name">License:</label>
+                <input type="text" formControlName="license" class="form-control">
+            </div>
+            <div class="form-group mb-2">
+                <label for="name">Copyright:</label>
+                <input type="text" formControlName="copyright" class="form-control">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="sub" (change)="onChange($event.target.checked)">
+                <label  class="form-check-label" for="sub">Sub-component</label>
+              </div>
+            <button type="submit" [disabled]="!component.valid" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
