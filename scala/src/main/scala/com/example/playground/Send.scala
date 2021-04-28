@@ -55,7 +55,7 @@ object sendFunctions {
         throw new Exception("Update wasn't successful, performing the rollback..");
       }
 
-      val created = retrieveFunctions.queryRelease(condVal);
+      val created = retrieveFunctions.queryRelease(newVal);
       sqlClient.close();
       return created;
     } catch {
