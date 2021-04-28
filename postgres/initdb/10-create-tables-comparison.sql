@@ -4,7 +4,8 @@ CREATE TABLE component (
   url VARCHAR,
   version VARCHAR NOT NULL,
   license VARCHAR,
-  copyright VARCHAR
+  copyright VARCHAR,
+  row_version INTEGER DEFAULT 0
 );
 
 CREATE TABLE sub_component (
@@ -13,12 +14,14 @@ CREATE TABLE sub_component (
   url VARCHAR,
   version VARCHAR NOT NULL,
   license VARCHAR,
-  copyright VARCHAR
+  copyright VARCHAR,
+  row_version INTEGER DEFAULT 0
 );
 
 CREATE TABLE junction_table (
   comp_id INTEGER NOT NULL,
   subcomp_id INTEGER NOT NULL,
+  row_version INTEGER DEFAULT 0,
   PRIMARY KEY(comp_id, subcomp_id),
   FOREIGN KEY(comp_id) REFERENCES component(id),
   FOREIGN KEY(subcomp_id) REFERENCES sub_component(id)
@@ -26,7 +29,8 @@ CREATE TABLE junction_table (
 
 CREATE TABLE module (
   id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL
+  name VARCHAR NOT NULL,
+  row_version INTEGER DEFAULT 0
 );
 
 CREATE TABLE module_component (
@@ -39,6 +43,7 @@ CREATE TABLE module_component (
   date DATE,
   comment_one VARCHAR,
   comment_two VARCHAR,
+  row_version INTEGER DEFAULT 0,
   PRIMARY KEY(module_id, comp_id),
   FOREIGN KEY(module_id) REFERENCES module(id),
   FOREIGN KEY(comp_id) REFERENCES component(id)

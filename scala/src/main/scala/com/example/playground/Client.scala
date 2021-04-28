@@ -19,14 +19,15 @@ class Client {
     }
   }
 
-  def execute(query: String) {
+  def execute(query: String): ResultSet = {
     if (connection != null) {
       val stm = connection.createStatement(
         ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-      stm.executeUpdate(query);
+      return stm.executeQuery(query);
     }
     else {
       println("Connection was not established.");
+      return null;
     }
   }
 
@@ -41,6 +42,13 @@ class Client {
       println("Connection was not established.");
       return null;
     }
+  }
+
+  def rollback() {
+    if (connection != null) 
+      connection.rollback();
+    else 
+      println("Connection was not established.");
   }
 
   def close() {
