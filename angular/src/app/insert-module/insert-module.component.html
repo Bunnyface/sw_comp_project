@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col">
+        <h3>New module</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form [formGroup]="module" (ngSubmit)="onSubmit()">
+            <div class="form-group mb-2">
+                <label for="name">Module name:</label>
+                <input type="text" formControlName="name" class="form-control">
+            </div>
+            <button type="submit" [disabled]="!module.valid" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
