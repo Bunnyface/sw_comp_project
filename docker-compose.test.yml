@@ -11,10 +11,14 @@ services:
     depends_on:
       scala:
         condition: service_healthy
+    volumes:
+      - ./tests/integration/scala:/app
     environment:
       - PSQLHOST=postgres
       - PSQLUSER=scalauser
       - PSQLPASSWD=example
+      - MODULES_TABLE=module
+      - MODULETOCOMP_TABLE=module_component
+      - COMP_TABLE=component
     networks:
       - sw_network
-

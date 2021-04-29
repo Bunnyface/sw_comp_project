@@ -48,7 +48,7 @@ object sendFunctions {
   ): Json = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
-
+    println("Sending update query");
 
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
@@ -75,6 +75,7 @@ object sendFunctions {
         println("Update wasn't successful");
         sqlClient.close();
     }
+    println("RETURNING NULL");
     return null;
   }
 }

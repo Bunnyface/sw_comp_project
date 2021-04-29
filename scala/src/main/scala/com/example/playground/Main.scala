@@ -44,6 +44,7 @@ object Main extends App {
   }
 
   def releases: Endpoint[IO, Json] = post("releases") {
+    println("Getting releases");
     val response = retrieveFunctions.queryNames();
     Ok(response.asJson);
   }
@@ -75,10 +76,12 @@ object Main extends App {
   def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
     val response =
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
-    if (response != null)
-      Created(response);
-    else
+    if (response != null) {
+      Created(response)
+    };
+    else {
       BadRequest(new Exception("Release not found"));
+    };
   }
 
   val policy: Cors.Policy = Cors.Policy(
