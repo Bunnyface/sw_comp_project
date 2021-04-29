@@ -1,5 +1,8 @@
 package com.example.playground
 
+import io.circe._
+import io.circe.syntax._
+import retrieveFunctions._
 
 object sendFunctions {
   def queryInsert(
@@ -37,29 +40,35 @@ object sendFunctions {
     newVal: String,
     condCol: String,
     condVal: String
-  ): retrieveFunctions.Module = {
+  ): Json = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
 
 
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
-    val query = f"UPDATE $table%s SET $change%s, row_version=row_version+1 WHERE $condition%s RETURNING version;";
+    val query = f"UPDATE $table%s SET $change%s, row_version=row_version+1 WHERE $condition%s RETURNING row_version;";
 
-    val version = retrieveFunctions.get(table, "row_version", condition)(0)(0).asInstanceOf[Int];
+    val version = getArray(table, "row_version", condition)(0)(0).asInstanceOf[Int];
 
     try {
-      val updatedVersion = sqlClient.execute(query).getInt(0);
+      val returnedRow = sqlClient.execute(query);
+      returnedRow.next();
+      val updatedVersion = returnedRow.getInt(1);
       if (updatedVersion - version != 1) {
         sqlClient.rollback();
         throw new Exception("Update wasn't successful, performing the rollback..");
       }
 
-      val created = retrieveFunctions.queryRelease(condVal);
+      val created = getMapArray(table, "*", condition)
+        .map(row => mapToJson(row))
+        .asJson;
       sqlClient.close();
       return created;
     } catch {
-      case _: Throwable => sqlClient.close();
+      case _: Throwable => 
+        println("Update wasn't successful");
+        sqlClient.close();
     }
     return null;
   }
