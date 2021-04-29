@@ -40,7 +40,7 @@ object sendFunctions {
   ): retrieveFunctions.Module = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
-
+    println("Sending update query");
 
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
@@ -55,12 +55,15 @@ object sendFunctions {
         throw new Exception("Update wasn't successful, performing the rollback..");
       }
 
-      val created = retrieveFunctions.queryRelease(condVal);
+      val created = retrieveFunctions.queryRelease(newVal);
       sqlClient.close();
       return created;
     } catch {
-      case _: Throwable => sqlClient.close();
+      case _: Throwable => 
+        println("Caught error");
+        sqlClient.close();
     }
+    println("RETURNING NULL");
     return null;
   }
 }
