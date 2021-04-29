@@ -9,7 +9,7 @@ object sendFunctions {
     table: String,
     columns: Array[String],
     data: Array[Array[String]]
-  ): Array[Array[String]] = {
+  ): Array[Json] = {
     if (data == null || data.length == 0)
       return Array();
 
@@ -18,15 +18,20 @@ object sendFunctions {
 
     val columnString = columns.mkString(", ");
 
-    val result: Array[Array[String]] = data.map(array => {
+    val result: Array[Json] = data.map(array => {
       val row = "'" + array.mkString("', '") + "'";
-      val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s);"; 
+      val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s) RETURNING *;"; 
 
       try {
-        val res = sqlClient.execute(query);
-        array;
+        mapToJson(
+          resultSetToMapArray(
+            sqlClient.execute(query)
+          )(0)
+        );
       } catch {
-        case _: Throwable => null;
+        case _: Throwable => 
+        println("Insert wasn't successful");
+        null;
       }
     }).filter(row => row != null);
 
