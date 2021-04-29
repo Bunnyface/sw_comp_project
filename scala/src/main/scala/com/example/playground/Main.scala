@@ -77,7 +77,7 @@ object Main extends App {
     val response =
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
     if (response != null) {
-      Created(response.asJson)
+      Created(response)
     };
     else {
       BadRequest(new Exception("Release not found"));

@@ -21,7 +21,7 @@ object compareFunctions {
 
   def getComponents(name: String): Array[Array[String]] = {
     val data = retrieveFunctions
-      .get(
+      .getArray(
         "module AS m, module_component AS mc, component AS c", 
         "c.name, c.version", 
         f"m.id = mc.module_id AND c.id = mc.comp_id AND m.name='$name%s'")
