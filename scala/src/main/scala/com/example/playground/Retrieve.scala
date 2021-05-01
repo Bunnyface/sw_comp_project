@@ -12,7 +12,7 @@ object retrieveFunctions{
     components: Array[Array[String]]
   );
 
-   def queryNames(): Array[String] = {
+  def queryNames(): Array[String] = {
     val resList = getArray("module", "name");
     return resList.map(row => row(0).toString());
   }
@@ -38,6 +38,41 @@ object retrieveFunctions{
       Array(fetched(1).toString()),
       componentData.toArray
     );
+  }
+
+  def retrieveEverything(): Json = {
+    val subComp = resultSetToMapArray(get("sub_component"));
+    val juncTable = resultSetToMapArray(get("junction_table"));
+
+    val components = resultSetToMapArray(get("component"))
+      .map(comp => {
+        val related = juncTable.filter(j => j("comp_id") == comp("id"))
+          .flatMap(j => j.get("subcomp_id"))
+        val subs = subComp.filter(sub => related.contains(sub("id")))
+        
+        comp ++ Map("sub_components" -> 
+          subs.map(c => mapToJson(c)).asJson)
+      });
+    
+    val modToComp = resultSetToMapArray(get("module_component"))
+    
+    val modules = resultSetToMapArray(get("module"))
+      .map(mod => {
+        val related = modToComp.filter(j => j("module_id") == mod("id"))
+          .flatMap(j => j.get("comp_id"))
+        val additional = modToComp.filter(j => j("module_id") == mod("id"))
+          .map(row => row.-("module_id"))
+        val comps = components.filter(comp => related.contains(comp("id")))
+
+        mod ++ 
+          Map("components" -> 
+            comps.map(comp => mapToJson(
+              comp ++ additional.filter(j => j("comp_id") == comp("id"))(0).-("comp_id")
+            ))
+          )
+      })
+
+    return modules.map(m => mapToJson(m)).asJson;
   }
 
   // UTILITY FUNCTIONS
@@ -141,6 +176,8 @@ object retrieveFunctions{
     value match {
       case value: String => Json.fromString(value)
       case value: Int => Json.fromInt(value)
+      case value: Json => value
+      case value: Array[Any] => value.map(v => valueToJson(v)).asJson
       case value: Any => Json.fromString(value.toString())
     }
   }
