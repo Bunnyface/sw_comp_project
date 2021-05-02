@@ -45,8 +45,7 @@ object Main extends App {
 
   def releases: Endpoint[IO, Json] = post("releases") {
     println("Getting releases");
-    val response = retrieveFunctions.queryNames();
-    Ok(response.asJson);
+    Ok(retrieveFunctions.queryNames());
   }
 
   def releaseInfo: Endpoint[IO, Json] = post("releases" :: path[String]) { relName: String =>
@@ -54,7 +53,7 @@ object Main extends App {
     if (relInfo == null)
       NotFound(new Exception("Release not found"));
     else
-      Ok(relInfo.asJson);
+      Ok(relInfo);
   }
 
   def getEverything: Endpoint[IO, Json] = post("moduleData") {
