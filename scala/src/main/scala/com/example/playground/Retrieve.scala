@@ -41,10 +41,10 @@ object retrieveFunctions{
   }
 
   def retrieveEverything(): Json = {
-    val subComp = resultSetToMapArray(get("sub_component"));
-    val juncTable = resultSetToMapArray(get("junction_table"));
+    val subComp = getMapArray("sub_component");
+    val juncTable = getMapArray("junction_table");
 
-    val components = resultSetToMapArray(get("component"))
+    val components = getMapArray("component")
       .map(comp => {
         val related = juncTable.filter(j => j("comp_id") == comp("id"))
           .flatMap(j => j.get("subcomp_id"))
@@ -54,9 +54,9 @@ object retrieveFunctions{
           subs.map(c => mapToJson(c)).asJson)
       });
     
-    val modToComp = resultSetToMapArray(get("module_component"))
+    val modToComp = getMapArray("module_component");
     
-    val modules = resultSetToMapArray(get("module"))
+    val modules = getMapArray("module")
       .map(mod => {
         val related = modToComp.filter(j => j("module_id") == mod("id"))
           .flatMap(j => j.get("comp_id"))
@@ -70,7 +70,7 @@ object retrieveFunctions{
               comp ++ additional.filter(j => j("comp_id") == comp("id"))(0).-("comp_id")
             ))
           )
-      })
+      });
 
     return modules.map(m => mapToJson(m)).asJson;
   }
