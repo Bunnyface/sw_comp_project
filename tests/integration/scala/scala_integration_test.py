@@ -5,6 +5,8 @@ import pytest
 import logging
 import asyncio
 import asyncpg
+import threading
+import time
 
 SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
@@ -75,6 +77,57 @@ def perform_test(url, method, expected, message=None, payload=None):
     logging.warning(f"received body: {body}")
     assert(expected.code == received.status_code)
     assert(expected.body == body)
+
+def perform_parallel_test(module_id, thread_num=4):
+    responses = []
+
+    def task(cond, name):
+        with cond:
+            cond.wait()
+        responses.append(
+            perform_request(
+                "/update",
+                "POST",
+                {
+                    "table": MODULES_TABLE_NAME,
+                    "newValCol": "name",
+                    "newVal": name,
+                    "condCol": "id",
+                    "condVal": str(module_id)
+                }
+            )
+        )
+
+    def signal(cond):
+        cond.acquire()
+        cond.notify_all()
+        cond.release()    
+
+    threads = []
+    condition = threading.Condition()
+
+    for i in range(thread_num):
+        threads.append(
+            threading.Thread(name=f't{i}', target=task, args=(condition, f'n{i}',))
+        )
+
+    signal = threading.Thread(name='p', target=signal, args=(condition,))
+
+    for th in threads:
+        th.start()
+
+    time.sleep(2)
+    signal.start()
+
+    for th in threads:
+        th.join()
+    
+    signal.join()
+
+    for r in responses[1:]:
+        if responses[0].status_code != r.status_code:
+            return False
+    return True
 
 
 # --------------- Tests ---------------
