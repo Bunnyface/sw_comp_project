@@ -8,11 +8,11 @@ import io.circe.syntax._
 
 object retrieveFunctions{
   case class Module(
-    info: Array[String],
-    components: Array[Array[String]]
-  );
+                     info: Array[String],
+                     components: Array[Array[String]]
+                   );
 
-   def queryNames(): Array[String] = {
+  def queryNames(): Array[String] = {
     val resList = getArray("module", "name");
     return resList.map(row => row(0).toString());
   }
@@ -43,10 +43,10 @@ object retrieveFunctions{
   // UTILITY FUNCTIONS
 
   def get(
-    table: String,
-    columns: String = "*",
-    cond: String = null
-  ): ResultSet = {
+           table: String,
+           columns: String = "*",
+           cond: String = null
+         ): ResultSet = {
     val query = if (cond == null) {
       f"SELECT $columns%s FROM $table%s"
     } else {
@@ -61,7 +61,7 @@ object retrieveFunctions{
       sqlClient.close()
       return result;
     } catch {
-      case _: Throwable => 
+      case _: Throwable =>
         println(f"Fetching wasn't successful using query '$query%s'")
         sqlClient.close()
     }
@@ -69,20 +69,20 @@ object retrieveFunctions{
   }
 
   def getArray(
-    table: String,
-    columns: String = "*",
-    cond: String = null
-  ): Array[Array[Any]] = {
+                table: String,
+                columns: String = "*",
+                cond: String = null
+              ): Array[Array[Any]] = {
     return resultSetToArray(
       get(table, columns, cond)
     )
   }
 
   def getMapArray(
-    table: String,
-    columns: String = "*",
-    cond: String = null
-  ): Array[Map[String, Any]] = {
+                   table: String,
+                   columns: String = "*",
+                   cond: String = null
+                 ): Array[Map[String, Any]] = {
     return resultSetToMapArray(
       get(table, columns, cond)
     )
@@ -91,7 +91,7 @@ object retrieveFunctions{
   def resultSetToArray(result: ResultSet): Array[Array[Any]] = {
     if (result == null)
       return null
-    
+
     val metadata = result.getMetaData();
     val colLength = metadata.getColumnCount();
 
@@ -100,8 +100,8 @@ object retrieveFunctions{
       def next() = {
         for (i <- 1 to colLength)
           yield if (metadata.getColumnType(i) == Types.INTEGER) result.getInt(i)
-                else if (metadata.getColumnType(i) == Types.DATE) result.getDate(i)
-                else result.getString(i)
+          else if (metadata.getColumnType(i) == Types.DATE) result.getDate(i)
+          else result.getString(i)
       }.toArray
     }.toArray
 
@@ -111,7 +111,7 @@ object retrieveFunctions{
   def resultSetToMapArray(result: ResultSet): Array[Map[String, Any]] = {
     if (result == null)
       return null
-    
+
     val metadata = result.getMetaData();
     val colLength = metadata.getColumnCount();
 
@@ -119,10 +119,10 @@ object retrieveFunctions{
       def hasNext = result.next()
       def next() = {
         for (i <- 1 to colLength)
-          yield metadata.getColumnName(i) -> 
-                ( if (metadata.getColumnType(i) == Types.INTEGER) result.getInt(i)
-                  else if (metadata.getColumnType(i) == Types.DATE) result.getDate(i)
-                  else result.getString(i) )
+          yield metadata.getColumnName(i) ->
+            ( if (metadata.getColumnType(i) == Types.INTEGER) result.getInt(i)
+            else if (metadata.getColumnType(i) == Types.DATE) result.getDate(i)
+            else result.getString(i) )
       }.toMap
     }.toArray
 

@@ -22,22 +22,22 @@ object Main extends App {
   case class Message(hello: String);
 
   case class CompareRequest(
-    first: String,
-    second: String
-  );
+                             first: String,
+                             second: String
+                           );
 
   case class InsertRequest (
-    columns: Array[String],
-    data: Array[Array[String]]
-  );
+                             columns: Array[String],
+                             data: Array[Array[String]]
+                           );
 
   case class UpdateRequest(
-    table: String,
-    newValCol: String,
-    newVal: String,
-    condCol: String,
-    condVal: String
-  );
+                            table: String,
+                            newValCol: String,
+                            newVal: String,
+                            condCol: String,
+                            condVal: String
+                          );
 
   def healthcheck: Endpoint[IO, String] = get(pathEmpty) {
     Ok("OK")

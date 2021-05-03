@@ -6,10 +6,10 @@ import retrieveFunctions._
 
 object sendFunctions {
   def queryInsert(
-    table: String,
-    columns: Array[String],
-    data: Array[Array[String]]
-  ): Array[Json] = {
+                   table: String,
+                   columns: Array[String],
+                   data: Array[Array[String]]
+                 ): Array[Json] = {
     println("INSERTING")
     if (data == null || data.length == 0)
       return Array();
@@ -21,7 +21,7 @@ object sendFunctions {
 
     val result: Array[Json] = data.map(array => {
       val row = "'" + array.mkString("', '") + "'";
-      val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s) RETURNING *;"; 
+      val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s) RETURNING *;";
 
       try {
         mapToJson(
@@ -30,9 +30,9 @@ object sendFunctions {
           )(0)
         );
       } catch {
-        case _: Throwable => 
-        println("Insert wasn't successful");
-        null;
+        case _: Throwable =>
+          println("Insert wasn't successful");
+          null;
       }
     }).filter(row => row != null);
 
@@ -41,12 +41,12 @@ object sendFunctions {
   }
 
   def queryUpdate(
-    table: String, 
-    newValCol: String, 
-    newVal: String,
-    condCol: String,
-    condVal: String
-  ): Json = {
+                   table: String,
+                   newValCol: String,
+                   newVal: String,
+                   condCol: String,
+                   condVal: String
+                 ): Json = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
     println("Sending update query");
@@ -72,7 +72,7 @@ object sendFunctions {
       sqlClient.close();
       return created;
     } catch {
-      case _: Throwable => 
+      case _: Throwable =>
         println("Update wasn't successful");
         sqlClient.close();
     }
@@ -82,7 +82,7 @@ object sendFunctions {
 
   def insertModule(mod: dbmodels.module): Array[Json]= {
     print("Insert Module")
-     val res = queryInsert(
+    val res = queryInsert(
       "module",
       Array[String]{"name"},
       Array[Array[String]]{Array[String]{mod.name}}
@@ -151,7 +151,7 @@ object sendFunctions {
       Array[Array[String]](Array[String](
         comp_id,
         subcomp_id
-    )))
+      )))
     return res
   }
 }
