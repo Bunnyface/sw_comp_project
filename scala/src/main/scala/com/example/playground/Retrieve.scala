@@ -6,20 +6,16 @@ import java.sql.Types
 import io.circe._
 import io.circe.syntax._
 
-object retrieveFunctions{
-  case class Module(
-    info: Array[String],
-    components: Array[Array[String]]
-  );
 
-   def queryNames(): Array[String] = {
+object retrieveFunctions{
+  def queryNames(): Json = {
     val resList = getArray("module", "name");
-    return resList.map(row => row(0).toString());
+    return valueToJson(resList.flatten);
   }
 
-  def queryRelease(moduleName: String): Module = {
+  def queryRelease(moduleName: String): Json = {
     val fetched = try {
-      getArray("module", "*", f"name='$moduleName%s'")(0);
+      getMapArray("module", "id, name", f"name='$moduleName%s'")(0);
     } catch {
       case _: Throwable => null;
     }
@@ -27,17 +23,50 @@ object retrieveFunctions{
     if (fetched == null)
       return null;
 
-    val moduleID = fetched(0).asInstanceOf[Int];
-    val componentData = getArray(
+    val moduleID = fetched.apply("id").asInstanceOf[Int];
+    val componentData = getMapArray(
       "module_component as mc, component as c",
       "c.name, c.version",
       f"mc.module_id=$moduleID%d AND mc.comp_id=c.id"
-    ).map(row => row.map(v => v.toString()).toArray);
-
-    return Module(
-      Array(fetched(1).toString()),
-      componentData.toArray
     );
+
+    return valueToJson(
+      fetched ++ Map("components" -> componentData)
+    )
+  }
+
+  def retrieveEverything(): Json = {
+    val subComp = getMapArray("sub_component");
+    val juncTable = getMapArray("junction_table");
+
+    val components = getMapArray("component")
+      .map(comp => {
+        val related = juncTable.filter(j => j("comp_id") == comp("id"))
+          .flatMap(j => j.get("subcomp_id"))
+        val subs = subComp.filter(sub => related.contains(sub("id")))
+        
+        comp ++ Map("sub_components" -> subs)
+      });
+    
+    val modToComp = getMapArray("module_component");
+    
+    val modules = getMapArray("module")
+      .map(mod => {
+        val related = modToComp.filter(j => j("module_id") == mod("id"))
+          .flatMap(j => j.get("comp_id"))
+        val additional = modToComp.filter(j => j("module_id") == mod("id"))
+          .map(row => row.-("module_id"))
+        val comps = components.filter(comp => related.contains(comp("id")))
+
+        mod ++ 
+          Map("components" -> 
+            comps.map(comp => 
+              comp ++ additional.filter(j => j("comp_id") == comp("id"))(0).-("comp_id")
+            )
+          )
+      });
+
+    return valueToJson(modules);
   }
 
   // UTILITY FUNCTIONS
@@ -133,14 +162,17 @@ object retrieveFunctions{
     return array.map(v => valueToJson(v)).asJson
   }
 
-  def mapToJson(map: Map[String, Any]): Json = {
-    return map.map({ case (k, v) => k -> valueToJson(v) }).asJson
+  def mapToJson(map: Map[_, _]): Json = {
+    return map.map({ case (k, v) => k.toString() -> valueToJson(v) }).asJson
   }
 
   def valueToJson(value: Any): Json = {
     value match {
       case value: String => Json.fromString(value)
       case value: Int => Json.fromInt(value)
+      case value: Json => value
+      case value: Map[_, _] => mapToJson(value)
+      case value: Array[Any] => arrayToJson(value)
       case value: Any => Json.fromString(value.toString())
     }
   }
