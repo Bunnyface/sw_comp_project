@@ -45,8 +45,7 @@ object Main extends App {
 
   def releases: Endpoint[IO, Json] = post("releases") {
     println("Getting releases");
-    val response = retrieveFunctions.queryNames();
-    Ok(response.asJson);
+    Ok(retrieveFunctions.queryNames());
   }
 
   def releaseInfo: Endpoint[IO, Json] = post("releases" :: path[String]) { relName: String =>
@@ -54,7 +53,11 @@ object Main extends App {
     if (relInfo == null)
       NotFound(new Exception("Release not found"));
     else
-      Ok(relInfo.asJson);
+      Ok(relInfo);
+  }
+
+  def getEverything: Endpoint[IO, Json] = post("moduleData") {
+    Ok(retrieveFunctions.retrieveEverything());
   }
 
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
@@ -132,7 +135,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
