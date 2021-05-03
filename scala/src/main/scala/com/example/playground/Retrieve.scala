@@ -144,4 +144,31 @@ object retrieveFunctions{
       case value: Any => Json.fromString(value.toString())
     }
   }
+
+  def getModuleId(name: String): String = {
+    val resSet = get("module", "id", f"name = '$name%s'");
+    if(resSet.next()) {
+      val value = resSet.getString("id");
+      return value
+    }
+    return ""
+  }
+
+  def getCompId(name: String): String = {
+    val resSet = get("component", "id", f"name = '$name%s'");
+    if(resSet.next()) {
+      val value = resSet.getString("id");
+      return value
+    }
+    return ""
+  }
+
+  def getSubId(name: String): String = {
+    val resSet = get("sub_component", "id", f"name = '$name%s'");
+    if(resSet.next()) {
+      val value = resSet.getString("id");
+      return value
+    }
+    return ""
+  }
 }
