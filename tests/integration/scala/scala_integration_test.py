@@ -5,6 +5,8 @@ import pytest
 import logging
 import asyncio
 import asyncpg
+import threading
+import time
 
 SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
 
@@ -35,17 +37,17 @@ def close_db_connection(conn):
         await conn.close()
     asyncio.get_event_loop().run_until_complete(run())
 
-def fetch(conn, query, mode="row"):
+def fetch(conn, query, mode="row", type="list"):
     async def run():
         async with conn.transaction():
             if mode == "row":
                 t = await conn.fetchrow(query)
                 if t != None:
-                    return list(t)
+                    return list(t) if type == "list" else dict(t)
                 else:
                     return t
             else:
-                return [list(x) for x in await conn.fetch(query)]
+                return [list(x) if type == "list" else dict(x) for x in await conn.fetch(query)]
     
     return asyncio.get_event_loop().run_until_complete(run())
 
@@ -75,6 +77,67 @@ def perform_test(url, method, expected, message=None, payload=None):
     logging.warning(f"received body: {body}")
     assert(expected.code == received.status_code)
     assert(expected.body == body)
+
+def perform_parallel_test(thread_num=4):
+    responses = []
+
+    def task(cond, name, module_id):
+        with cond:
+            cond.wait()
+        responses.append(
+            perform_request(
+                "/update",
+                "POST",
+                {
+                    "table": MODULES_TABLE_NAME,
+                    "newValCol": "name",
+                    "newVal": name,
+                    "condCol": "id",
+                    "condVal": str(module_id)
+                }
+            )
+        )
+
+    def signal(cond):
+        cond.acquire()
+        cond.notify_all()
+        cond.release()    
+
+    threads = []
+    condition = threading.Condition()
+
+    module_name = "test_name"
+    payload = {"columns":["name"], "data":[[module_name]]}
+    module = parse_to_json(
+        perform_request(
+            "/insert/module",
+            "PUT",
+            payload
+        ).text
+    )[0]
+
+    for i in range(thread_num):
+        threads.append(
+            threading.Thread(name=f't{i}', target=task, args=(condition, f'n{i}', module["id"],))
+        )
+
+    signal = threading.Thread(name='s', target=signal, args=(condition,))
+
+    for th in threads:
+        th.start()
+
+    time.sleep(2)
+    signal.start()
+
+    for th in threads:
+        th.join()
+    
+    signal.join()
+
+    for r in responses[1:]:
+        if responses[0].status_code != r.status_code:
+            return True
+    return False
 
 
 # --------------- Tests ---------------
@@ -119,11 +182,13 @@ def test_releases():
                 components = fetch(
                    conn,
                    comp_string,
-                   "row"
+                   "row",
+                   "dict"
                 )
                 exp_comp.append(components)
         exp = {
-            "info": [name],
+            "id": int(id_module[0]),
+            "name": name,
             "components": exp_comp
         }
         perform_test(
@@ -144,18 +209,18 @@ def test_insert():
 
     # Test 1: Insert a new component
     payload = {"columns":["name"], "data":[["newName"]]}
+    exp = [{"id": 3, "name": "newName", "row_version": 0}]
     perform_test(
         "/insert/module",
         "PUT",
-        Expected(201, payload["data"]),
+        Expected(201, exp),
         "Inserting a new release",
         payload
     )
 
-    exp = {
-        "components": [],
-        "info": payload["data"][0]
-    }
+    exp = exp[0]
+    exp["components"] = []
+    del exp["row_version"]
 
     perform_test(
         "/releases/newName",
@@ -170,18 +235,41 @@ def test_insert():
         ["name2"],
         ["name3"]
     ]}
+    last_id = fetch(
+        conn, 
+        "SELECT id FROM module ORDER BY id DESC LIMIT 1;", 
+        "row", 
+        "dict"
+    )
+    last_id = int(last_id["id"]) + 1
+    exp = [
+        {
+            "id": last_id+i, 
+            "name": payload["data"][i][0], 
+            "row_version": 0
+        }
+        for i in range(len(payload["data"]))
+    ]
     perform_test(
         "/insert/module",
         "PUT",
-        Expected(201, payload["data"]),
+        Expected(201, exp),
         "Inserting a new release",
         payload
     )
 
     for i in range(len(payload["data"])):
+        module_id = fetch(
+            conn, 
+            "SELECT id FROM {} WHERE name='{}';".format(
+                MODULES_TABLE_NAME, payload['data'][i][0]), 
+            "row", 
+            "dict"
+        )
         exp = {
-            "components": [],
-            "info": payload["data"][i]
+            "id": module_id["id"],
+            "name": payload["data"][i][0],
+            "components": []
         }
         perform_test(
             "/releases/{}".format(payload["data"][i][0]),
@@ -222,9 +310,13 @@ def test_update():
         "condCol": "name",
         "condVal": "newName"
     }
+
+    module_data = fetch(
+        conn, "SELECT * FROM module WHERE name='newName'", "row")
     exp = {
-        "components": [],
-        "info": ["newName2"]
+        "id": module_data[0],
+        "name": payload["newVal"],
+        "row_version": module_data[2] + 1
     }
     perform_test(
         "/update",
@@ -234,6 +326,20 @@ def test_update():
         payload
     )
 
+    component_data = fetch(
+        conn, 
+        f"""SELECT c.name, c.version
+            FROM {MODULES_TABLE_NAME} AS m,
+                 {MODULETOCOMP_TABLE_NAME} AS mc,
+                 {COMPONENT_TABLE_NAME} as c
+            WHERE m.id=mc.module_id AND c.id=mc.comp_id AND m.id={exp['id']};""",
+        "all",
+        "dict")
+    exp = {
+        "id": exp["id"],
+        "name": exp["name"],
+        "components": component_data
+    }
     perform_test(
         "/releases/newName2",
         "POST",
@@ -268,7 +374,7 @@ def test_update():
 def test_compare():
     conn = get_db_connection()
 
-    payload = {"first": "TestModule", "second": "Demomodule"}
+    payload = {"first": "TestModule", "second": "DemoModule"}
     exp = {'same': [], 'ex_first': [['TestComponent', 'Version 1'], ['DemoComponent', 'Version 1']], 'ex_second': []}
     perform_test(
         "/compare",
@@ -306,3 +412,14 @@ def test_compare():
     )
 
     close_db_connection(conn)
+
+def test_optimistic_locking():
+    threshold = 2
+    tests = 5
+    thread_num = 4
+
+    passed = 0
+    for _ in range(tests):
+        passed += 1 if perform_parallel_test(thread_num) else 0
+    
+    assert(passed >= threshold)
