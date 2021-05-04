@@ -11,13 +11,15 @@ import io.finch.circe._
 import io.circe.generic.auto._
 import spray.json._
 import DefaultJsonProtocol._
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
 import io.circe._
 import io.circe.syntax._
 
 
 
-object Main extends App {
+object Main extends App with LazyLogging {
 
   case class Message(hello: String);
 
@@ -44,7 +46,7 @@ object Main extends App {
   }
 
   def releases: Endpoint[IO, Json] = post("releases") {
-    println("Getting releases");
+    logger.debug("Getting releases");
     Ok(retrieveFunctions.queryNames());
   }
 

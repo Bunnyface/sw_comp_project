@@ -1,9 +1,11 @@
 package com.example.playground
 
 import java.sql.{Connection, DriverManager, ResultSet}
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
 
-class Client {
+class Client extends LazyLogging {
   var connection: Connection = null;
 
   def connect(dbname: String, dbuser: String = null, passwd: String = null) {
@@ -17,6 +19,7 @@ class Client {
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
       connection = DriverManager.getConnection(connString, user, password);
     }
+    logger.info(f"Connected to database at $host%s")
   }
 
   def execute(query: String): ResultSet = {
@@ -26,7 +29,7 @@ class Client {
       return stm.executeQuery(query);
     }
     else {
-      println("Connection was not established.");
+      logger.error("Connection was not established.");
       return null;
     }
   }
@@ -39,7 +42,7 @@ class Client {
       return result;
     }
     else {
-      println("Connection was not established.");
+      logger.error("Connection was not established.");
       return null;
     }
   }
@@ -48,14 +51,14 @@ class Client {
     if (connection != null) 
       connection.rollback();
     else 
-      println("Connection was not established.");
+      logger.error("Connection was not established.");
   }
 
   def close() {
     if (connection != null) 
       connection.close();
     else 
-      println("Connection was not established.");
+      logger.error("Connection was not established.");
   }
 
   def getConnectionData(): (String, String, String) = {
