@@ -414,7 +414,7 @@ def test_compare():
     close_db_connection(conn)
 
 def test_optimistic_locking():
-    threshold = 4
+    threshold = 2
     tests = 5
     thread_num = 4
 
