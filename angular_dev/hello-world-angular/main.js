@@ -37,8 +37,13 @@ class InsertModuleComponent {
         });
     }
     onSubmit() {
-        console.log(this.module.value);
-        // this.configService.addModule(this.module.value)
+        this.addModule(this.module.value);
+        this.module.reset();
+    }
+    addModule(body) {
+        const path = 'insertModule'; // TODO: add path when endpoit is ready
+        this.configService.insert(path, body).subscribe();
+        console.log(body);
     }
     ngOnInit() {
     }
@@ -113,7 +118,6 @@ function ReleasesComponent_tr_9_Template(rf, ctx) { if (rf & 1) {
 class ReleasesComponent {
     constructor(configService) {
         this.configService = configService;
-        this.modules = [];
     }
     getModules() {
         this.configService.getModules().subscribe(res => this.modules = res);
@@ -174,15 +178,15 @@ function ComponentsComponent_option_11_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const component_r1 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpropertyInterpolate"]("value", component_r1[0]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpropertyInterpolate"]("value", component_r1.name);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](component_r1[1]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](component_r1.name);
 } }
 class ComponentsComponent {
     constructor(configService) {
         this.configService = configService;
         this.newComponent = new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroup"]({
-            comp_id: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
+            componentname: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
             usage_type: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
             attr_value1: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
             attr_value2: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
@@ -197,31 +201,21 @@ class ComponentsComponent {
     }
     onSubmit() {
         this.addComponent(this.newComponent.value);
+        this.newComponent.reset();
     }
     // Add selected component to module
-    addComponent(component) {
-        const path = "module_component";
-        const body = this.formatBody(component);
-        this.configService.insert(path, body).subscribe();
+    addComponent(body) {
+        const path = "insertComponentToModule";
+        body.modulename = this.modulename;
         console.log(body);
-    }
-    // Format the request body to fit insert endpoint
-    formatBody(component) {
-        var columns = ["module_id"];
-        var data = [this.module_id.toString()];
-        Object.keys(component).map((value) => columns.push(value));
-        Object.values(component).map((value) => data.push(value));
-        var body = { "columns": [], "data": [[]] };
-        body.columns = columns;
-        body.data[0] = data;
-        return body;
+        this.configService.insert(path, body).subscribe();
     }
     ngOnInit() {
         this.getComponents();
     }
 }
 ComponentsComponent.ɵfac = function ComponentsComponent_Factory(t) { return new (t || ComponentsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_2__["ConfigService"])); };
-ComponentsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: ComponentsComponent, selectors: [["app-components"]], inputs: { module_id: "module_id" }, decls: 42, vars: 3, consts: [[1, "row"], [1, "col"], [3, "formGroup", "ngSubmit"], [1, "form-group", "mb-2"], ["for", "name"], ["formControlName", "comp_id", 1, "form-control"], [3, "value", 4, "ngFor", "ngForOf"], [1, "form-group"], ["for", "usageType"], ["type", "text", "formControlName", "usage_type", "id", "usageType", 1, "form-control"], ["for", "attr_value1"], ["type", "text", "formControlName", "attr_value1", "id", "attr_value1", 1, "form-control"], ["for", "attr_value2"], ["type", "text", "formControlName", "attr_value2", "id", "attr_value2", 1, "form-control"], ["for", "attr_value3"], ["type", "text", "formControlName", "attr_value3", "id", "attr_value3", 1, "form-control"], ["for", "date"], ["type", "date", "formControlName", "date", "id", "date", 1, "form-control"], ["for", "CommentOne"], ["type", "text", "formControlName", "comment_one", "id", "CommentOne", 1, "form-control"], ["for", "CommentTwo"], ["type", "text", "formControlName", "comment_two", "id", "CommentTwo", 1, "form-control"], ["type", "submit", 1, "btn", "btn-primary", "mb-2", 3, "disabled"], [3, "value"]], template: function ComponentsComponent_Template(rf, ctx) { if (rf & 1) {
+ComponentsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: ComponentsComponent, selectors: [["app-components"]], inputs: { modulename: "modulename" }, decls: 42, vars: 3, consts: [[1, "row"], [1, "col"], [3, "formGroup", "ngSubmit"], [1, "form-group", "mb-2"], ["for", "name"], ["formControlName", "componentname", 1, "form-control"], [3, "value", 4, "ngFor", "ngForOf"], [1, "form-group"], ["for", "usageType"], ["type", "text", "formControlName", "usage_type", "id", "usageType", 1, "form-control"], ["for", "attr_value1"], ["type", "text", "formControlName", "attr_value1", "id", "attr_value1", 1, "form-control"], ["for", "attr_value2"], ["type", "text", "formControlName", "attr_value2", "id", "attr_value2", 1, "form-control"], ["for", "attr_value3"], ["type", "text", "formControlName", "attr_value3", "id", "attr_value3", 1, "form-control"], ["for", "date"], ["type", "date", "formControlName", "date", "id", "date", 1, "form-control"], ["for", "CommentOne"], ["type", "text", "formControlName", "comment_one", "id", "CommentOne", 1, "form-control"], ["for", "CommentTwo"], ["type", "text", "formControlName", "comment_two", "id", "CommentTwo", 1, "form-control"], ["type", "submit", 1, "btn", "btn-primary", "mb-2", 3, "disabled"], [3, "value"]], template: function ComponentsComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "h3");
@@ -375,23 +369,21 @@ function ReleaseDetailComponent_div_4_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r0.module.name);
 } }
-function ReleaseDetailComponent_div_9_tr_16_td_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const value_r7 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](value_r7);
-} }
 function ReleaseDetailComponent_div_9_tr_16_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, ReleaseDetailComponent_div_9_tr_16_td_1_Template, 2, 1, "td", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const component_r5 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", component_r5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](component_r5.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](component_r5.version);
 } }
 function ReleaseDetailComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -417,7 +409,7 @@ function ReleaseDetailComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "tbody");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, ReleaseDetailComponent_div_9_tr_16_Template, 2, 1, "tr", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, ReleaseDetailComponent_div_9_tr_16_Template, 5, 2, "tr", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -428,21 +420,21 @@ function ReleaseDetailComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r1.module.components);
 } }
 function ReleaseDetailComponent_div_10_Template(rf, ctx) { if (rf & 1) {
-    const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ReleaseDetailComponent_div_10_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r8.onEdit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ReleaseDetailComponent_div_10_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r7); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r6.onEdit(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Add components to module");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
 function ReleaseDetailComponent_div_11_Template(rf, ctx) { if (rf & 1) {
-    const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "button", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ReleaseDetailComponent_div_11_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r11); const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r10.onEdit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ReleaseDetailComponent_div_11_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r8.onEdit(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Cancel");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-components", 11);
@@ -450,7 +442,7 @@ function ReleaseDetailComponent_div_11_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("module_id", ctx_r3.module.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("modulename", ctx_r3.module.name);
 } }
 class ReleaseDetailComponent {
     constructor(route, configService, location) {
@@ -479,7 +471,7 @@ class ReleaseDetailComponent {
     }
 }
 ReleaseDetailComponent.ɵfac = function ReleaseDetailComponent_Factory(t) { return new (t || ReleaseDetailComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_2__["ConfigService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_3__["Location"])); };
-ReleaseDetailComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ReleaseDetailComponent, selectors: [["app-release-detail"]], decls: 16, vars: 4, consts: [[1, "row"], [1, "col"], ["class", "row", 4, "ngIf"], [4, "ngIf"], [1, "btn", "btn-link", "btn-sm", 3, "click"], [1, "table", "table-sm", "module-table"], [1, "thead-dark"], ["scope", "col"], ["scole", "col"], [4, "ngFor", "ngForOf"], [1, "btn", "btn-sm", "btn-link", 3, "click"], [3, "module_id"]], template: function ReleaseDetailComponent_Template(rf, ctx) { if (rf & 1) {
+ReleaseDetailComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ReleaseDetailComponent, selectors: [["app-release-detail"]], decls: 16, vars: 4, consts: [[1, "row"], [1, "col"], ["class", "row", 4, "ngIf"], [4, "ngIf"], [1, "btn", "btn-link", "btn-sm", 3, "click"], [1, "table", "table-sm", "module-table"], [1, "thead-dark"], ["scope", "col"], ["scole", "col"], [4, "ngFor", "ngForOf"], [1, "btn", "btn-sm", "btn-link", 3, "click"], [3, "modulename"]], template: function ReleaseDetailComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "h3");
@@ -561,7 +553,6 @@ function CompareComponent_option_12_Template(rf, ctx) { if (rf & 1) {
 class CompareComponent {
     constructor(configService) {
         this.configService = configService;
-        this.modules = [];
     }
     getModules() {
         this.configService.getModules().subscribe(res => this.modules = res);
@@ -757,11 +748,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InsertComponentComponent", function() { return InsertComponentComponent; });
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config.service */ "wxHw");
+
 
 
 
 class InsertComponentComponent {
-    constructor() {
+    constructor(configService) {
+        this.configService = configService;
         this.subComponent = false;
         this.component = new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroup"]({
             name: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"](''),
@@ -772,8 +766,14 @@ class InsertComponentComponent {
         });
     }
     onSubmit() {
-        console.log(this.component.value);
-        console.log(this.subComponent);
+        this.addComponent(this.component.value);
+        this.component.reset();
+    }
+    addComponent(body) {
+        var path;
+        this.subComponent ? path = 'insertSubComponent' : path = 'insertComponent';
+        this.configService.insert(path, body).subscribe();
+        console.log(this.subComponent, body);
     }
     onChange(isChecked) {
         if (isChecked) {
@@ -786,7 +786,7 @@ class InsertComponentComponent {
     ngOnInit() {
     }
 }
-InsertComponentComponent.ɵfac = function InsertComponentComponent_Factory(t) { return new (t || InsertComponentComponent)(); };
+InsertComponentComponent.ɵfac = function InsertComponentComponent_Factory(t) { return new (t || InsertComponentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_2__["ConfigService"])); };
 InsertComponentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: InsertComponentComponent, selectors: [["app-insert-component"]], decls: 33, vars: 2, consts: [[1, "row"], [1, "col"], [3, "formGroup", "ngSubmit"], [1, "form-group", "mb-2"], ["for", "name"], ["type", "text", "formControlName", "name", 1, "form-control"], ["type", "text", "formControlName", "url", 1, "form-control"], ["type", "text", "formControlName", "version", 1, "form-control"], ["type", "text", "formControlName", "license", 1, "form-control"], ["type", "text", "formControlName", "copyright", 1, "form-control"], [1, "form-check"], ["type", "checkbox", "id", "sub", 1, "form-check-input", 3, "change"], ["for", "sub", 1, "form-check-label"], ["type", "submit", 1, "btn", "btn-primary", "mb-2", 3, "disabled"]], template: function InsertComponentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 1);
@@ -863,53 +863,73 @@ InsertComponentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ�
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataInputComponent", function() { return DataInputComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config.service */ "wxHw");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config.service */ "wxHw");
+/* harmony import */ var _insert_module_insert_module_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../insert-module/insert-module.component */ "6C2R");
+/* harmony import */ var _insert_component_insert_component_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../insert-component/insert-component.component */ "eIUU");
+
+
+
+
 
 
 class DataInputComponent {
     constructor(configService) {
         this.configService = configService;
-        this.file = null;
+        this.files = [];
+        this.fileForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroup"]({
+            file: new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"]('')
+        });
     }
-    // Read the contents of the file and add data to database.
     onFileSelected(event) {
-        this.file = event.target.files[0];
+        this.files.push(event.target.files[0]);
+    }
+    onSubmit() {
         var data = '';
         var jsonData;
-        if (this.file) {
+        if (this.files) {
             const reader = new FileReader();
             reader.onload = (event) => {
                 data = event.target.result;
-                console.log(data);
                 jsonData = JSON.parse(data);
-                this.configService.insert("releases", jsonData).subscribe(res => console.log(res));
+                this.addData(jsonData);
             };
-            reader.readAsText(this.file);
+            this.files.forEach(file => reader.readAsText(file));
         }
+        this.fileForm.reset();
+        this.files.splice(0, this.files.length);
+    }
+    addData(body) {
+        const path = ''; // TODO: add path when endpoint is ready
+        // this.configService.insert(path, body).subscribe();
+        console.log(body);
     }
     ngOnInit() {
     }
 }
-DataInputComponent.ɵfac = function DataInputComponent_Factory(t) { return new (t || DataInputComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_1__["ConfigService"])); };
-DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 7, vars: 1, consts: [[1, "form-group"], ["type", "file", "accept", ".json", "id", "file", 1, "form-control", 3, "change"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h2");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Insert data");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "input", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function DataInputComponent_Template_input_change_4_listener($event) { return ctx.onFileSelected($event); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "p");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+DataInputComponent.ɵfac = function DataInputComponent_Factory(t) { return new (t || DataInputComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_2__["ConfigService"])); };
+DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 9, vars: 1, consts: [[3, "formGroup", "ngSubmit"], ["formControlName", "file", "type", "file", "accept", ".json", "id", "file", 1, "form-control", 3, "change"], ["type", "submit", 1, "btn", "btn-success"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "h2");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, "Insert data");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "form", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngSubmit", function DataInputComponent_Template_form_ngSubmit_3_listener() { return ctx.onSubmit(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "input", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("change", function DataInputComponent_Template_input_change_4_listener($event) { return ctx.onFileSelected($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "button", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "Submit");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](7, "app-insert-module");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](8, "app-insert-component");
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.file ? "File uploaded." : "");
-    } }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("formGroup", ctx.fileForm);
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _insert_module_insert_module_component__WEBPACK_IMPORTED_MODULE_3__["InsertModuleComponent"], _insert_component_insert_component_component__WEBPACK_IMPORTED_MODULE_4__["InsertComponentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
 
 
 /***/ }),
@@ -998,11 +1018,11 @@ class ConfigService {
     getComponents() {
         const url = `${this.url}/components`;
         return this.http.post(url, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComparison', [])));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComponent', [])));
     }
     // Insert data
     insert(path, body) {
-        const url = `${this.url}/insert/${path}`;
+        const url = `${this.url}/${path}`;
         return this.http.put(url, body)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('insert')));
     }
