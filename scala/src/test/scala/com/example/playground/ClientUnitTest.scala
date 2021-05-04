@@ -68,7 +68,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     ResultSet.TYPE_FORWARD_ONLY,
     ResultSet.CONCUR_UPDATABLE
   )).thenReturn(mockStatement);
-  when(mockStatement.executeQuery("SELECT * FROM modules;")).thenReturn(mockResultSet)
+  when(mockStatement.executeQuery("INSERT INTO modules  VALUES time, date, num, val RETURNING *;")).thenReturn(mockResultSet)
 
   when(mockConnection.createStatement(
     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -115,11 +115,11 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(clientToTest.execute("This is not a real query") == null)
   }
 
-  test("execute(): With connection returns ResultSet"){
+  test("execute(): With connection returns ResultSet when query contains RETURNING"){
     fakeEnv();
     val clientToTest = new Client;
     clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.execute("SELECT * FROM modules;");
+    val result = clientToTest.execute("INSERT INTO modules  VALUES time, date, num, val RETURNING *;");
     assert(result.isInstanceOf[ResultSet]);
     resetEnv();
   }
@@ -193,7 +193,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(result == null);
     resetEnv();
   }
-  /* These are not done
+
   test("rollback(): Without connection returns null"){
     val clientToTest = new Client;
     assert(clientToTest.rollback() == null)
@@ -209,11 +209,35 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   }
 
 
-  test("close(): Without connection logs error"){
+  test("close(): Without connection returns null."){
     val clientToTest = new Client;
     assert(clientToTest.connection == null)
   }
-  */
+
+  test("lol"){
+    val clientToTest = new Client;
+    println(clientToTest.connection)
+    clientToTest.connect("defaultdb")
+    println(clientToTest.connection)
+    println(clientToTest.connection.isClosed())
+    clientToTest.close()
+    println(clientToTest.connection)
+    println(clientToTest.connection.isClosed())
+  }
+  test("close(): Should close existing connection"){
+    fakeEnv();
+    val clientToTest = new Client;
+    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
+    print(clientToTest.connection.isClosed())
+    if(!clientToTest.connection.isClosed()){
+      clientToTest.close()
+      assert(clientToTest.connection.isClosed());
+    }
+    else{
+      fail("Client didn't get a connection.")
+    }
+    resetEnv();
+  }
 
   test("getConnectionData(): Should return set of strings"){
     fakeEnv();
