@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, retry, map, tap } from 'rxjs/operators';
 
-import { Module } from './module';
+import { SwCompManagerModule } from './shared/module.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,12 +37,12 @@ export class ConfigService {
   getComponents(): Observable<any> {
     const url = `${this.url}/components`;
     return this.http.post<any>(url, null)
-      .pipe(catchError(this.handleError<String[]>('getComparison', [])));
+      .pipe(catchError(this.handleError<String[]>('getComponent', [])));
   }
 
   // Insert data
   insert(path: string, body: object): Observable<any> {
-    const url = `${this.url}/insert/${path}`;
+    const url = `${this.url}/${path}`;
     return this.http.put(url, body)
     .pipe(catchError(this.handleError<any>('insert')));
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Module } from '../module';
 import { ConfigService } from '../config.service';
+import { SwCompManagerModule } from '../shared/module.model';
 
 @Component({
   selector: 'app-releases',
@@ -9,7 +9,7 @@ import { ConfigService } from '../config.service';
 })
 export class ReleasesComponent implements OnInit {
 
-  modules: any = [];
+  modules: Array<SwCompManagerModule>;
 
   getModules(): void {
     this.configService.getModules().subscribe(res => this.modules = res);

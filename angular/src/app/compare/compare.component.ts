@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Module } from '../module';
 import { ConfigService } from '../config.service';
+import { SwCompManagerModule } from '../shared/module.model';
 
 @Component({
   selector: 'app-compare',
@@ -9,7 +9,7 @@ import { ConfigService } from '../config.service';
 })
 export class CompareComponent implements OnInit {
 
-  modules: any = [];
+  modules: Array<SwCompManagerModule>;
   comparison: string;
 
   getModules(): void {

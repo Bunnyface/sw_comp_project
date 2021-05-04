@@ -41,7 +41,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let component of module.components">
-                    <td *ngFor="let value of component">{{value}}</td>
+                    <td>{{component.name}}</td>
+                    <td>{{component.version}}</td>
                 </tr>
             </tbody>
         </table>
@@ -57,7 +58,7 @@
 
 <div *ngIf="edit">
     <button class="btn btn-sm btn-link" (click)="onEdit()">Cancel</button>
-    <app-components [module_id]="module.id"></app-components>
+    <app-components [modulename]="module.name"></app-components>
 </div>
 
 <!-- Go back -->

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '../config.service';
+import { SwCompManagerComponent } from '../shared/component.model';
 
 @Component({
   selector: 'app-components',
@@ -9,11 +10,11 @@ import { ConfigService } from '../config.service';
 })
 export class ComponentsComponent implements OnInit {
 
-  @Input() module_id;
-  components: JSON;
+  @Input() modulename;
+  components: Array<SwCompManagerComponent>;
 
   newComponent = new FormGroup({
-    comp_id: new FormControl(''),
+    componentname: new FormControl(''),
     usage_type: new FormControl(''),
     attr_value1: new FormControl(''),
     attr_value2: new FormControl(''),
@@ -33,22 +34,11 @@ export class ComponentsComponent implements OnInit {
   }
 
   // Add selected component to module
-  addComponent(component) {
-    const path = "module_component";
-    const body = this.formatBody(component);
+  addComponent(body) {
+    const path = "insertComponentToModule";
+    body.modulename = this.modulename;
+    console.log(body);
     this.configService.insert(path, body).subscribe();
-  }
-
-  // Format the request body to fit insert endpoint
-  formatBody(component): object {
-    var columns = ["module_id"];
-    var data = [this.module_id.toString()];
-    Object.keys(component).map((value) => columns.push(value));
-    Object.values(component).map((value) => data.push(value));
-    var body = { "columns": [], "data": [[]] };
-    body.columns = columns;
-    body.data[0] = data;
-    return body;
   }
 
   constructor(private configService: ConfigService) { }

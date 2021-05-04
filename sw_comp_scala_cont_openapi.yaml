@@ -282,9 +282,10 @@ paths:
                   type: string
         400:
           description: Request body was invalid
+
   /components:
       post:
-        description: Get names of all components in the db.
+        description: Get info on all components in the db.
         responses:
           200:
             description: Successful pull of component data.

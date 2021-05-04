@@ -19,8 +19,8 @@ export class InsertModuleComponent implements OnInit {
   }
 
   addModule(body): void {
-    const path = ''; // TODO: add path when endpoit is ready
-    // this.configService.insert(path, body).subscribe();
+    const path = 'insertModule'; // TODO: add path when endpoit is ready
+    this.configService.insert(path, body).subscribe();
     console.log(body);
   }
 

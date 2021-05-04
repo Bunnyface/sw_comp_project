@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Module } from '../module'
 import { ConfigService } from '../config.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { SwCompManagerModule } from '../shared/module.model';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 })
 export class ReleaseDetailComponent implements OnInit {
 
-  module: Module;
+  module: SwCompManagerModule;
   edit: boolean = false
 
   constructor(
@@ -23,7 +23,7 @@ export class ReleaseDetailComponent implements OnInit {
 
   getRelease(): void {
     const name = this.route.snapshot.paramMap.get('name');
-    this.configService.getRelease(name).subscribe(res => this.module = res)
+    this.configService.getRelease(name).subscribe(res => this.module = res);
   }
 
   onEdit(): void {

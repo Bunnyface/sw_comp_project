@@ -25,9 +25,9 @@ export class InsertComponentComponent implements OnInit {
   }
 
   addComponent(body) {
-    var path = '';
-    this.subComponent ? path = '' : path = ''; // TODO: add path when endpoint is ready
-    // this.configService.insert(path, component).subscribe();
+    var path: string;
+    this.subComponent ? path = 'insertSubComponent' : path = 'insertComponent';
+    this.configService.insert(path, body).subscribe();
     console.log(this.subComponent, body);
   }
 
