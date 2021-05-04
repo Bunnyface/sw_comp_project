@@ -1,9 +1,13 @@
 package com.example.playground
 
 import scala.collection.mutable.ArrayBuffer
+import io.circe._
+import io.circe.syntax._
+
+import retrieveFunctions.{ valueToJson, getArray }
 
 object compareFunctions {
-  def compare(firstName: String, secondName: String): Map[String, Array[Array[String]]] = {
+  def compare(firstName: String, secondName: String): Json = {
     val firstSet = getComponents(firstName);
     val secondSet = getComponents(secondName);
 
@@ -12,21 +16,22 @@ object compareFunctions {
 
     val sameComp = getSame(firstSet, secondSet);
 
-    return Map(
-      "same" -> sameComp.toArray, 
-      "ex_first" -> getExclusive(firstSet, sameComp).toArray, 
-      "ex_second" -> getExclusive(secondSet, sameComp).toArray
-    );
+    return valueToJson(
+      Map(
+        "same" -> sameComp.toArray, 
+        "ex_first" -> getExclusive(firstSet, sameComp).toArray, 
+        "ex_second" -> getExclusive(secondSet, sameComp).toArray
+      )
+    )
   }
 
-  def getComponents(name: String): Array[Array[String]] = {
-    val data = retrieveFunctions
-      .getArray(
-        "module AS m, module_component AS mc, component AS c", 
-        "c.name, c.version", 
-        f"m.id = mc.module_id AND c.id = mc.comp_id AND m.name='$name%s'")
-      .map(row => row.map(v => v.toString()).toArray);
-    
+  def getComponents(name: String): Array[Array[Any]] = {
+    val data = getArray(
+      "module AS m, module_component AS mc, component AS c", 
+      "c.name, c.version", 
+      f"m.id = mc.module_id AND c.id = mc.comp_id AND m.name='$name%s'"
+    )
+
     if (data.length > 0)
       return data.toArray;
     
@@ -34,16 +39,16 @@ object compareFunctions {
   }
 
   def getSame(
-    first: Array[Array[String]], 
-    second: Array[Array[String]]
-  ): Array[Array[String]] = {
+    first: Array[Array[Any]], 
+    second: Array[Array[Any]]
+  ): Array[Array[Any]] = {
     return first.filter(row => second.contains(row));
   }
 
   def getExclusive(
-    first: Array[Array[String]], 
-    second: Array[Array[String]]
-  ): Array[Array[String]] = {
+    first: Array[Array[Any]], 
+    second: Array[Array[Any]]
+  ): Array[Array[Any]] = {
     return first.filter(row => !second.contains(row));
   }
 }

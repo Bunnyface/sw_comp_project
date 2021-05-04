@@ -63,7 +63,7 @@ object Main extends App {
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     val response = compareFunctions.compare(req.first, req.second);
     if (response != null)
-      Ok(response.asJson);
+      Ok(response);
     else
       NotFound(new Exception("One of the requested releases was not found"));
   }
