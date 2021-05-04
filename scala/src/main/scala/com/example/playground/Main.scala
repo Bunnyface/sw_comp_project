@@ -22,22 +22,22 @@ object Main extends App {
   case class Message(hello: String);
 
   case class CompareRequest(
-    first: String,
-    second: String
-  );
+                             first: String,
+                             second: String
+                           );
 
   case class InsertRequest (
-    columns: Array[String],
-    data: Array[Array[String]]
-  );
+                             columns: Array[String],
+                             data: Array[Array[String]]
+                           );
 
   case class UpdateRequest(
-    table: String,
-    newValCol: String,
-    newVal: String,
-    condCol: String,
-    condVal: String
-  );
+                            table: String,
+                            newValCol: String,
+                            newVal: String,
+                            condCol: String,
+                            condVal: String
+                          );
 
   def healthcheck: Endpoint[IO, String] = get(pathEmpty) {
     Ok("OK")
@@ -76,6 +76,46 @@ object Main extends App {
       BadRequest(new Exception("Table not found or data is corrupted"));
   }
 
+  def insertModule: Endpoint[IO, Json] = put("insertModule":: jsonBody[dbmodels.module]) { ( req: dbmodels.module) =>
+    val response = sendFunctions.insertModule(req);
+    if (response.length != 0)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
+  def insertComponent: Endpoint[IO, Json] = put("insertComponent":: jsonBody[dbmodels.component]) { ( req: dbmodels.component) =>
+    val response = sendFunctions.insertComponent(req);
+    if (response.length != 0)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
+  def insertSubComponent: Endpoint[IO, Json] = put("insertSubComponent":: jsonBody[dbmodels.subComponent]) { ( req: dbmodels.subComponent) =>
+    val response = sendFunctions.insertSubComponent(req);
+    if (response.length != 0)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
+  def insertComponentToModule: Endpoint[IO, Json] = put("insertComponentToModule":: jsonBody[dbmodels.componentToModule]) { ( req: dbmodels.componentToModule) =>
+    val response = sendFunctions.insertComponentToModel(req);
+    if (response.length != 0)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
+  def insertSubToComponent: Endpoint[IO, Json] = put("insertSubToComponent":: jsonBody[dbmodels.junction]) { ( req: dbmodels.junction) =>
+    val response = sendFunctions.insertSubToComp(req);
+    if (response.length != 0)
+      Created(response.asJson);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
   def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
     val response =
       sendFunctions.queryUpdate(req.table, req.newValCol, req.newVal, req.condCol, req.condVal);
@@ -95,7 +135,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: getEverything)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
