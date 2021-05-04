@@ -34,6 +34,15 @@ object retrieveFunctions{
     )
   }
 
+  def queryComponents(): Json = {
+    val fetched = try {
+      getMapArray("component", "*");
+    } catch {
+      case _: Throwable => null;
+    }
+    return valueToJson(fetched);
+  }
+
   def retrieveEverything(): Json = {
     val subComp = getMapArray("sub_component");
     val juncTable = getMapArray("junction_table");

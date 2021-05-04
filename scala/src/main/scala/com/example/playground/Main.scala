@@ -56,6 +56,11 @@ object Main extends App {
       Ok(relInfo);
   }
 
+  def components: Endpoint[IO, Json] = post("components") {
+    println("Getting components");
+    Ok(retrieveFunctions.queryComponents());
+  }
+
   def getEverything: Endpoint[IO, Json] = post("moduleData") {
     Ok(retrieveFunctions.retrieveEverything());
   }
@@ -135,7 +140,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
