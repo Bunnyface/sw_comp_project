@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
       "org.scalatest"      %% "scalatest"    % scalatestVersion % "test",
       "org.postgresql" % "postgresql" % postgresqlVersion,
       "io.spray" %%  "spray-json" % sprayVersion,
-      "org.mockito" %% "mockito-scala" % mockitoVersion % "test",
+      "org.mockito" %% "mockito-scala" % mockitoVersion % "test"
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % loggingVersion
     )
