@@ -9,8 +9,12 @@ import org.mockito.Mockito.when
 import org.mockito.Matchers._
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.sql.{Connection, DriverManager, ResultSet, Statement}
 
+=======
+import java.sql.{Connection, DriverManager, ResultSet}
+>>>>>>> First Unit tests for Client
 =======
 import java.sql.{Connection, DriverManager, ResultSet}
 >>>>>>> First Unit tests for Client
@@ -47,6 +51,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 
   //In memory as if "db"
 <<<<<<< HEAD
+<<<<<<< HEAD
   val mockResultSet = mock[ResultSet];
   val mockStatement = mock[Statement];
   val mockConnection = mock[Connection];
@@ -55,6 +60,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
                             return mockConnection;
                           };
 =======
+=======
+>>>>>>> First Unit tests for Client
   val resultSet = mock[ResultSet];
   val mockConnection = mock[Connection];
   print(mockConnection.isInstanceOf[Connection])
@@ -62,11 +69,15 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
                         def getMockConnection(connection: String, user: String, pwd: String): Connection = {
                           return mockConnection;
                         };
+<<<<<<< HEAD
+>>>>>>> First Unit tests for Client
+=======
 >>>>>>> First Unit tests for Client
                         }
   val mockDriver = mock[mockDriverManager];
 
   //accepted
+<<<<<<< HEAD
 <<<<<<< HEAD
   when(
     mockDriver.getMockConnection(
@@ -94,6 +105,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   def connectingFunction(connString: String, user: String, passwd: String ) : Connection = {
     val result = mockDriver.getMockConnection(connString, user, passwd);
 =======
+=======
+>>>>>>> First Unit tests for Client
   when(mockDriver.getMockConnection("jdbc:postgresql://THE_HOST/DBNAME","USER","PASSWORD")).thenReturn(mockConnection);
   when(mockDriver.getMockConnection("jdbc:postgresql://THE_HOST/DBNAME","THE_USER","THE_PASSWD")).thenReturn(mockConnection);
   //denied
@@ -119,6 +132,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     print(connString, user, passwd)
     val result = mockDriver.getMockConnection(connString, user, passwd);
     print(result.isInstanceOf[Connection])
+<<<<<<< HEAD
+>>>>>>> First Unit tests for Client
+=======
 >>>>>>> First Unit tests for Client
     return result;
   }
@@ -126,6 +142,11 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> First Unit tests for Client
 =======
 
 
@@ -148,7 +169,11 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     resetEnv();
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+ /*
+>>>>>>> First Unit tests for Client
 =======
  /*
 >>>>>>> First Unit tests for Client
@@ -158,6 +183,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     clientToTest.connect("RANDOM", null, null, connectingFunction);
     assert(clientToTest.connection == null);
     resetEnv();
+<<<<<<< HEAD
 <<<<<<< HEAD
   }
 
@@ -291,6 +317,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     resetEnv();
   }
 =======
+=======
+>>>>>>> First Unit tests for Client
   };
   */
 
@@ -315,6 +343,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     }
   }*/
 
+<<<<<<< HEAD
+>>>>>>> First Unit tests for Client
+=======
 >>>>>>> First Unit tests for Client
 
   test("getConnectionData(): Should return set of strings"){
@@ -330,6 +361,10 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     val clientToTest = new Client;
     val (one, two, three) = clientToTest.getConnectionData()
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    println(one)
+>>>>>>> First Unit tests for Client
 =======
     println(one)
 >>>>>>> First Unit tests for Client
