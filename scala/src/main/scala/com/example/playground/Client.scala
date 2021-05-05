@@ -128,7 +128,8 @@ class Client extends LazyLogging {
     if (connection != null)
       connection.close();
     else
-      logger.error("There is no connetion to close.");
+      logger.error("There is no connection to close.");
+
   }
   /**
  * Get environmental variables for sql connection
