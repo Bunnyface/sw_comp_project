@@ -134,6 +134,7 @@ class Client extends LazyLogging {
       connection.close();
     else
       logger.error("There is no connection to close.");
+  }
 
   }
   /**
