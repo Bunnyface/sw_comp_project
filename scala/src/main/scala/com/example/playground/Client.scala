@@ -69,14 +69,22 @@ class Client extends LazyLogging {
     if (connection != null)
       connection.rollback();
     else
+<<<<<<< HEAD
       logger.error("Connection was not established.");
+=======
+      println("Connection was not established.");
+>>>>>>> First Unit tests for Client
   }
 
   def close() {
     if (connection != null)
       connection.close();
     else
+<<<<<<< HEAD
       logger.error("Connection was not established.");
+=======
+      println("Connection was not established.");
+>>>>>>> First Unit tests for Client
   }
 
   def getConnectionData(): (String, String, String) = {
