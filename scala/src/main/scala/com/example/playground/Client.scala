@@ -9,22 +9,32 @@ import com.typesafe.scalalogging.LazyLogging
  */
 class Client extends LazyLogging {
   var connection: Connection = null;
-/**
- * Initialize connection to the database
- * @param dbnmame name of the database
- * @param dbuser the username for the database, if none given, environmental variables used
- * @param passwd password for the database, if none given, environmental variables used
- */
-  def connect(dbname: String, dbuser: String = null, passwd: String = null) {
-    classOf[org.postgresql.Driver];
+
+  private[this] def defaultConnecting(connString: String, user: String, passwd: String ) : Connection = {
+    print(connString, user, passwd)
+    val result = DriverManager.getConnection(connString, user, passwd);
+    return result;
+  }
+
+  /**
+   * Initialize connection to the database
+   * @param dbnmame name of the database
+   * @param dbuser the username for the database, if none given, environmental variables used
+   * @param passwd password for the database, if none given, environmental variables used
+   * @param connectFunction lets tests mock DriverManager to fake database connection
+   */
+
+  //connectFunction can be changed for tests
+  def connect(dbname: String, dbuser: String = null, passwd: String = null, connectFunction: (String, String, String) => Connection = defaultConnecting) {
+    //classOf[org.postgresql.Driver];
     val (host, user, password) = getConnectionData();
     if (dbuser != null && passwd != null){
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = DriverManager.getConnection(connString, dbuser, passwd);
+      connection = connectFunction(connString, dbuser, passwd);
     }
     else {
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = DriverManager.getConnection(connString, user, password);
+      connection = connectFunction(connString, user, password);
     }
     connection.setAutoCommit(false);
   }
@@ -35,7 +45,7 @@ class Client extends LazyLogging {
   def execute(query: String): ResultSet = {
     if (connection != null) {
       val statement = connection.createStatement(
-        ResultSet.TYPE_FORWARD_ONLY, 
+        ResultSet.TYPE_FORWARD_ONLY,
         ResultSet.CONCUR_UPDATABLE)
       val result = if (query.contains("RETURNING")) {
         statement.executeQuery(query);
@@ -58,7 +68,7 @@ class Client extends LazyLogging {
   def fetch(query: String): ResultSet = {
     if (connection != null) {
       val result = connection.createStatement(
-        ResultSet.TYPE_SCROLL_INSENSITIVE, 
+        ResultSet.TYPE_SCROLL_INSENSITIVE,
         ResultSet.CONCUR_READ_ONLY
       ).executeQuery(query);
       connection.commit();
@@ -73,18 +83,18 @@ class Client extends LazyLogging {
  * Execute a sql-rollback in case of database conflicts
  */
   def rollback() {
-    if (connection != null) 
+    if (connection != null)
       connection.rollback();
-    else 
+    else
       logger.error("Connection was not established.");
   }
   /**
  * Close the established connection, must be always done at the end of query
  */
   def close() {
-    if (connection != null) 
+    if (connection != null)
       connection.close();
-    else 
+    else
       logger.error("Connection was not established.");
   }
   /**

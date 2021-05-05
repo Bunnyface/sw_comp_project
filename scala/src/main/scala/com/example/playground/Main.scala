@@ -351,7 +351,7 @@ object Main extends App with LazyLogging {
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany
-      :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule 
+      :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule
       :+: insertSubToComponent :+: getEverything :+: deleteWithId :+: deleteWithName)
     .toService
   /**
