@@ -11,6 +11,7 @@ import org.mockito.Matchers._
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.sql.{Connection, DriverManager, ResultSet, Statement}
 
 =======
@@ -23,6 +24,9 @@ import java.sql.{Connection, DriverManager, ResultSet}
 import java.sql.{Connection, DriverManager, ResultSet, Statement}
 
 >>>>>>> More testing on Client
+=======
+import java.sql.{Connection, DriverManager, ResultSet}
+>>>>>>> First Unit tests for Client
 
 class ClientUnitTest extends FunSuite with MockitoSugar{
 
@@ -58,6 +62,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   val mockResultSet = mock[ResultSet];
   val mockStatement = mock[Statement];
   val mockConnection = mock[Connection];
@@ -88,10 +93,20 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
                             return mockConnection;
                           };
 >>>>>>> More testing on Client
+=======
+  val resultSet = mock[ResultSet];
+  val mockConnection = mock[Connection];
+  print(mockConnection.isInstanceOf[Connection])
+  case class mockDriverManager(){
+                        def getMockConnection(connection: String, user: String, pwd: String): Connection = {
+                          return mockConnection;
+                        };
+>>>>>>> First Unit tests for Client
                         }
   val mockDriver = mock[mockDriverManager];
 
   //accepted
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -123,10 +138,13 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 =======
 =======
 >>>>>>> First Unit tests for Client
+=======
+>>>>>>> First Unit tests for Client
   when(mockDriver.getMockConnection("jdbc:postgresql://THE_HOST/DBNAME","USER","PASSWORD")).thenReturn(mockConnection);
   when(mockDriver.getMockConnection("jdbc:postgresql://THE_HOST/DBNAME","THE_USER","THE_PASSWD")).thenReturn(mockConnection);
   //denied
   /*
+<<<<<<< HEAD
 =======
 >>>>>>> More testing on Client
   when(
@@ -162,11 +180,35 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+  when(
+    and(
+      mockDriver.getMockConnection(
+          not(eq("jdbc:postgresql://THE_HOST/DBNAME")),not(eq("USER")),not(eq("PASSWORD"))
+      ),
+      mockDriver.getMockConnection(
+        not(eq("jdbc:postgresql://THE_HOST/DBNAME")),not(eq("THE_USER")),not(eq("THE_PASSWD"))
+      )
+    )
+  ).thenReturn(null);*/
+
+  /*
+  when(mockConnection.createStatement(
+    ResultSet.TYPE_FORWARD_ONLY,
+    ResultSet.CONCUR_UPDATABLE
+  ).executeQuery(query)).then(mockConnection.commit()).thenReturn(resultSet);
+  */
+  def connectingFunction(connString: String, user: String, passwd: String ) : Connection = {
+    print(connString, user, passwd)
+    val result = mockDriver.getMockConnection(connString, user, passwd);
+    print(result.isInstanceOf[Connection])
+>>>>>>> First Unit tests for Client
     return result;
   }
 
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -180,6 +222,10 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+
+
+>>>>>>> First Unit tests for Client
   //Tests:
 
   test("connect(): Connection is established with the mock db with provided credentials."){
@@ -200,6 +246,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
  /*
@@ -210,12 +257,16 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 =======
 
 >>>>>>> More testing on Client
+=======
+ /*
+>>>>>>> First Unit tests for Client
   test("connect(): Connection is declined when name of the database is not correct"){
     fakeEnv();
     val clientToTest = new Client;
     clientToTest.connect("RANDOM", null, null, connectingFunction);
     assert(clientToTest.connection == null);
     resetEnv();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -503,6 +554,32 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     resetEnv();
   }
 >>>>>>> Commit before rebasing.
+=======
+  };
+  */
+
+
+  test("execute(): without connection returns null"){
+    val clientToTest = new Client;
+    assert(clientToTest.execute("This is not a real query") == null)
+  }
+  /*
+  test("execute(): With connection returns ResultSet"){
+    fakeEnv();
+    val clientToTest = new Client;
+    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
+    val result = clientToTest.execute("SELECT * FROM modules;");
+    assert(result.isInstanceOf[ResultSet]);
+    resetEnv();
+  }
+  test("Nonsense query should fail"){
+
+    assertThrows[org.postgresql.util.PSQLException]{
+
+    }
+  }*/
+
+>>>>>>> First Unit tests for Client
 
   test("getConnectionData(): Should return set of strings"){
     fakeEnv();
@@ -519,6 +596,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     println(one)
 >>>>>>> First Unit tests for Client
@@ -527,6 +605,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+    println(one)
+>>>>>>> First Unit tests for Client
     assert(one == "THE_HOST" && two == "THE_USER" && three == "THE_PASSWD")
     resetEnv();
   }
