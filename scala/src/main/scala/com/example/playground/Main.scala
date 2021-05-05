@@ -140,7 +140,19 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
+    .serve[Application.Json](
+      compare                 :+:
+      insert                  :+:
+      update                  :+:
+      releases                :+:
+      releaseInfo             :+:
+      components              :+:
+      insertModule            :+:
+      insertComponent         :+:
+      insertSubComponent      :+:
+      insertComponentToModule :+:
+      insertSubToComponent    :+: 
+      getEverything)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)

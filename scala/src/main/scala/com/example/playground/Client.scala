@@ -6,16 +6,24 @@ import java.sql.{Connection, DriverManager, ResultSet}
 class Client {
   var connection: Connection = null;
 
-  def connect(dbname: String, dbuser: String = null, passwd: String = null) {
-    classOf[org.postgresql.Driver];
+  private[this] def defaultConnecting(connString: String, user: String, passwd: String ) : Connection = {
+    print(connString, user, passwd)
+    val result = DriverManager.getConnection(connString, user, passwd);
+    return result;
+  }
+
+  //connectFunction can be changed for tests
+  def connect(dbname: String, dbuser: String = null, passwd: String = null, connectFunction: (String, String, String) => Connection = defaultConnecting) {
+    //classOf[org.postgresql.Driver];
+    print(classOf[DriverManager])
     val (host, user, password) = getConnectionData();
     if (dbuser != null && passwd != null){
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = DriverManager.getConnection(connString, dbuser, passwd);
+      connection = connectFunction(connString, dbuser, passwd);
     }
     else {
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = DriverManager.getConnection(connString, user, password);
+      connection = connectFunction(connString, user, password);
     }
     connection.setAutoCommit(false);
   }
@@ -23,7 +31,7 @@ class Client {
   def execute(query: String): ResultSet = {
     if (connection != null) {
       val result = connection.createStatement(
-        ResultSet.TYPE_FORWARD_ONLY, 
+        ResultSet.TYPE_FORWARD_ONLY,
         ResultSet.CONCUR_UPDATABLE
       ).executeQuery(query);
       connection.commit();
@@ -38,7 +46,7 @@ class Client {
   def fetch(query: String): ResultSet = {
     if (connection != null) {
       val result = connection.createStatement(
-        ResultSet.TYPE_SCROLL_INSENSITIVE, 
+        ResultSet.TYPE_SCROLL_INSENSITIVE,
         ResultSet.CONCUR_READ_ONLY
       ).executeQuery(query);
       connection.commit();
@@ -51,16 +59,16 @@ class Client {
   }
 
   def rollback() {
-    if (connection != null) 
+    if (connection != null)
       connection.rollback();
-    else 
+    else
       println("Connection was not established.");
   }
 
   def close() {
-    if (connection != null) 
+    if (connection != null)
       connection.close();
-    else 
+    else
       println("Connection was not established.");
   }
 
