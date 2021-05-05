@@ -1,5 +1,5 @@
 <div>
-    <h2>Releases</h2>
+    <h2>Modules</h2>
 </div>
 <table class="table table-sm table-hover">
     <thead class="thead-dark">
@@ -8,8 +8,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let release of releases" [ngValue]="release">
-            <td routerLink="/releases/{{release}}">{{release}}</td>
+        <tr *ngFor="let module of modules" [ngValue]="module">
+            <td routerLink="/modules/{{module}}">{{module}}</td>
         </tr>
     </tbody>
 </table>

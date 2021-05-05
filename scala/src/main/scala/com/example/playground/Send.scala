@@ -33,7 +33,7 @@ object sendFunctions extends LazyLogging {
         );
       } catch {
         case _: Throwable =>
-          println("Insert wasn't successful");
+          logger.debug("Insert wasn't successful");
           null;
       }
     }).filter(row => row != null);
@@ -55,29 +55,27 @@ object sendFunctions extends LazyLogging {
 
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
-    val query = f"UPDATE $table%s SET $change%s, row_version=row_version+1 WHERE $condition%s RETURNING row_version;";
+    val query = f"UPDATE $table%s SET $change%s, row_version=row_version+1 WHERE $condition%s RETURNING *;";
 
     val version = getArray(table, "row_version", condition)(0)(0).asInstanceOf[Int];
 
     try {
-      val returnedRow = sqlClient.execute(query);
-      returnedRow.next();
-      val updatedVersion = returnedRow.getInt(1);
+      val returnedRow = resultSetToMapArray(
+        sqlClient.execute(query)
+      )(0);
+      val updatedVersion = returnedRow.apply("row_version").asInstanceOf[Int];
       if (updatedVersion - version != 1) {
         sqlClient.rollback();
-        throw new Exception("Update wasn't successful, performing the rollback..");
+        throw new Exception("Parallel update occurred, performing the rollback..");
       }
-
-      val created = getMapArray(table, "*", condition)
-        .map(row => mapToJson(row))
-        .asJson;
       sqlClient.close();
-      return created;
+      return valueToJson(returnedRow);
     } catch {
-      case _: Throwable =>
-        logger.error("Update wasn't successful");
-        sqlClient.close();
+      case e: Exception =>
+        println(e)
+        logger.error("Update wasn't successful")
     }
+    sqlClient.close();
     logger.debug("RETURNING NULL");
     return null;
   }

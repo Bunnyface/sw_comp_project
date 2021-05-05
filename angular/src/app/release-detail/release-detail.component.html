@@ -4,17 +4,17 @@
         <h3>Module info</h3>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="module">
     <div class="col">
-        <table class="table table-sm table-hover module-table">
+        <table class="table table-sm module-table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Name</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let value of release.info">
-                    <td>{{value}}</td>
+                <tr>
+                    <td>{{module.name}}</td>
                 </tr>
             </tbody>
         </table>
@@ -27,27 +27,43 @@
         <h3>Module components</h3>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="module">
     <div class="col">
-        <table class="table table-sm table-hover module-table">
+        <table class="table table-sm module-table">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Component</th>
                     <th scole="col">Version</th>
+                    <th scole="col">Url</th>
+                    <th scole="col">License</th>
+                    <th scole="col">Copyright</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let component of release.components">
-                    <td *ngFor="let value of component">{{value}}</td>
+                <tr *ngFor="let component of module.components">
+                    <td>{{component.name}}</td>
+                    <td>{{component.version}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
+<!-- Add components-->
+<div class="row" *ngIf="!edit">
+    <div class="col">
+        <button (click)="onEdit()" class="btn btn-link btn-sm">Add components to module</button>
+    </div>
+</div>
+
+<div *ngIf="edit">
+    <button class="btn btn-sm btn-link" (click)="onEdit()">Cancel</button>
+    <app-components [modulename]="module.name"></app-components>
+</div>
+
 <!-- Go back -->
 <div class="row">
     <div class="col">
-        <button (click)="goBack()" class="btn btn-primary">Back to modules</button>
+        <button (click)="goBack()" class="btn btn-link btn-sm">Back to modules</button>
     </div>
 </div>

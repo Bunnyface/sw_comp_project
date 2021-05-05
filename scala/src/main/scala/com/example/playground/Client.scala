@@ -19,14 +19,17 @@ class Client extends LazyLogging {
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
       connection = DriverManager.getConnection(connString, user, password);
     }
-    logger.info(f"Connected to database at $host%s")
+    connection.setAutoCommit(false);
   }
 
   def execute(query: String): ResultSet = {
     if (connection != null) {
-      val stm = connection.createStatement(
-        ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-      return stm.executeQuery(query);
+      val result = connection.createStatement(
+        ResultSet.TYPE_FORWARD_ONLY, 
+        ResultSet.CONCUR_UPDATABLE
+      ).executeQuery(query);
+      connection.commit();
+      return result;
     }
     else {
       logger.error("Connection was not established.");
@@ -36,9 +39,11 @@ class Client extends LazyLogging {
 
   def fetch(query: String): ResultSet = {
     if (connection != null) {
-      val stm = connection.createStatement(
-        ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      val result = stm.executeQuery(query);
+      val result = connection.createStatement(
+        ResultSet.TYPE_SCROLL_INSENSITIVE, 
+        ResultSet.CONCUR_READ_ONLY
+      ).executeQuery(query);
+      connection.commit();
       return result;
     }
     else {
