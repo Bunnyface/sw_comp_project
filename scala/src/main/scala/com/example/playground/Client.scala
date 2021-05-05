@@ -86,7 +86,11 @@ class Client extends LazyLogging {
     if (connection != null)
       connection.rollback();
     else
+<<<<<<< HEAD
       logger.error("Connection was not established.");
+=======
+      println("Connection was not established.");
+>>>>>>> First Unit tests for Client
   }
   /**
  * Close the established connection, must be always done at the end of query
@@ -95,7 +99,11 @@ class Client extends LazyLogging {
     if (connection != null)
       connection.close();
     else
+<<<<<<< HEAD
       logger.error("Connection was not established.");
+=======
+      println("Connection was not established.");
+>>>>>>> First Unit tests for Client
   }
   /**
  * Get environmental variables for sql connection
