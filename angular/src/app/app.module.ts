@@ -9,6 +9,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { ReleasesComponent } from './releases/releases.component';
@@ -21,6 +24,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { InsertModuleComponent } from './insert-module/insert-module.component';
 import { InsertComponentComponent } from './insert-component/insert-component.component';
 import { ComponentsComponent } from './components/components.component';
+import { InsertCompToModComponent } from './insert-comp-to-mod/insert-comp-to-mod.component';
+import { CompsComponent } from './comps/comps.component';
 
 
 @NgModule({
@@ -32,7 +37,9 @@ import { ComponentsComponent } from './components/components.component';
     CompareComponent,
     InsertModuleComponent,
     InsertComponentComponent,
-    ComponentsComponent
+    ComponentsComponent,
+    InsertCompToModComponent,
+    CompsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,10 +50,10 @@ import { ComponentsComponent } from './components/components.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule, MatCheckboxModule,
-    MatTableModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule
+    MatTableModule, MatSortModule,
+    MatFormFieldModule, MatInputModule,
+    MatCardModule, MatExpansionModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

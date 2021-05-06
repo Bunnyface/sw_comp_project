@@ -21,7 +21,7 @@ import { SwCompManagerModule } from '../shared/module.model';
 export class ReleasesComponent implements OnInit {
 
   modules: SwCompManagerModule[];
-  columns: String[];
+  columns: String[] = ["name", "components"];
   dataSource = new MatTableDataSource<SwCompManagerModule>();
   expandedModule: SwCompManagerModule | null;
   @ViewChild(MatSort) sort: MatSort;
@@ -29,7 +29,6 @@ export class ReleasesComponent implements OnInit {
 
   getModules(): void {
     this.configService.getFullModules().subscribe(res => {
-      this.columns = Object.keys(res[0]);
       this.dataSource.data = res;
       this.dataSource.sort = this.sort;
       console.log(this.dataSource.data);

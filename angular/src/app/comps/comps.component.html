@@ -1,0 +1,36 @@
+<!-- Header -->
+<div class="row">
+    <div class="col">
+        <h1 class="mat-display-3">Components</h1>
+    </div>
+</div>
+
+<!-- Filtering -->
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+</mat-form-field>
+
+<!-- Component table -->
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columns">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+        <td mat-cell *matCellDef="let component">{{component[column]}}</td>
+    </ng-container>
+
+    <!-- Expanded content -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let component" [attr.colspan]="columns.length">
+            <div class="component-detail" [@detailExpand]="component == expandedComponent ? 'expanded' : 'collapsed'">
+                <!-- TODO: Add expanded content here and remove router link from above-->
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let component; columns: columns;"
+        class="component-row" [class.expanded-row]="expandedComponent === component"
+        (click)="expandedComponent = expandedComponent === component ? null : component">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>
+<app-insert-component></app-insert-component>
