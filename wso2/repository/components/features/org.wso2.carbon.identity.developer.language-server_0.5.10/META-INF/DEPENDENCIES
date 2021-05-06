@@ -1,0 +1,15 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Language server on Identity Server Feature
+
+
+From: 'WSO2' (http://www.wso2.org/)
+  - Language server on Identity Server (http://wso2.org) org.wso2.carbon.identity.developer:org.wso2.carbon.identity.developer.language-server:war:0.5.10
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

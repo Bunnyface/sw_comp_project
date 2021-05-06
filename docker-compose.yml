@@ -45,7 +45,13 @@ services:
       POSTGRES_DB: defaultdb
     networks:
       - sw_network
-  
+
+  identity-server:
+    image: swcomp/is
+    build: ./wso2
+    ports:
+      - 9443:9443
+
 networks:
   sw_network:
     driver: bridge
