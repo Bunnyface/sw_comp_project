@@ -1,0 +1,15 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Identity Rest API Feature
+
+
+From: 'WSO2' (http://www.wso2.org/)
+  - WSO2 Identity Server - Rest API Dispatcher (http://wso2.org/components/org.wso2.carbon.identity.rest.api.dispatcher) org.wso2.carbon.identity.rest.dispatcher:org.wso2.carbon.identity.rest.api.dispatcher:war:1.0.140
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

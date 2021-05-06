@@ -1,0 +1,79 @@
+{
+    "en-US": {
+        "code": "en-US",
+        "flag": "us",
+        "name": "English (United States)",
+        "namespaces": [
+            "adminPortal",
+            "common",
+            "console",
+            "devPortal",
+            "userPortal"
+        ],
+        "paths": {
+            "adminPortal": "en-US/portals/adminPortal.json",
+            "devPortal": "en-US/portals/devPortal.json",
+            "common": "en-US/portals/common.json",
+            "console": "en-US/portals/console.json",
+            "userPortal": "en-US/portals/userPortal.json"
+        }
+    },
+    "fr-FR": {
+        "code": "fr-FR",
+        "flag": "fr",
+        "name": "Français (France)",
+        "namespaces": [
+            "adminPortal",
+            "common",
+            "console",
+            "devPortal",
+            "userPortal"
+        ],
+        "paths": {
+            "adminPortal": "fr-FR/portals/adminPortal.json",
+            "devPortal": "fr-FR/portals/devPortal.json",
+            "common": "fr-FR/portals/common.json",
+            "console": "fr-FR/portals/console.json",
+            "userPortal": "fr-FR/portals/userPortal.json"
+        }
+    },
+    "pt-BR": {
+        "code": "pt-BR",
+        "flag": "br",
+        "name": "Português (Brazil)",
+        "namespaces": [
+            "common",
+            "userPortal"
+        ],
+        "paths": {
+            "common": "pt-BR/portals/common.json",
+            "userPortal": "pt-BR/portals/userPortal.json"
+        }
+    },
+    "si-LK": {
+        "code": "si-LK",
+        "flag": "lk",
+        "name": "සිංහල (Sri Lanka)",
+        "namespaces": [
+            "common",
+            "userPortal"
+        ],
+        "paths": {
+            "common": "si-LK/portals/common.json",
+            "userPortal": "si-LK/portals/userPortal.json"
+        }
+    },
+    "ta-IN": {
+        "code": "ta-IN",
+        "flag": "in",
+        "name": "தமிழ் (India)",
+        "namespaces": [
+            "common",
+            "userPortal"
+        ],
+        "paths": {
+            "common": "ta-IN/portals/common.json",
+            "userPortal": "ta-IN/portals/userPortal.json"
+        }
+    }
+}
