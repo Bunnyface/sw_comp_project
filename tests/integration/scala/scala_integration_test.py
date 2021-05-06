@@ -178,7 +178,7 @@ def test_releases():
         exp_comp = []
         if flat_comps != None:
             for c_id in flat_comps:
-                comp_string = f"SELECT name, version FROM {COMPONENT_TABLE_NAME} WHERE id='{c_id}';"
+                comp_string = f"SELECT name, version, url, license, copyright, usage_type, attr_value1, attr_value2, attr_value3, date, comment_one, comment_two FROM {COMPONENT_TABLE_NAME} c, {MODULETOCOMP_TABLE_NAME} mc WHERE mc.comp_id = c.id AND id='{c_id}';"
                 components = fetch(
                    conn,
                    comp_string,
