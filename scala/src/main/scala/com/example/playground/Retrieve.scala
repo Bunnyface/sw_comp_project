@@ -25,10 +25,9 @@ object retrieveFunctions{
     val moduleID = fetched.apply("id").asInstanceOf[Int];
     val componentData = getMapArray(
       "module_component as mc, component as c",
-      "c.*, mc.usage_type, mc.attr_value1, mc.attr_value2, mc.attr_value3, mc.date, mc.comment_one, mc.comment_two",
+      "c.name, c.url, c.version, c.license, c.copyright, mc.usage_type, mc.attr_value1, mc.attr_value2, mc.attr_value3, mc.date, mc.comment_one, mc.comment_two",
       f"mc.module_id=$moduleID%d AND mc.comp_id=c.id"
     );
-
     return valueToJson(
       fetched ++ Map("components" -> componentData)
     )

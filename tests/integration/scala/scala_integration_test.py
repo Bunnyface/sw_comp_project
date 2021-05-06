@@ -6,6 +6,7 @@ import logging
 import asyncio
 import asyncpg
 import threading
+import unittest
 import time
 
 SCALAURL = "http://scala:8081" # TODO ADD SOME EASY WAYS TO CUSTOMIZE
@@ -74,9 +75,15 @@ def perform_test(url, method, expected, message=None, payload=None):
     
     received = perform_request(url, method, payload)
     body = parse_to_json(received.text)
-    logging.warning(f"received body: {body}")
     assert(expected.code == received.status_code)
-    assert(expected.body == body)
+    if "components" in body:
+        if isinstance(body["components"], list):
+            for x in range(len(body["components"])):
+                logging.warning(f"date is : {expected.body['components'][x]}")
+                assert(expected.body["components"][x] == body["components"][x])
+    else:
+        assert expected.body== body
+
 
 def perform_parallel_test(thread_num=4):
     responses = []
@@ -149,8 +156,8 @@ def test_releases():
     test_string = "SELECT name FROM " + MODULES_TABLE_NAME + ";"
     exp = [x[0] for x in fetch(conn, test_string , "all")]
     perform_test(
-        "/releases", 
-        "POST", 
+        "/releases",
+        "POST",
         Expected(200, exp),
         "Sending request for releases"
     )
@@ -178,19 +185,22 @@ def test_releases():
         exp_comp = []
         if flat_comps != None:
             for c_id in flat_comps:
-                comp_string = f"SELECT name, version, url, license, copyright, usage_type, attr_value1, attr_value2, attr_value3, date, comment_one, comment_two FROM {COMPONENT_TABLE_NAME} c, {MODULETOCOMP_TABLE_NAME} mc WHERE mc.comp_id = c.id AND id='{c_id}';"
+                comp_string = f"SELECT c.name, c.version, c.url, c.license, c.copyright, mc.usage_type, mc.attr_value1, mc.attr_value2, mc.attr_value3, mc.date, mc.comment_one, mc.comment_two FROM {COMPONENT_TABLE_NAME} c, {MODULETOCOMP_TABLE_NAME} mc WHERE mc.comp_id = c.id AND id='{c_id}';"
                 components = fetch(
                    conn,
                    comp_string,
                    "row",
                    "dict"
                 )
+                if "date" in components:
+                    components["date"] = components["date"].strftime("%Y-%m-%d")
                 exp_comp.append(components)
         exp = {
             "id": int(id_module[0]),
             "name": name,
             "components": exp_comp
         }
+        logging.warning(f"expectations are: {exp}")
         perform_test(
             f"/releases/{name}",
             "POST",
@@ -236,16 +246,16 @@ def test_insert():
         ["name3"]
     ]}
     last_id = fetch(
-        conn, 
-        "SELECT id FROM module ORDER BY id DESC LIMIT 1;", 
-        "row", 
+        conn,
+        "SELECT id FROM module ORDER BY id DESC LIMIT 1;",
+        "row",
         "dict"
     )
     last_id = int(last_id["id"]) + 1
     exp = [
         {
-            "id": last_id+i, 
-            "name": payload["data"][i][0], 
+            "id": last_id+i,
+            "name": payload["data"][i][0],
             "row_version": 0
         }
         for i in range(len(payload["data"]))
@@ -260,10 +270,10 @@ def test_insert():
 
     for i in range(len(payload["data"])):
         module_id = fetch(
-            conn, 
+            conn,
             "SELECT id FROM {} WHERE name='{}';".format(
-                MODULES_TABLE_NAME, payload['data'][i][0]), 
-            "row", 
+                MODULES_TABLE_NAME, payload['data'][i][0]),
+            "row",
             "dict"
         )
         exp = {
@@ -327,7 +337,7 @@ def test_update():
     )
 
     component_data = fetch(
-        conn, 
+        conn,
         f"""SELECT c.name, c.version
             FROM {MODULES_TABLE_NAME} AS m,
                  {MODULETOCOMP_TABLE_NAME} AS mc,
@@ -421,5 +431,5 @@ def test_optimistic_locking():
     passed = 0
     for _ in range(tests):
         passed += 1 if perform_parallel_test(thread_num) else 0
-    
+
     assert(passed >= threshold)
