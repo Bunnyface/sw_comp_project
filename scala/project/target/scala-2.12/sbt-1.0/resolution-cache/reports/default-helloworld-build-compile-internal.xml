@@ -9,7 +9,7 @@
 		extra-sbtVersion="1.0"
 		conf="compile-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20210505082210"/>
+		date="20210506075455"/>
 	<dependencies>
 		<module organisation="org.scala-sbt" name="sbt">
 			<revision name="1.2.6" status="release" pubdate="20181017062438" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/sbt/sbt" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
@@ -110,7 +110,7 @@
 		<module organisation="org.apache.logging.log4j" name="log4j-slf4j-impl">
 			<revision name="2.8.1" status="release" pubdate="20170227001254" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="75">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="no" details="" size="39285" time="0" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-slf4j-impl/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-slf4j-impl/2.8.1/log4j-slf4j-impl-2.8.1.pom"/>
+				<metadata-artifact status="no" details="" size="35636" time="0" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-slf4j-impl/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-slf4j-impl/2.8.1/log4j-slf4j-impl-2.8.1.pom"/>
 				<caller organisation="org.scala-sbt" name="main_2.12" conf="compile, runtime" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.2.6"/>
 				<artifacts>
 					<artifact name="log4j-slf4j-impl" type="jar" ext="jar" status="no" details="" size="23181" time="0" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-slf4j-impl/jars/log4j-slf4j-impl-2.8.1.jar">
@@ -882,7 +882,7 @@
 					<artifact name="log4j-core" type="jar" ext="jar" status="no" details="" size="1402925" time="0" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-core/jars/log4j-core-2.8.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.8.1/log4j-core-2.8.1.jar"/>
 					</artifact>
-					<artifact name="log4j-core" type="test-jar" ext="jar" extra-classifier="tests" status="successful" details="" size="1412295" time="365" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-core/test-jars/log4j-core-2.8.1-tests.jar">
+					<artifact name="log4j-core" type="test-jar" ext="jar" extra-classifier="tests" status="successful" details="" size="1412295" time="430" location="/root/.ivy2/cache/org.apache.logging.log4j/log4j-core/test-jars/log4j-core-2.8.1-tests.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.8.1/log4j-core-2.8.1-tests.jar"/>
 					</artifact>
 				</artifacts>

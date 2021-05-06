@@ -40,7 +40,7 @@ build-test-image:
 ##
 backup-wso2:
 	sudo chmod -R 777 wso2/.
-	docker container cp sw_comp_project_identity-server_1:/home/wso2carbon/wso2is-5.11.0/repository/. wso2/repository
+	docker container cp sw_comp_project_wso2-is_1:/home/wso2carbon/wso2is-5.11.0/repository/. wso2/repository
 	#docker container cp sw_comp_project_identity-server_1:/home/wso2carbon/wso2is-5.11.0/backup/. wso2/backup
 	sudo chmod -R 777 wso2/.
 
@@ -49,4 +49,5 @@ start:
 	sudo docker-compose up --build
 	#admin12
 	#perus
-
+	# client secret yfQCUSOCQA7GdOkZjt6DURzjonIa
+    # client key WUhu_VLobDzKlfvO7hwKZEADBvEa

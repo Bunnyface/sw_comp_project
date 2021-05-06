@@ -1,0 +1,4 @@
+TID: [-1234] [2021-05-05 08:22:49,287] []  INFO {AUDIT_LOG} - Initiator : wso2.system.user | Action : Add BPS Profile | Data : { "Profile Name" : "embeded_bps","Manager Host URL" : "https://localhost:9443/services","Worker Host URL" : "https://localhost:9443/services","User" : "admin" } | Result :  Success 
+TID: [-1234] [2021-05-05 08:22:51,799] []  INFO {AUDIT_LOG} - Initiator=wso2.system.user Action=Get-User-Claim-Value Target=admin Data={"Claim Value":["8af99377-be6d-4747-b02f-6abe39fac575"],"Claim":"urn:ietf:params:scim:schemas:core:2.0:id","Profile":"default"} Outcome=Success
+TID: [-1234] [2021-05-05 08:23:33,885] []  INFO {AUDIT_LOG} - Initiator : admin@carbon.super | Action : create | Target : 1 | Data : { My Account } | Result : Success 
+TID: [-1234] [2021-05-05 08:23:33,903] []  INFO {AUDIT_LOG} - Initiator : admin@carbon.super | Action : create | Target : 2 | Data : { Console } | Result : Success 

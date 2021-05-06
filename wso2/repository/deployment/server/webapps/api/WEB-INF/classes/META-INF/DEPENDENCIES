@@ -1,0 +1,197 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+WSO2 Identity Server - Rest API Dispatcher
+
+
+From: 'an unknown organization'
+  - commons.lang.wso2 (http://wso2.org) commons-lang.wso2:commons-lang:bundle:2.6.0.wso2v1
+
+  - swagger-annotations (https://github.com/swagger-api/swagger-core/modules/swagger-annotations) io.swagger:swagger-annotations:bundle:1.6.2
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.html)
+  - swagger-core (https://github.com/swagger-api/swagger-core/modules/swagger-core) io.swagger:swagger-core:bundle:1.6.2
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.html)
+  - swagger-jaxrs (https://github.com/swagger-api/swagger-core/modules/swagger-jaxrs) io.swagger:swagger-jaxrs:bundle:1.6.2
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.html)
+  - swagger-models (https://github.com/swagger-api/swagger-core/modules/swagger-models) io.swagger:swagger-models:bundle:1.6.2
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.html)
+  - Bean Validation API (http://beanvalidation.org) javax.validation:validation-api:jar:2.0.1.Final
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Hibernate Validator Engine (http://hibernate.org/validator/hibernate-validator) org.hibernate.validator:hibernate-validator:jar:6.0.17.Final
+    License: Apache License 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Reflections (http://github.com/ronmamo/reflections) org.reflections:reflections:jar:0.9.11
+    License: WTFPL  (http://www.wtfpl.net/)    License: The New BSD License  (http://www.opensource.org/licenses/bsd-license.html)
+
+From: 'Eclipse Foundation' (https://www.eclipse.org)
+  - JavaBeans Activation Framework API jar (https://github.com/eclipse-ee4j/jaf/jakarta.activation-api) jakarta.activation:jakarta.activation-api:jar:1.2.1
+    License: EDL 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
+  - jakarta.xml.bind-api (https://github.com/eclipse-ee4j/jaxb-api/jakarta.xml.bind-api) jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2
+    License: Eclipse Distribution License - v 1.0  (http://www.eclipse.org/org/documents/edl-v10.php)
+
+From: 'FasterXML' (http://fasterxml.com)
+  - Woodstox (https://github.com/FasterXML/woodstox) com.fasterxml.woodstox:woodstox-core:bundle:6.2.1
+    License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'FasterXML' (http://fasterxml.com/)
+  - Jackson-annotations (http://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-annotations:bundle:2.10.5
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson-core (https://github.com/FasterXML/jackson-core) com.fasterxml.jackson.core:jackson-core:bundle:2.10.5
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - jackson-databind (http://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-databind:bundle:2.10.5
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson-dataformat-XML (https://github.com/FasterXML/jackson-dataformat-xml) com.fasterxml.jackson.dataformat:jackson-dataformat-xml:bundle:2.10.5
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson module: JAXB Annotations (https://github.com/FasterXML/jackson-modules-base) com.fasterxml.jackson.module:jackson-module-jaxb-annotations:bundle:2.10.5
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'fasterxml.com' (http://fasterxml.com)
+  - ClassMate (http://github.com/FasterXML/java-classmate) com.fasterxml:classmate:bundle:1.3.4
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Stax2 API (http://github.com/FasterXML/stax2-api) org.codehaus.woodstox:stax2-api:bundle:4.2.1
+    License: The BSD License  (http://www.opensource.org/licenses/bsd-license.php)
+
+From: 'QOS.ch' (http://www.qos.ch)
+  - SLF4J API Module (http://www.slf4j.org) org.slf4j:slf4j-api:jar:1.7.22
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+
+From: 'Shigeru Chiba, www.javassist.org'
+  - Javassist (http://www.javassist.org/) org.javassist:javassist:bundle:3.21.0-GA
+    License: MPL 1.1  (http://www.mozilla.org/MPL/MPL-1.1.html)    License: LGPL 2.1  (http://www.gnu.org/licenses/lgpl-2.1.html)    License: Apache License 2.0  (http://www.apache.org/licenses/)
+
+From: 'Spring IO' (http://projects.spring.io/spring-framework)
+  - Spring Beans (https://github.com/spring-projects/spring-framework) org.springframework:spring-beans:jar:5.1.1.RELEASE
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+  - Spring Core (https://github.com/spring-projects/spring-framework) org.springframework:spring-core:jar:5.1.1.RELEASE
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+  - Spring Commons Logging Bridge (https://github.com/spring-projects/spring-framework) org.springframework:spring-jcl:jar:5.1.1.RELEASE
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Codec (http://commons.apache.org/codec/) commons-codec:commons-codec:jar:1.6
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons Collections (http://commons.apache.org/collections/) commons-collections:commons-collections:jar:3.2.2
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons Logging (http://commons.apache.org/proper/commons-logging/) commons-logging:commons-logging:jar:1.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons Lang (http://commons.apache.org/proper/commons-lang/) org.apache.commons:commons-lang3:jar:3.2.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - olingo-odata2-api-incubating (http://olingo.incubator.apache.org/olingo-odata2-lib-incubating/olingo-odata2-api-incubating) org.apache.olingo:olingo-odata2-api-incubating:jar:1.1.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - olingo-odata2-core-incubating (http://olingo.incubator.apache.org/olingo-odata2-lib-incubating/olingo-odata2-core-incubating) org.apache.olingo:olingo-odata2-core-incubating:jar:1.1.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'The Apache Software Foundation' (https://www.apache.org/)
+  - Apache Commons BeanUtils (https://commons.apache.org/proper/commons-beanutils/) commons-beanutils:commons-beanutils:jar:1.9.4
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'WSO2' (http://www.wso2.org/)
+  - org.wso2.carbon.identity.api.server.application.management.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.application.management/org.wso2.carbon.identity.api.server.application.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.application.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Applications Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.server.application.management/org.wso2.carbon.identity.api.server.application.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.application.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.challenge.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.challenge/org.wso2.carbon.identity.api.server.challenge.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.challenge.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.claim.management.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.claim.management/org.wso2.carbon.identity.api.server.claim.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.claim.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.configs.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.configs/org.wso2.carbon.identity.api.server.configs.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.configs.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.configs.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.configs/org.wso2.carbon.identity.api.server.configs.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.configs.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.cors.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.cors/org.wso2.carbon.identity.api.server.cors.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.cors.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.cors.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.cors/org.wso2.carbon.identity.api.server.cors.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.cors.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.email.template.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.email.template/org.wso2.carbon.identity.api.server.email.template.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.email.template.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.fetch.remote.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.fetch.remote/org.wso2.carbon.identity.api.server.fetch.remote.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.fetch.remote.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.fetch.remote.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.fetch.remote/org.wso2.carbon.identity.api.server.fetch.remote.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.fetch.remote.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.identity.governance.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.identity.governance/org.wso2.carbon.identity.api.server.identity.governance.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.identity.governance.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Identity Governance Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.identity.governance/org.wso2.carbon.identity.api.server.identity.governance.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.identity.governance.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.idp.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.idp/org.wso2.carbon.identity.api.server.idp.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.idp.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.idp.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.idp/org.wso2.carbon.identity.api.server.idp.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.idp.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Common Keystore Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.keystore.management/org.wso2.carbon.identity.api.server.keystore.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.keystore.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Keystore Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.keystore.management/org.wso2.carbon.identity.api.server.keystore.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.keystore.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - OIDC Scope Management Rest API Common (http://wso2.org/components/org.wso2.carbon.identity.api.server.oidc.scope.management/org.wso2.carbon.identity.api.server.oidc.scope.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.oidc.scope.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - OIDC Scope Management Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.oidc.scope.management/org.wso2.carbon.identity.api.server.oidc.scope.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.oidc.scope.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Common Permission Management (http://wso2.org/components/org.wso2.carbon.identity.api.server.permission.management/org.wso2.carbon.identity.api.server.permission.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.permission.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Permission Mata Data Management Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.permission.management/org.wso2.carbon.identity.api.server.permission.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.permission.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.script.library.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.script.library/org.wso2.carbon.identity.api.server.script.library.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.script.library.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.script.library.v1 (http://wso2.org/org.wso2.carbon.identity.api.server.script.library.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.script.library.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.tenant.management.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.tenant.management/org.wso2.carbon.identity.api.server.tenant.management.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.tenant.management.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.tenant.management.v1 (http://wso2.org/org.wso2.carbon.identity.api.server.tenant.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.tenant.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.server.userstore.common (http://wso2.org/components/org.wso2.carbon.identity.api.server.userstore/org.wso2.carbon.identity.api.server.userstore.common) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.userstore.common:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Store Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.server.userstore/org.wso2.carbon.identity.api.server.userstore.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.api.server.userstore.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Challenges Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.server.challenge/org.wso2.carbon.identity.rest.api.server.challenge.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.rest.api.server.challenge.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Claim Management Rest API v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.claim.management/org.wso2.carbon.identity.rest.api.server.claim.management.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.rest.api.server.claim.management.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - Email Templates Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.server.email.template/org.wso2.carbon.identity.rest.api.server.email.template.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.rest.api.server.email.template.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.rest.api.server.workflow.engine.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.server.workflow.engine/org.wso2.carbon.identity.rest.api.server.workflow.engine.v1) org.wso2.carbon.identity.server.api:org.wso2.carbon.identity.rest.api.server.workflow.engine.v1:jar:1.0.190
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.application.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.application/org.wso2.carbon.identity.api.user.application.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.application.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.approval.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.approval/org.wso2.carbon.identity.api.user.approval.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.approval.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.challenge.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.challenge/org.wso2.carbon.identity.api.user.challenge.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.challenge.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.fido2.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.fido2/org.wso2.carbon.identity.api.user.fido2.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.fido2.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.functionality.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.functionality/org.wso2.carbon.identity.api.user.functionality.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.functionality.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.recovery.commons (http://wso2.org/components/org.wso2.carbon.identity.api.user.recovery/org.wso2.carbon.identity.api.user.recovery.commons) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.recovery.commons:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.api.user.session.common (http://wso2.org/components/org.wso2.carbon.identity.api.user.session/org.wso2.carbon.identity.api.user.session.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.api.user.session.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Application Management Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.application/org.wso2.carbon.identity.rest.api.user.application.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.application.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Approvals Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.approval/org.wso2.carbon.identity.rest.api.user.approval.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.approval.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Associations Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.association/org.wso2.carbon.identity.rest.api.user.association.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.association.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.rest.api.user.authorized.apps.v1 (http://wso2.org/components/org.wso2.carbon.identity.api.user.authorized.apps/org.wso2.carbon.identity.rest.api.user.authorized.apps.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.authorized.apps.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.wso2.carbon.identity.rest.api.user.authorized.apps.v2 (http://wso2.org/components/org.wso2.carbon.identity.api.user.authorized.apps/org.wso2.carbon.identity.rest.api.user.authorized.apps.v2) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.authorized.apps.v2:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Challenges Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.challenge/org.wso2.carbon.identity.rest.api.user.challenge.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.challenge.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - FIDO2 Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.fido2/org.wso2.carbon.identity.rest.api.user.fido2.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.fido2.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Functionality Mgt Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.functionality/org.wso2.carbon.identity.rest.api.user.functionality.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.functionality.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Account Recovery Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.recovery/org.wso2.carbon.identity.rest.api.user.recovery.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.recovery.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - User Session Management Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.session/org.wso2.carbon.identity.rest.api.user.session.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.session.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - TOTP Common (http://wso2.org/components/org.wso2.carbon.identity.api.user.totp/org.wso2.carbon.identity.rest.api.user.totp.common) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.totp.common:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - WSO2 Identity Server - TOTP Rest API (http://wso2.org/components/org.wso2.carbon.identity.api.user.totp/org.wso2.carbon.identity.rest.api.user.totp.v1) org.wso2.carbon.identity.user.api:org.wso2.carbon.identity.rest.api.user.totp.v1:jar:1.1.17
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

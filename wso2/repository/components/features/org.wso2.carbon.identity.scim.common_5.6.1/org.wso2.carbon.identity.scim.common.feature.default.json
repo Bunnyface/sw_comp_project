@@ -1,0 +1,5 @@
+{
+  "provisioning_config.properties.dumb-mode" : false,
+  "provisioning_config.properties.provisioning-handlers" : "org.wso2.carbon.identity.scim.common.impl.DefaultSCIMProvisioningHandler",
+  "provisioning_config.properties.user-schema-extension-enabled" : true
+}
