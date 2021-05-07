@@ -19,6 +19,13 @@ export class ConfigService {
       .pipe(catchError(this.handleError<String[]>('getModules', [])));
   }
 
+  // Get full info on all modules
+  getFullModules(): Observable<any> {
+    const url = `${this.url}/moduleData`;
+    return this.http.post<any>(url, null)
+      .pipe(catchError(this.handleError<String[]>('getFullModules', [])));
+  }
+
   // Get details of selected release
   getRelease(name: string): Observable<any> {
     const url = `${this.url}/releases/${name}`;

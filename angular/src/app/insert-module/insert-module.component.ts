@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ConfigService } from '../config.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { ConfigService } from '../config.service';
   styleUrls: ['./insert-module.component.css']
 })
 export class InsertModuleComponent implements OnInit {
+
+  options: FormGroup;
 
   module = new FormGroup({
     name: new FormControl('')
@@ -19,12 +21,17 @@ export class InsertModuleComponent implements OnInit {
   }
 
   addModule(body): void {
-    const path = 'insertModule'; // TODO: add path when endpoit is ready
+    const path = 'insertModule';
     this.configService.insert(path, body).subscribe();
     console.log(body);
   }
 
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService, fb: FormBuilder) { 
+    this.options = fb.group({
+      subComponent: false,
+      floatLabel: 'auto'
+    });
+  }
 
   ngOnInit(): void {
   }

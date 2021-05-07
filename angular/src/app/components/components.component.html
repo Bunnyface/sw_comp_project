@@ -9,7 +9,7 @@
             <div class="form-group mb-2">
                 <label for="name">Component</label>
                 <select formControlName="componentname" class="form-control">
-                    <option *ngFor="let component of components" value="{{component.name}}">{{component.name}}</option>
+                    <option *ngFor="let component of components" value="{{component.name}}">{{component.name}} {{component.version}}</option>
                 </select>
             </div>
             <div class="form-group">

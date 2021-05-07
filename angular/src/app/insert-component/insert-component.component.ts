@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '../config.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ConfigService } from '../config.service';
 })
 export class InsertComponentComponent implements OnInit {
 
-  subComponent: boolean = false;
+  options: FormGroup;
 
   component = new FormGroup({
     name: new FormControl(''),
@@ -26,21 +26,17 @@ export class InsertComponentComponent implements OnInit {
 
   addComponent(body) {
     var path: string;
-    this.subComponent ? path = 'insertSubComponent' : path = 'insertComponent';
+    this.options.value.subComponent ? path = 'insertSubComponent' : path = 'insertComponent';
     this.configService.insert(path, body).subscribe();
-    console.log(this.subComponent, body);
+    console.log(this.options.value.subComponent, body);
   }
 
-  onChange(isChecked: boolean): void {
-    if (isChecked) {
-      this.subComponent = true;
-    }
-    else {
-      this.subComponent = false;
-    }
+  constructor(private configService: ConfigService, fb: FormBuilder) { 
+    this.options = fb.group({
+      subComponent: false,
+      floatLabel: 'auto'
+    });
   }
-
-  constructor(private configService: ConfigService) { }
 
   ngOnInit(): void {
   }

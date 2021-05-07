@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col">
+        <form [formGroup]="newComponent" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <select matNativeControl placeholder="Component" formControlName="componentname">
+                    <option *ngFor="let component of components" value="{{component.name}}">{{component.name}} {{component.version}}</option>
+                </select>
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Usage type" type="text" formControlName="usage_type" id="usageType" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Attribute value 1" type="text" formControlName="attr_value1" id="attr_value1" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Attribute value 2" type="text" formControlName="attr_value2" id="attr_value2" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Attribute value 3" type="text" formControlName="attr_value3" id="attr_value3" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Date" type="date" formControlName="date" id="date" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Comment 1" type="text" formControlName="comment_one" id="CommentOne" />
+            </mat-form-field>
+            <mat-form-field [floatLabel]="options.value.floatLabel">
+                <input matInput placeholder="Comment 2" type="text" formControlName="comment_two" id="CommentTwo" />
+            </mat-form-field>
+            <button type="submit" [disabled]="!newComponent.valid" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>

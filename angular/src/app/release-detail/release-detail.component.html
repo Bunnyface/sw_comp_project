@@ -1,55 +1,78 @@
 <!-- Module info-->
 <div class="row">
     <div class="col">
-        <h3>Module info</h3>
-    </div>
-</div>
-<div class="row" *ngIf="module">
-    <div class="col">
-        <table class="table table-sm module-table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{module.name}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <h1 class="mat-display-2" *ngIf="module">{{module.name}}</h1>
     </div>
 </div>
 
 <!-- Module components-->
 <div class="row">
     <div class="col">
-        <h3>Module components</h3>
+        <h2 *ngIf="module">{{module.name}} has {{module.components.length}} components</h2>
     </div>
 </div>
-<div class="row" *ngIf="module">
+
+<!-- Filtering -->
+<div class="row">
     <div class="col">
-        <table class="table table-sm module-table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Component</th>
-                    <th scole="col">Version</th>
-                    <th scole="col">Url</th>
-                    <th scole="col">License</th>
-                    <th scole="col">Copyright</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let component of module.components">
-                    <td>{{component.name}}</td>
-                    <td>{{component.version}}</td>
-                </tr>
-            </tbody>
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+        </mat-form-field>
+    </div>
+</div>
+
+
+<!-- Component table-->
+<div class="row">
+    <div class="col">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columns">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.toUpperCase().replace("_", " ")}} </th>
+                <td mat-cell *matCellDef="let component">{{component[column]}}</td>
+            </ng-container>
+
+            <!-- Expanded content -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let component" [attr.colspan]="columns.length">
+                    <div class="component-detail" [@detailExpand]="component == expandedComponent ? 'expanded' : 'collapsed'">
+                        <ul>
+                            <li>Usage: {{component.usage_type}}</li>
+                            <li>Attribute value 1: {{component.attr_value1}}</li>
+                            <li>Attribute value 2: {{component.attr_value2}}</li>
+                            <li>Attribute value 3: {{component.attr_value3}}</li>
+                            <li>Date: {{component.date}}</li>
+                            <li>Comment 1: {{component.comment_one}}</li>
+                            <li>Comment 2: {{component.comment_two}}</li>
+                        </ul>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let component; columns: columns;"
+                class="component-row" [class.expanded-row]="expandedComponent === component"
+                (click)="expandedComponent = expandedComponent === component ? null : component">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
         </table>
     </div>
 </div>
 
 <!-- Add components-->
+<div class="row">
+    <div class="col">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                Add Components
+            </mat-expansion-panel-header>
+            <app-insert-comp-to-mod *ngIf="module" [modulename]="module.name"></app-insert-comp-to-mod>
+        </mat-expansion-panel>
+    </div>
+</div>
+
+
+
+<!--
 <div class="row" *ngIf="!edit">
     <div class="col">
         <button (click)="onEdit()" class="btn btn-link btn-sm">Add components to module</button>
@@ -58,8 +81,9 @@
 
 <div *ngIf="edit">
     <button class="btn btn-sm btn-link" (click)="onEdit()">Cancel</button>
-    <app-components [modulename]="module.name"></app-components>
+    <app-insert-comp-to-mod [modulename]="module.name"></app-insert-comp-to-mod>
 </div>
+-->
 
 <!-- Go back -->
 <div class="row">
