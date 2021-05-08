@@ -15,6 +15,7 @@ import DefaultJsonProtocol._
 import io.circe._
 import io.circe.syntax._
 
+import bulkModels._
 
 
 object Main extends App {
@@ -76,6 +77,16 @@ object Main extends App {
       BadRequest(new Exception("Table not found or data is corrupted"));
   }
 
+
+  def insertMany: Endpoint[IO, Json] = put("insertMany" :: jsonBody[Array[Json]]) { reqBody: Array[Json] =>
+    val response = sendFunctions.insertMany(reqBody);
+    if (response != null)
+      Ok(response);
+    else
+      BadRequest(new Exception("Table not found or data is corrupted"));
+  }
+
+
   def insertModule: Endpoint[IO, Json] = put("insertModule":: jsonBody[dbmodels.module]) { ( req: dbmodels.module) =>
     val response = sendFunctions.insertModule(req);
     if (response.length != 0)
@@ -135,7 +146,7 @@ object Main extends App {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
