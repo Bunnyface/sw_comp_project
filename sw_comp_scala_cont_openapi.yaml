@@ -161,7 +161,8 @@ paths:
 
       example:
         body:
-          { "name": "componentname",
+          {
+            "name": "componentname",
             "url": "urlforcomp.com",
             "version": "1.2",
             "license": "exlicence",
