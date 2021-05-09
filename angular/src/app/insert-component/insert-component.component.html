@@ -1,0 +1,26 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>New component</mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="component" (ngSubmit)="onSubmit()">
+        <mat-form-field [floatLabel]="options.value.floatLabel">
+            <input matInput placeholder="Name" type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field [floatLabel]="options.value.floatLabel">
+            <input matInput placeholder="Url" type="text" formControlName="url">
+        </mat-form-field>
+        <mat-form-field [floatLabel]="options.value.floatLabel">
+            <input matInput placeholder="Version" type="text" formControlName="version" />
+        </mat-form-field>
+        <mat-form-field [floatLabel]="options.value.floatLabel">
+            <input matInput placeholder="License" type="text" formControlName="license" />
+        </mat-form-field>
+        <mat-form-field [floatLabel]="options.value.floatLabel">
+            <input matInput placeholder="Copyright" type="text" formControlName="copyright" />
+        </mat-form-field>
+        <form [formGroup]="options">
+            <mat-checkbox formControlName="subComponent" id="sub">Sub-Component</mat-checkbox>
+        </form>
+        <button mat-button color="primary" type="submit" [disabled]="!component.valid">Submit</button>
+    </form>
+</mat-expansion-panel>

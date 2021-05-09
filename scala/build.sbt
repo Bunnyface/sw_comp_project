@@ -3,6 +3,8 @@ val circeVersion = "0.10.1"
 val scalatestVersion = "3.0.5"
 val postgresqlVersion = "42.2.18"
 val sprayVersion = "1.3.6"
+val logbackVersion = "1.2.3"
+val loggingVersion = "3.9.3"
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,6 +18,8 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic" % circeVersion,
       "org.scalatest"      %% "scalatest"    % scalatestVersion % "test",
       "org.postgresql" % "postgresql" % postgresqlVersion,
-      "io.spray" %%  "spray-json" % sprayVersion
+      "io.spray" %%  "spray-json" % sprayVersion,
+      "ch.qos.logback" % "logback-classic" % logbackVersion,
+      "com.typesafe.scala-logging" %% "scala-logging" % loggingVersion
     )
   )

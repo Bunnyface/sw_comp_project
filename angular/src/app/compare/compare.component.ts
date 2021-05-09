@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Release } from '../release';
 import { ConfigService } from '../config.service';
+import { SwCompManagerModule } from '../shared/module.model';
 
 @Component({
   selector: 'app-compare',
@@ -9,11 +9,11 @@ import { ConfigService } from '../config.service';
 })
 export class CompareComponent implements OnInit {
 
-  releases: any = [];
+  modules: Array<SwCompManagerModule>;
   comparison: string;
 
-  getReleases(): void {
-    this.configService.getReleases().subscribe(releases => this.releases = releases);
+  getModules(): void {
+    this.configService.getModules().subscribe(res => this.modules = res);
   }
 
   getComparison(first: string, second: string): void {
@@ -29,7 +29,7 @@ export class CompareComponent implements OnInit {
   constructor(private configService: ConfigService) { }
 
   ngOnInit(): void {
-    this.getReleases();
+    this.getModules();
   }
 
 }

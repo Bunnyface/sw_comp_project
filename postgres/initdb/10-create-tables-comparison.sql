@@ -5,7 +5,8 @@ CREATE TABLE component (
   version VARCHAR NOT NULL,
   license VARCHAR,
   copyright VARCHAR,
-  row_version INTEGER DEFAULT 0
+  row_version INTEGER DEFAULT 0,
+  CONSTRAINT UC_comp UNIQUE (name, version)
 );
 
 CREATE TABLE sub_component (
@@ -15,7 +16,8 @@ CREATE TABLE sub_component (
   version VARCHAR NOT NULL,
   license VARCHAR,
   copyright VARCHAR,
-  row_version INTEGER DEFAULT 0
+  row_version INTEGER DEFAULT 0,
+  CONSTRAINT UC_subcomp UNIQUE (name, version)
 );
 
 CREATE TABLE junction_table (
