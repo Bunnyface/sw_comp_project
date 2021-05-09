@@ -3,14 +3,16 @@ package com.example.playground
 import io.circe._
 import io.circe.syntax._
 import retrieveFunctions._
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
-object sendFunctions {
+object sendFunctions extends LazyLogging {
   def queryInsert(
                    table: String,
                    columns: Array[String],
                    data: Array[Array[String]]
                  ): Array[Json] = {
-    println("INSERTING")
+    logger.debug("INSERTING")
     if (data == null || data.length == 0)
       return Array();
 
@@ -31,7 +33,7 @@ object sendFunctions {
         );
       } catch {
         case _: Throwable =>
-          println("Insert wasn't successful");
+          logger.debug("Insert wasn't successful");
           null;
       }
     }).filter(row => row != null);
@@ -49,7 +51,7 @@ object sendFunctions {
                  ): Json = {
     val sqlClient = new Client();
     sqlClient.connect("defaultdb");
-    println("Sending update query");
+    logger.debug("Sending update query");
 
     val change = f"${newValCol}='${newVal}'";
     val condition = f"${condCol}='${condVal}'";
@@ -71,15 +73,15 @@ object sendFunctions {
     } catch {
       case e: Exception =>
         println(e)
-        println("Update wasn't successful")
+        logger.error("Update wasn't successful")
     }
     sqlClient.close();
-    println("RETURNING NULL");
+    logger.debug("RETURNING NULL");
     return null;
   }
 
   def insertModule(mod: dbmodels.module): Array[Json]= {
-    print("Insert Module")
+    logger.debug("Insert Module")
     val res = queryInsert(
       "module",
       Array[String]{"name"},
@@ -89,7 +91,7 @@ object sendFunctions {
   }
 
   def insertComponent(comp: dbmodels.component): Array[Json]= {
-    print("Insert Component")
+    logger.debug("Insert Component")
     val res = queryInsert(
       "component",
       Array[String]("name", "url", "version", "license", "copyright"),
@@ -98,7 +100,7 @@ object sendFunctions {
     return res
   }
   def insertSubComponent(comp: dbmodels.subComponent): Array[Json]= {
-    print("Insert subComponent")
+    logger.debug("Insert subComponent")
     val res = queryInsert(
       "sub_component",
       Array[String]("name", "url", "version", "license", "copyright"),
@@ -108,7 +110,7 @@ object sendFunctions {
   }
 
   def insertComponentToModel(comp: dbmodels.componentToModule): Array[Json]= {
-    print("Insert ComponentToModel")
+    logger.debug("Insert ComponentToModel")
     val mod_id = getModuleId(comp.modulename)
     val comp_id = getCompId(comp.componentname)
     val res = queryInsert(
@@ -137,7 +139,7 @@ object sendFunctions {
     return res
   }
   def insertSubToComp(comp: dbmodels.junction): Array[Json]= {
-    print("Insert SubToComp")
+    logger.debug("Insert SubToComp")
     val comp_id = getCompId(comp.componentname)
     val subcomp_id = getSubId(comp.subcomponentname)
     val res = queryInsert(

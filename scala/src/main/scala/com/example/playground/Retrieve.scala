@@ -5,8 +5,10 @@ import java.sql.{ResultSet}
 import java.sql.Types
 import io.circe._
 import io.circe.syntax._
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
-object retrieveFunctions{
+object retrieveFunctions extends LazyLogging {
   def queryNames(): Json = {
     val resList = getArray("module", "name");
     return valueToJson(resList.flatten);
@@ -98,7 +100,7 @@ object retrieveFunctions{
       return result;
     } catch {
       case _: Throwable =>
-        println(f"Fetching wasn't successful using query '$query%s'")
+        logger.error(f"Fetching wasn't successful using query '$query%s'")
         sqlClient.close()
     }
     return null;
