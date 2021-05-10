@@ -34,9 +34,9 @@ export class ConfigService {
   }
 
   // Get comparison of two selected releases
-  getComparison(first: string, second: string): Observable<any> {
-    const url = `${this.url}/compareReleases/${first}:${second}`
-    return this.http.post(url, null)
+  getComparison(body): Observable<any> {
+    const url = `${this.url}/compare/`
+    return this.http.post(url, body)
     .pipe(catchError(this.handleError<any>('getComparison', [])));
   }
 
