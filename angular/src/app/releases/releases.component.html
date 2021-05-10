@@ -1,47 +1,85 @@
 <div>
     <h1 class="mat-display-3">Modules</h1>
 </div>
-<!--
-<table class="table table-sm table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let module of modules" [ngValue]="module">
-            <td routerLink="/modules/{{module.name}}">{{module.name}}</td>
-        </tr>
-    </tbody>
-</table>
--->
 
-<!-- Filtering -->
-<mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
-</mat-form-field>
+<!-- Filtering and options -->
+<div *ngIf="!compareSubmitted">
+    <div class="row">
+        <mat-form-field class="col-md-11">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+        </mat-form-field>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Options" class="col-md-1">
+            <mat-icon>more_horizontal</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onCompareMode(false)" *ngIf="!compareMode">
+                <span>Compare Modules</span>
+            </button>
+            <button mat-menu-item disabled *ngIf="compareMode">
+                <span>Compare Modules</span>
+            </button>
+            <button mat-menu-item (click)="onAddModule()">
+                <span>Add a Module</span>
+            </button>
+        </mat-menu>
+    </div>
 
-<!-- Module table -->
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
-    <ng-container matColumnDef="{{column}}" *ngFor="let column of columns">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
-        <td mat-cell *matCellDef="let module" routerLink="/modules/{{module.name}}"><span *ngIf="column != 'components'">{{module[column]}}</span><span *ngIf="column == 'components'">{{module[column].length}}</span></td>
-    </ng-container>
 
-    <!-- Expanded content -->
-    <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let module" [attr.colspan]="columns.length">
-            <div class="module-detail" [@detailExpand]="module == expandedModule ? 'expanded' : 'collapsed'">
-                <!-- TODO: Add expanded content here and remove router link from above-->
-            </div>
-        </td>
-    </ng-container>
+    <!-- Module table -->
+    <div class="mat-elevation-z8 module-table">
+        <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let module; columns: columns;"
-        class="module-row" [class.expanded-row]="expandedModule === module"
-        (click)="expandedModule = expandedModule === module ? null : module">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
-</table>
-<app-insert-module></app-insert-module>
+            <!-- Checkbox column for compare selection-->
+            <ng-container *ngIf="compareMode" matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef> select two modules to compare </th>
+                <td mat-cell *matCellDef="let row">
+                <mat-checkbox [checked]="selection.isSelected(row)"
+                    (change)="onSelect(row)"
+                    [disabled]="!selection.isSelected(row) && disabled"
+                    (change)="$event ? selection.toggle(row) : null">
+                </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <!-- Other columns -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
+                <td mat-cell *matCellDef="let module" routerLink="/modules/{{module.name}}">{{module.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="components">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> components </th>
+                <td mat-cell *matCellDef="let module" routerLink="/modules/{{module.name}}">{{module.components.length}}</td>
+            </ng-container>
+
+            <!-- Expanded content -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let module" [attr.colspan]="columns.length">
+                    <div class="module-detail" [@detailExpand]="module == expandedModule ? 'expanded' : 'collapsed'">
+                        <!-- TODO: Add expanded content here and remove router link from above-->
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let module; columns: columns;"
+                class="module-row" [class.expanded-row]="expandedModule === module"
+                (click)="expandedModule = expandedModule === module ? null : module">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+        </table>
+        <mat-paginator [length]="100"
+                    [pageSize]="10"
+                    [pageSizeOptions]="[10, 20, 50, 100]">
+        </mat-paginator>
+    </div>
+
+    <div class="row">
+        <button class="col-md-2" *ngIf="compareMode" mat-button color="warn" (click)="onCompareMode(true)">Cancel</button>
+        <button class="col-md-2" mat-button color="primary" *ngIf="compareMode" (click)="onCompareSubmit()">Compare</button>
+    </div>
+</div>
+
+<app-insert-module *ngIf="addModuleMode"></app-insert-module>
+<button *ngIf="compareSubmitted" mat-button color="primary" (click)="onCancel()">Back to Modules</button>
+<app-compare *ngIf="compareSubmitted" [modulesToCompare]="modulesToCompare"></app-compare>
