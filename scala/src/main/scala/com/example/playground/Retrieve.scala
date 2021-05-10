@@ -53,6 +53,7 @@ object retrieveFunctions extends LazyLogging {
         val related = juncTable.filter(j => j("comp_id") == comp("id"))
           .flatMap(j => j.get("subcomp_id"))
         val subs = subComp.filter(sub => related.contains(sub("id")))
+          .map(sub => sub -- Set("id", "row_version"))
         
         comp ++ Map("sub_components" -> subs)
       });
@@ -67,10 +68,10 @@ object retrieveFunctions extends LazyLogging {
           .map(row => row.-("module_id"))
         val comps = components.filter(comp => related.contains(comp("id")))
 
-        mod ++ 
+        (mod -- Set("id", "row_version")) ++ 
           Map("components" -> 
             comps.map(comp => 
-              comp ++ additional.filter(j => j("comp_id") == comp("id"))(0).-("comp_id")
+              comp ++ additional.filter(j => j("comp_id") == comp("id"))(0) -- Seq("comp_id", "id", "row_version")
             )
           )
       });

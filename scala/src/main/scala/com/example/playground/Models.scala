@@ -1,6 +1,6 @@
 package com.example.playground
 
-object dbmodels{
+object dbmodels {
   case class module (
     name: String
   );
@@ -56,4 +56,44 @@ object dbmodels{
     license: String,
     copyright: String
   );
+}
+
+object bulkModels {
+  case class module (
+    name: String,
+    components: Array[component]
+  );
+
+  case class component (
+    name: String,
+    url: String,
+    version: String,
+    license: String,
+    copyright: String,
+    usage_type: String,
+    attr_value1: String,
+    attr_value2: String,
+    attr_value3: String,
+    date: String,
+    comment_one: String,
+    comment_two: String,
+    sub_components: Array[subComponent]
+  );
+
+  case class singleComponent (
+    name: String,
+    url: String,
+    version: String,
+    license: String,
+    copyright: String,
+    sub_components: Array[subComponent]
+  )
+
+  case class subComponent (
+    name: String,
+    url: String,
+    version: String,
+    license: String,
+    copyright: String
+  )
 }

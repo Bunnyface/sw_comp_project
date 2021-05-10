@@ -2,17 +2,20 @@ package com.example.playground
 
 import io.circe._
 import io.circe.syntax._
+import io.circe.generic.auto._
 import retrieveFunctions._
+import bulkModels._
+
 import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
+
 object sendFunctions extends LazyLogging {
-  def queryInsert(
-                   table: String,
-                   columns: Array[String],
-                   data: Array[Array[String]]
-                 ): Array[Json] = {
-    logger.debug("INSERTING")
+  def insert(
+    table: String,
+    columns: Array[String],
+    data: Array[Array[Any]]
+  ): Array[Map[String, Any]] = {
     if (data == null || data.length == 0)
       return Array();
 
@@ -21,16 +24,15 @@ object sendFunctions extends LazyLogging {
 
     val columnString = columns.mkString(", ");
 
-    val result: Array[Json] = data.map(array => {
-      val row = "'" + array.mkString("', '") + "'";
+    val result: Array[Map[String, Any]] = data.map(array => {
+      val row = array.map(v => getValueFormat(v)).mkString(", ");
       val query = f"INSERT INTO $table%s ($columnString%s) VALUES ($row%s) RETURNING *;";
 
+      println(query)
       try {
-        mapToJson(
-          resultSetToMapArray(
-            sqlClient.execute(query)
-          )(0)
-        );
+        resultSetToMapArray(
+          sqlClient.execute(query)
+        )(0)
       } catch {
         case _: Throwable =>
           logger.debug("Insert wasn't successful");
@@ -40,6 +42,19 @@ object sendFunctions extends LazyLogging {
 
     sqlClient.close();
     return result;
+  }
+
+  def queryInsert(
+                   table: String,
+                   columns: Array[String],
+                   data: Array[Array[String]]
+                 ): Array[Json] = {
+    logger.debug("INSERTING")
+    return insert(
+      table, 
+      columns, 
+      data.map(row => row.map(v => v.asInstanceOf[Any]))
+    ).map(v => valueToJson(v));
   }
 
   def queryUpdate(
@@ -153,5 +168,113 @@ object sendFunctions extends LazyLogging {
         subcomp_id
       )))
     return res
+  }
+
+  def getValueFormat(value: Any): String = {
+    value match {
+      case value: Int => value.toString()
+      case value: String => f"'$value%s'"
+      case value: Any => "'" + value.toString() + "'"
+    }
+  }
+
+  def insertMany(data: Array[Json]): Json = {
+    val parsed = data.map(el => 
+      insertElement(
+        parseIntoElement(el)
+      )
+    )
+    return valueToJson(parsed)
+  }
+
+  def insertElementRow(table: String, el: Map[String, Any]): Map[String, Any] = {
+    insert(
+      table, 
+      el.keys.toArray, 
+      Array(el.values.toArray)
+    )(0)
+  }
+
+  def parseIntoElement(data: Json): Any = {
+    data.as[module] match {
+      case Left(error) =>
+        println(error)
+      case Right(module) =>
+        return data.as[module].toOption.getOrElse(module)
+    }
+    data.as[component] match {
+      case Left(error) =>
+        println(error)
+      case Right(component) =>
+        return data.as[component].toOption.getOrElse(component)
+    }
+    data.as[singleComponent] match {
+      case Left(error) =>
+        println(error)
+      case Right(singleComponent) =>
+        return data.as[singleComponent].toOption.getOrElse(singleComponent)
+    }
+    data.as[subComponent] match {
+      case Left(error) =>
+        println(error)
+      case Right(subComponent) =>
+        return data.as[subComponent].toOption.getOrElse(subComponent)
+    }
+    return null
+  }
+
+  def insertElement(data: Any, higherOrderID: Int = -1): Any = {
+    data match {
+      case data: module => {
+        val map = getClassMap(data)
+        val comps = data.components
+        val row = insertElementRow("module", map.-("components"))
+        return row ++ Map("components" -> 
+          comps.map(comp => insertElement(comp, row.apply("id").asInstanceOf[Int])))
+      }
+      case data: component => {
+        val map = getClassMap(data)
+        val subs = data.sub_components
+        val component_row = insertElementRow(
+          "component", 
+          map.filter(
+            { case (k, v) => 
+              Array("name", "url", "version", "license", "copyright").contains(k.toString()) 
+            })
+        )
+        val additional_data = map -- Set("sub_components", "name", "url", "version", "license", "copyright")
+        val additional_row = insertElementRow(
+          "module_component",
+          Map("module_id" -> higherOrderID, "comp_id" -> component_row.apply("id")) ++ additional_data
+        )
+        return component_row ++ additional_row ++ Map("sub_components" -> 
+          subs.map(sub => insertElement(sub, component_row.apply("id").asInstanceOf[Int])))
+      }
+      case data: singleComponent => {
+        val map = getClassMap(data)
+        val subs = data.sub_components
+        val row = insertElementRow("component", map.-("sub_components"))
+        return row ++ Map("sub_components" -> 
+          subs.map(sub => insertElement(sub, row.apply("id").asInstanceOf[Int])))
+      }
+      case data: subComponent => {
+        val map = getClassMap(data)
+        val row = insertElementRow("sub_component", map)
+        if (higherOrderID != -1)
+          insert(
+            "junction_table", 
+            Array("comp_id", "subcomp_id"), 
+            Array(
+              Array(higherOrderID.toString(), row.apply("id").toString())
+            ))
+        return row
+      }
+    }
+    return null
+  }
+
+  def getClassMap(cc: Product): Map[String, Any] = {
+    val values = cc.productIterator
+    cc.getClass.getDeclaredFields.map(_.getName -> values.next).toMap
   }
 }
