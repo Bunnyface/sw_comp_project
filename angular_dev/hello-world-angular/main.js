@@ -133,6 +133,129 @@ InsertCompToModComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵ�
 
 /***/ }),
 
+/***/ "/sz5":
+/*!******************************************************!*\
+  !*** ./src/app/insert-file/insert-file.component.ts ***!
+  \******************************************************/
+/*! exports provided: InsertFileComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InsertFileComponent", function() { return InsertFileComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config.service */ "wxHw");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
+/* harmony import */ var _angular_material_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/list */ "MutI");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/button */ "bTqV");
+
+
+
+
+
+
+function InsertFileComponent_button_11_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function InsertFileComponent_button_11_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r4.onDelete(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Delete");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} }
+function InsertFileComponent_button_15_Template(rf, ctx) { if (rf & 1) {
+    const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function InsertFileComponent_button_15_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r7); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r6.onSubmit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Upload selected");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} }
+function InsertFileComponent_button_16_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Upload selected");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} }
+class InsertFileComponent {
+    constructor(configService) {
+        this.configService = configService;
+        this.fileName = "";
+        this.body = {};
+    }
+    // Read file contents
+    onFileSelected(event) {
+        const file = event.target.files[0];
+        if (file) {
+            this.fileName = file.name;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                this.body = JSON.parse(event.target.result);
+            };
+            reader.readAsText(file);
+        }
+    }
+    // Delete selected file before uploading
+    onDelete() {
+        this.fileName = "";
+        this.body = {};
+    }
+    // Submit selected file
+    onSubmit() {
+        this.addData(this.body);
+    }
+    addData(body) {
+        const path = "insertMany";
+        this.configService.insert(path, body).subscribe(res => {
+            console.log(res);
+            this.onDelete();
+        });
+    }
+    ngOnInit() {
+    }
+}
+InsertFileComponent.ɵfac = function InsertFileComponent_Factory(t) { return new (t || InsertFileComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_1__["ConfigService"])); };
+InsertFileComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: InsertFileComponent, selectors: [["app-insert-file"]], decls: 17, vars: 4, consts: [[1, "mat-display-3"], ["type", "file", "accept", ".json", 1, "file-input", 3, "change"], ["fileUpload", ""], [1, "file-upload"], [1, "row"], ["mat-button", "", "color", "warn", 3, "click", 4, "ngIf"], [1, "button-group"], ["mat-stroked-button", "", "color", "primary", 1, "col-md-2", 3, "click"], ["class", "col-md-4", "mat-raised-button", "", "color", "primary", 3, "click", 4, "ngIf"], ["class", "col-md-4", "mat-raised-button", "", "disabled", "", 4, "ngIf"], ["mat-button", "", "color", "warn", 3, "click"], ["mat-raised-button", "", "color", "primary", 1, "col-md-4", 3, "click"], ["mat-raised-button", "", "disabled", "", 1, "col-md-4"]], template: function InsertFileComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h1", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Insert data");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "input", 1, 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function InsertFileComponent_Template_input_change_3_listener($event) { return ctx.onFileSelected($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "mat-card");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "mat-list");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "mat-list-item", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "span");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](11, InsertFileComponent_button_11_Template, 2, 0, "button", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "div", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "button", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function InsertFileComponent_Template_button_click_13_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r8); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](4); return _r0.click(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](14, "Browse files");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](15, InsertFileComponent_button_15_Template, 2, 0, "button", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, InsertFileComponent_button_16_Template, 2, 0, "button", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.fileName || "No file selected yet.");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.fileName != "");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !(ctx.fileName == ""));
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.fileName == "");
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_2__["MatCard"], _angular_material_list__WEBPACK_IMPORTED_MODULE_3__["MatList"], _angular_material_list__WEBPACK_IMPORTED_MODULE_3__["MatListItem"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["NgIf"], _angular_material_button__WEBPACK_IMPORTED_MODULE_5__["MatButton"]], styles: [".file-input[_ngcontent-%COMP%] {\n    display: none;\n}\n\n.button-group[_ngcontent-%COMP%] {\n    display: flex;\n    justify-content: flex-end;\n    padding: 20px;\n}\n\n.button-group[_ngcontent-%COMP%]    > button[_ngcontent-%COMP%] {\n    margin: 2px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluc2VydC1maWxlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxhQUFhO0FBQ2pCOztBQUVBO0lBQ0ksYUFBYTtJQUNiLHlCQUF5QjtJQUN6QixhQUFhO0FBQ2pCOztBQUVBO0lBQ0ksV0FBVztBQUNmIiwiZmlsZSI6Imluc2VydC1maWxlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZmlsZS1pbnB1dCB7XG4gICAgZGlzcGxheTogbm9uZTtcbn1cblxuLmJ1dHRvbi1ncm91cCB7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtZW5kO1xuICAgIHBhZGRpbmc6IDIwcHg7XG59XG5cbi5idXR0b24tZ3JvdXAgPiBidXR0b24ge1xuICAgIG1hcmdpbjogMnB4O1xufSAiXX0= */"] });
+
+
+/***/ }),
+
 /***/ 0:
 /*!***************************!*\
   !*** multi ./src/main.ts ***!
@@ -1052,7 +1175,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_components_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/components.component */ "93si");
 /* harmony import */ var _insert_comp_to_mod_insert_comp_to_mod_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./insert-comp-to-mod/insert-comp-to-mod.component */ "/9Eq");
 /* harmony import */ var _comps_comps_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./comps/comps.component */ "opIp");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _insert_file_insert_file_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./insert-file/insert-file.component */ "/sz5");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
 
 
 
@@ -1081,8 +1206,8 @@ __webpack_require__.r(__webpack_exports__);
 
 class AppModule {
 }
-AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_25__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_13__["AppComponent"]] });
-AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_25__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [], imports: [[
+AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_26__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_13__["AppComponent"]] });
+AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_26__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClientModule"],
             _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__["NgbModule"],
@@ -1096,7 +1221,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_25__["ɵɵdefineInjecto
             _angular_material_card__WEBPACK_IMPORTED_MODULE_10__["MatCardModule"], _angular_material_expansion__WEBPACK_IMPORTED_MODULE_11__["MatExpansionModule"],
             _angular_material_list__WEBPACK_IMPORTED_MODULE_12__["MatListModule"]
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_25__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_13__["AppComponent"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_26__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_13__["AppComponent"],
         _releases_releases_component__WEBPACK_IMPORTED_MODULE_14__["ReleasesComponent"],
         _release_detail_release_detail_component__WEBPACK_IMPORTED_MODULE_16__["ReleaseDetailComponent"],
         _data_input_data_input_component__WEBPACK_IMPORTED_MODULE_17__["DataInputComponent"],
@@ -1105,7 +1230,8 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_25__["ɵɵdefineInjecto
         _insert_component_insert_component_component__WEBPACK_IMPORTED_MODULE_21__["InsertComponentComponent"],
         _components_components_component__WEBPACK_IMPORTED_MODULE_22__["ComponentsComponent"],
         _insert_comp_to_mod_insert_comp_to_mod_component__WEBPACK_IMPORTED_MODULE_23__["InsertCompToModComponent"],
-        _comps_comps_component__WEBPACK_IMPORTED_MODULE_24__["CompsComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
+        _comps_comps_component__WEBPACK_IMPORTED_MODULE_24__["CompsComponent"],
+        _insert_file_insert_file_component__WEBPACK_IMPORTED_MODULE_25__["InsertFileComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
         _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClientModule"],
         _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_15__["NgbModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
@@ -1246,10 +1372,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _config_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config.service */ "wxHw");
-/* harmony import */ var _insert_module_insert_module_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../insert-module/insert-module.component */ "6C2R");
-/* harmony import */ var _insert_component_insert_component_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../insert-component/insert-component.component */ "eIUU");
-
-
 
 
 
@@ -1289,7 +1411,7 @@ class DataInputComponent {
     }
 }
 DataInputComponent.ɵfac = function DataInputComponent_Factory(t) { return new (t || DataInputComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_config_service__WEBPACK_IMPORTED_MODULE_2__["ConfigService"])); };
-DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 9, vars: 1, consts: [[3, "formGroup", "ngSubmit"], ["formControlName", "file", "type", "file", "accept", ".json", "id", "file", 1, "form-control", 3, "change"], ["type", "submit", 1, "btn", "btn-success"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
+DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: DataInputComponent, selectors: [["app-data-input"]], decls: 7, vars: 1, consts: [[3, "formGroup", "ngSubmit"], ["formControlName", "file", "type", "file", "accept", ".json", "id", "file", 1, "form-control", 3, "change"], ["type", "submit", 1, "btn", "btn-success"]], template: function DataInputComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "h2");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](2, "Insert data");
@@ -1304,12 +1426,10 @@ DataInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefin
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "Submit");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](7, "app-insert-module");
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](8, "app-insert-component");
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("formGroup", ctx.fileForm);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _insert_module_insert_module_component__WEBPACK_IMPORTED_MODULE_3__["InsertModuleComponent"], _insert_component_insert_component_component__WEBPACK_IMPORTED_MODULE_4__["InsertComponentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJkYXRhLWlucHV0LmNvbXBvbmVudC5jc3MifQ== */"] });
 
 
 /***/ }),
@@ -1486,7 +1606,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "tyNb");
 /* harmony import */ var _compare_compare_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./compare/compare.component */ "RxGz");
 /* harmony import */ var _comps_comps_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./comps/comps.component */ "opIp");
-/* harmony import */ var _data_input_data_input_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data-input/data-input.component */ "lnFV");
+/* harmony import */ var _insert_file_insert_file_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./insert-file/insert-file.component */ "/sz5");
 /* harmony import */ var _release_detail_release_detail_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./release-detail/release-detail.component */ "ID1x");
 /* harmony import */ var _releases_releases_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./releases/releases.component */ "7wvp");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "fXoL");
@@ -1503,7 +1623,7 @@ const routes = [
     { path: 'modules', component: _releases_releases_component__WEBPACK_IMPORTED_MODULE_5__["ReleasesComponent"] },
     { path: 'components', component: _comps_comps_component__WEBPACK_IMPORTED_MODULE_2__["CompsComponent"] },
     { path: 'compare', component: _compare_compare_component__WEBPACK_IMPORTED_MODULE_1__["CompareComponent"] },
-    { path: 'insert', component: _data_input_data_input_component__WEBPACK_IMPORTED_MODULE_3__["DataInputComponent"] },
+    { path: 'insert', component: _insert_file_insert_file_component__WEBPACK_IMPORTED_MODULE_3__["InsertFileComponent"] },
     { path: '', redirectTo: 'modules', pathMatch: 'full' }
 ];
 class AppRoutingModule {
