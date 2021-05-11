@@ -26,6 +26,7 @@ import { InsertComponentComponent } from './insert-component/insert-component.co
 import { ComponentsComponent } from './components/components.component';
 import { InsertCompToModComponent } from './insert-comp-to-mod/insert-comp-to-mod.component';
 import { CompsComponent } from './comps/comps.component';
+import { InsertFileComponent } from './insert-file/insert-file.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { CompsComponent } from './comps/comps.component';
     InsertComponentComponent,
     ComponentsComponent,
     InsertCompToModComponent,
-    CompsComponent
+    CompsComponent,
+    InsertFileComponent
   ],
   imports: [
     BrowserModule,
