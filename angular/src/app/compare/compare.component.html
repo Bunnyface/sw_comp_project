@@ -1,6 +1,8 @@
 <h1>Comparing {{modulesToCompare[0]}} and {{modulesToCompare[1]}}</h1>
-<h2>Same components</h2>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Same components</h2>
+    </div>
     <table mat-table [dataSource]="same" matSort>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
@@ -17,8 +19,10 @@
     </table>
 </div>
 
-<h2>Exclusive to {{modulesToCompare[0]}}</h2>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Exclusive to {{modulesToCompare[0]}}</h2>
+    </div>
     <table mat-table [dataSource]="exFirst" matSort>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
@@ -35,8 +39,10 @@
     </table>
 </div>
 
-<h2>Exclusive to {{modulesToCompare[1]}}</h2>
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Exclusive to {{modulesToCompare[1]}}</h2>
+    </div>
     <table mat-table [dataSource]="exSecond" matSort>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>

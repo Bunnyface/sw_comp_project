@@ -1,7 +1,15 @@
 table {
     width: 100%;
-  }
+}
+
+.comparison-table {
+    margin-bottom: 50px;
+}
   
 .component-row td {
-  border-bottom-width: 0;
+    border-bottom-width: 0;
 }
+
+.table-header {
+    padding: 20px;
+  }

@@ -18,7 +18,7 @@
             <button mat-menu-item disabled *ngIf="compareMode">
                 <span>Compare Modules</span>
             </button>
-            <button mat-menu-item (click)="onAddModule()">
+            <button mat-menu-item routerLink="/insert">
                 <span>Add a Module</span>
             </button>
         </mat-menu>
@@ -27,17 +27,22 @@
 
     <!-- Module table -->
     <div class="mat-elevation-z8 module-table">
+        <div class="table-header" *ngIf="compareMode">
+            <h2 class="mat-h2">Select two Modules to compare</h2>
+        </div>
+        
+        
         <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
             <!-- Checkbox column for compare selection-->
             <ng-container *ngIf="compareMode" matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef> select two modules to compare </th>
+                <th mat-header-cell *matHeaderCellDef> select </th>
                 <td mat-cell *matCellDef="let row">
-                <mat-checkbox [checked]="selection.isSelected(row)"
-                    (change)="onSelect(row)"
-                    [disabled]="!selection.isSelected(row) && disabled"
-                    (change)="$event ? selection.toggle(row) : null">
-                </mat-checkbox>
+                    <mat-checkbox [checked]="selection.isSelected(row)"
+                        (change)="onSelect(row)"
+                        [disabled]="!selection.isSelected(row) && disabled"
+                        (change)="$event ? selection.toggle(row) : null">
+                    </mat-checkbox>
                 </td>
             </ng-container>
 
@@ -70,16 +75,20 @@
         </table>
         <mat-paginator [length]="100"
                     [pageSize]="10"
-                    [pageSizeOptions]="[10, 20, 50, 100]">
+                    [pageSizeOptions]="[10, 20, 50, 100]"
+                    showFirstLastButtons>
         </mat-paginator>
-    </div>
-
-    <div class="row">
-        <button class="col-md-2" *ngIf="compareMode" mat-button color="warn" (click)="onCompareMode(true)">Cancel</button>
-        <button class="col-md-2" mat-button color="primary" *ngIf="compareMode" (click)="onCompareSubmit()">Compare</button>
+        <div class="button-group" *ngIf="compareMode">
+            <button class="col-md-2" mat-stroked-button color="primary" (click)="onCompareMode(true)">Cancel</button>
+            <button class="col-md-2" mat-raised-button color="primary" (click)="onCompareSubmit()" *ngIf="modulesToCompare.length == 2">Compare</button>
+            <button class="col-md-2" mat-raised-button disabled *ngIf="modulesToCompare.length < 2">Compare</button>
+        </div>
+        
+        
     </div>
 </div>
 
-<app-insert-module *ngIf="addModuleMode"></app-insert-module>
-<button *ngIf="compareSubmitted" mat-button color="primary" (click)="onCancel()">Back to Modules</button>
-<app-compare *ngIf="compareSubmitted" [modulesToCompare]="modulesToCompare"></app-compare>
+<div *ngIf="compareSubmitted">
+    <button mat-button color="primary" (click)="onCancel()">Back to Modules</button>
+    <app-compare [modulesToCompare]="modulesToCompare"></app-compare>
+</div>
