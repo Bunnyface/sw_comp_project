@@ -32,3 +32,8 @@ backup-wso2:
 	docker container cp sw_comp_project_identity-server_1:/home/wso2carbon/wso2is-5.11.0/backup/. wso2/backup
 	sudo chmod -R 777 wso2/.
 
+start:
+	sudo chmod -R 777 wso2/.
+	sudo docker-compose up --build
+
+	
