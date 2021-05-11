@@ -3,7 +3,7 @@ table {
 }
 
 .module-table {
-  margin-bottom: 5px;
+  margin-bottom: 50px;
 }
   
 tr.detail-row {
@@ -33,4 +33,18 @@ tr.module-row:not(.expanded-row):active {
 
 .mat-column-select {
   overflow: initial;
+}
+
+.table-header {
+  padding: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.button-group > button {
+  margin: 2px;
 }
