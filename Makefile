@@ -34,3 +34,7 @@ integration-test:
 build-test-image:
 	docker rmi pytest_image
 	docker build tests/integration/scala/ --tag pytest_image
+
+start:
+	sudo chmod -R 777 wso2/.
+	sudo docker-compose up --build
