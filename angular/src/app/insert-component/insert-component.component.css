@@ -1,0 +1,19 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+form > mat-form-field {
+    width: 100%;
+}
+
+form {
+    margin-bottom: 20px;
+}
+  
+form > * {
+    margin: 5px 0;
+}
+  
+form.mat-radio-button {
+    margin: 0 12px;
+}

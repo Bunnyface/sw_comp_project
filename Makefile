@@ -34,6 +34,3 @@ integration-test:
 build-test-image:
 	docker rmi pytest_image
 	docker build tests/integration/scala/ --tag pytest_image
-
-## curl -v -X PUT -H "Content-Type: application/json" -d '{"name":"test"}' localhost:8081/insertModule ##
-##

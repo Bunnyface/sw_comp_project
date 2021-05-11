@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col">
+        <h3>Add an existing component to the module</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form [formGroup]="newComponent" (ngSubmit)="onSubmit()">
+            <div class="form-group mb-2">
+                <label for="name">Component</label>
+                <select formControlName="componentname" class="form-control">
+                    <option *ngFor="let component of components" value="{{component.name}}">{{component.name}} {{component.version}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="usageType">Usage type</label>
+                <input type="text" formControlName="usage_type" class="form-control" id="usageType">
+            </div>
+            <div class="form-group">
+                <label for="attr_value1">Attribute value 1</label>
+                <input type="text" formControlName="attr_value1" class="form-control" id="attr_value1">
+            </div>
+            <div class="form-group">
+                <label for="attr_value2">Attribute value 2</label>
+                <input type="text" formControlName="attr_value2" class="form-control" id="attr_value2">
+            </div>
+            <div class="form-group">
+                <label for="attr_value3">Attribute value 3</label>
+                <input type="text" formControlName="attr_value3" class="form-control" id="attr_value3">
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" formControlName="date" class="form-control" id="date">
+            </div>
+            <div class="form-group">
+                <label for="CommentOne">Comment 1</label>
+                <input type="text" formControlName="comment_one" class="form-control" id="CommentOne">
+            </div>
+            <div class="form-group">
+                <label for="CommentTwo">Comment 2</label>
+                <input type="text" formControlName="comment_two" class="form-control" id="CommentTwo">
+            </div>
+            <button type="submit" [disabled]="!newComponent.valid" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>

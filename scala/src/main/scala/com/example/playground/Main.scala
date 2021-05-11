@@ -11,6 +11,8 @@ import io.finch.circe._
 import io.circe.generic.auto._
 import spray.json._
 import DefaultJsonProtocol._
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
 import io.circe._
 import io.circe.syntax._
@@ -18,7 +20,7 @@ import io.circe.syntax._
 import bulkModels._
 
 
-object Main extends App {
+object Main extends App with LazyLogging {
 
   case class Message(hello: String);
 
@@ -45,7 +47,7 @@ object Main extends App {
   }
 
   def releases: Endpoint[IO, Json] = post("releases") {
-    println("Getting releases");
+    logger.debug("Getting releases");
     Ok(retrieveFunctions.queryNames());
   }
 
@@ -55,6 +57,11 @@ object Main extends App {
       NotFound(new Exception("Release not found"));
     else
       Ok(relInfo);
+  }
+
+  def components: Endpoint[IO, Json] = post("components") {
+    println("Getting components");
+    Ok(retrieveFunctions.queryComponents());
   }
 
   def getEverything: Endpoint[IO, Json] = post("moduleData") {
@@ -165,7 +172,7 @@ object Main extends App {
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany
-      :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule 
+      :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule 
       :+: insertSubToComponent :+: getEverything :+: deleteWithId :+: deleteWithName)
     .toService
 

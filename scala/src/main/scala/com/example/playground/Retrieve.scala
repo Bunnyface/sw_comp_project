@@ -5,8 +5,10 @@ import java.sql.{ResultSet}
 import java.sql.Types
 import io.circe._
 import io.circe.syntax._
+import com.typesafe.scalalogging.Logger
+import com.typesafe.scalalogging.LazyLogging
 
-object retrieveFunctions{
+object retrieveFunctions extends LazyLogging {
   def queryNames(): Json = {
     val resList = getArray("module", "name");
     return valueToJson(resList.flatten);
@@ -25,13 +27,21 @@ object retrieveFunctions{
     val moduleID = fetched.apply("id").asInstanceOf[Int];
     val componentData = getMapArray(
       "module_component as mc, component as c",
-      "c.name, c.version",
+      "c.name, c.url, c.version, c.license, c.copyright, mc.usage_type, mc.attr_value1, mc.attr_value2, mc.attr_value3, mc.date, mc.comment_one, mc.comment_two",
       f"mc.module_id=$moduleID%d AND mc.comp_id=c.id"
     );
-
     return valueToJson(
       fetched ++ Map("components" -> componentData)
     )
+  }
+
+  def queryComponents(): Json = {
+    val fetched = try {
+      getMapArray("component", "*");
+    } catch {
+      case _: Throwable => null;
+    }
+    return valueToJson(fetched);
   }
 
   def retrieveEverything(): Json = {
@@ -91,7 +101,7 @@ object retrieveFunctions{
       return result;
     } catch {
       case _: Throwable =>
-        println(f"Fetching wasn't successful using query '$query%s'")
+        logger.error(f"Fetching wasn't successful using query '$query%s'")
         sqlClient.close()
     }
     return null;

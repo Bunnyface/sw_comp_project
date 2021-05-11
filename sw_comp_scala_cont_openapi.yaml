@@ -13,7 +13,7 @@ paths:
       description: Get infromation of all releases in the db.
       responses:
         200:
-          description: Successfull pull of release data.
+          description: Successful pull of release data.
           content:
             application/json:
               schema:
@@ -161,7 +161,8 @@ paths:
 
       example:
         body:
-          { "name": "componentname",
+          {
+            "name": "componentname",
             "url": "urlforcomp.com",
             "version": "1.2",
             "license": "exlicence",
@@ -282,3 +283,22 @@ paths:
                   type: string
         400:
           description: Request body was invalid
+
+  /components:
+      post:
+        description: Get info on all components in the db.
+        responses:
+          200:
+            description: Successful pull of component data.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: string
+          401:
+            description: User has not been authenticated.
+          403:
+            description: User is not authorized to view the results.
+          404:
+            description: No components were found in the database.
