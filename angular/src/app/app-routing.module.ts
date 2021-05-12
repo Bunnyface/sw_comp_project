@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'modules/:name', component: ReleaseDetailComponent },
   { path: 'modules', component: ReleasesComponent },
   { path: 'components', component: CompsComponent },
-  { path: 'insert', component: DataInputComponent },
+  { path: 'insert', component: InsertFileComponent },
   { path: '', redirectTo: 'modules', pathMatch: 'full' }
 ]
 
