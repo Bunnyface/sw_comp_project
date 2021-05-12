@@ -24,10 +24,15 @@ class Client extends LazyLogging {
 
   def execute(query: String): ResultSet = {
     if (connection != null) {
-      val result = connection.createStatement(
+      val statement = connection.createStatement(
         ResultSet.TYPE_FORWARD_ONLY, 
-        ResultSet.CONCUR_UPDATABLE
-      ).executeQuery(query);
+        ResultSet.CONCUR_UPDATABLE)
+      val result = if (query.contains("RETURNING")) {
+        statement.executeQuery(query);
+      } else {
+        statement.executeUpdate(query);
+        null
+      }
       connection.commit();
       return result;
     }

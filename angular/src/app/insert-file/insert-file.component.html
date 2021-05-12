@@ -1,0 +1,21 @@
+<div>
+    <h1 class="mat-display-3">Insert data</h1>
+</div>
+
+<input type="file" class="file-input" accept=".json" (change)="onFileSelected($event)" #fileUpload>
+<mat-card>
+    <div class="file-upload">
+        <mat-list>
+            <mat-list-item class="row">
+                <span>{{fileName || "No file selected yet."}}</span>
+                <button mat-button color="warn" *ngIf="fileName != ''" (click)="onDelete()">Delete</button>
+            </mat-list-item>
+        </mat-list>
+
+        <div class="button-group">
+            <button class="col-md-2" mat-stroked-button color="primary" (click)="fileUpload.click()">Browse files</button>
+            <button class="col-md-4" mat-raised-button color="primary" *ngIf="!(fileName == '')" (click)="onSubmit()">Upload selected</button>
+            <button class="col-md-4" mat-raised-button disabled *ngIf="(fileName == '')">Upload selected</button>
+        </div>
+    </div>
+</mat-card>

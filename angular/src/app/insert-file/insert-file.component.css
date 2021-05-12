@@ -1,0 +1,13 @@
+.file-input {
+    display: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.button-group > button {
+    margin: 2px;
+} 

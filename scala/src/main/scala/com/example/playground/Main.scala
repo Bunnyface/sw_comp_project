@@ -145,6 +145,24 @@ object Main extends App with LazyLogging {
     };
   }
 
+  def deleteWithId: Endpoint[IO, Json] = delete("delete" :: path[String] :: path[Int]) {
+    (table: String, id: Int) =>
+      val response = deleteFunctions.deleteById(table, id)
+      if (response != null)
+        Ok(response)
+      else 
+        BadRequest(new Exception("Element not found"))
+  }
+
+  def deleteWithName: Endpoint[IO, Json] = delete("delete" :: path[String] :: path[String]) {
+    (table: String, identifier: String) =>
+      val response = deleteFunctions.deleteByName(table, identifier)
+      if (response != null)
+        Ok(response)
+      else
+        BadRequest(new Exception("Element not found"))
+  }
+
   val policy: Cors.Policy = Cors.Policy(
     allowsOrigin = _ => Some("*"),
     allowsMethods= _ => Some(Seq("GET", "POST", "PUT")),
@@ -153,7 +171,9 @@ object Main extends App with LazyLogging {
 
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
-    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule :+: insertSubToComponent :+: getEverything)
+    .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany
+      :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule 
+      :+: insertSubToComponent :+: getEverything :+: deleteWithId :+: deleteWithName)
     .toService
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(Cors.UnsafePermissivePolicy).andThen(service)
