@@ -1,20 +1,60 @@
-<h2>Compare releases</h2>
-
-<form #compare="ngForm" (ngSubmit)="onSubmit(compare.value)">
-    <div class="form-group mb-2">
-        <label for="first" class="form-label">Release</label>
-        <select class="form-control" id="first" ngModel name="first">
-            <option *ngFor="let module of modules" [ngValue]="module">{{module}}</option>
-        </select>
-
-        <label for="second" class="form-label">Compare with</label>
-        <select class="form-control" id="second" ngModel name="second">
-            <option *ngFor="let module of modules" [ngValue]="module">{{module}}</option>
-        </select>
+<h1>Comparing {{modulesToCompare[0]}} and {{modulesToCompare[1]}}</h1>
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Same components</h2>
     </div>
-    <button type="submit" class="btn btn-success mb-2">Valitse</button>
-</form>
+    <table mat-table [dataSource]="same" matSort>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
+            <td mat-cell *matCellDef="let component"> {{component[0]}} </td>
+        </ng-container>
 
-<div>
-    <code>{{comparison}}</code>
+        <ng-container matColumnDef="version">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> version </th>
+            <td mat-cell *matCellDef="let component"> {{component[1]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let component; columns: columns;" class="component-row"></tr>
+    </table>
+</div>
+
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Exclusive to {{modulesToCompare[0]}}</h2>
+    </div>
+    <table mat-table [dataSource]="exFirst" matSort>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
+            <td mat-cell *matCellDef="let component"> {{component[0]}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="version">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> version </th>
+            <td mat-cell *matCellDef="let component"> {{component[1]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let component; columns: columns;" class="component-row"></tr>
+    </table>
+</div>
+
+<div class="mat-elevation-z8 comparison-table">
+    <div class="table-header">
+        <h2 class="mat-h2">Exclusive to {{modulesToCompare[1]}}</h2>
+    </div>
+    <table mat-table [dataSource]="exSecond" matSort>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> name </th>
+            <td mat-cell *matCellDef="let component"> {{component[0]}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="version">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> version </th>
+            <td mat-cell *matCellDef="let component"> {{component[1]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let component; columns: columns;" class="component-row"></tr>
+    </table>
 </div>

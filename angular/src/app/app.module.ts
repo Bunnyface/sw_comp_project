@@ -12,6 +12,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIcon, MatIconModule } from '@angular/material/icon'
+
 
 import { AppComponent } from './app.component';
 import { ReleasesComponent } from './releases/releases.component';
@@ -55,7 +59,8 @@ import { InsertFileComponent } from './insert-file/insert-file.component';
     MatTableModule, MatSortModule,
     MatFormFieldModule, MatInputModule,
     MatCardModule, MatExpansionModule,
-    MatListModule
+    MatListModule, MatPaginatorModule,
+    MatMenuModule, MatIconModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

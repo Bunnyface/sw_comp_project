@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
-import { CompareComponent } from './compare/compare.component';
 import { CompsComponent } from './comps/comps.component';
 import { InsertFileComponent } from './insert-file/insert-file.component';
 import { ReleaseDetailComponent } from './release-detail/release-detail.component';
@@ -10,8 +9,7 @@ const routes: Routes = [
   { path: 'modules/:name', component: ReleaseDetailComponent },
   { path: 'modules', component: ReleasesComponent },
   { path: 'components', component: CompsComponent },
-  { path: 'compare', component: CompareComponent },
-  { path: 'insert', component: InsertFileComponent },
+  { path: 'insert', component: DataInputComponent },
   { path: '', redirectTo: 'modules', pathMatch: 'full' }
 ]
 
