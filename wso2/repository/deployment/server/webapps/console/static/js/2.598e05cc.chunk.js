@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{1529:function(n,e,o){"use strict";o.r(e);var a=o(1),i=o(0),t=o.n(i);e.default=function(){return t.a.createElement(a.V,{description:"Loaded dynamically from extension configuration.",header:"Dynamic Component"})}}}]);
