@@ -91,6 +91,8 @@ class Client extends LazyLogging {
     }
 
   }
+
+  }
   /**
  * Execute a database query
  * @param query the SQL query string
