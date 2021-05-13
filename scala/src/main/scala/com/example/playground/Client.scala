@@ -4,12 +4,14 @@ import java.sql.{Connection, DriverManager, ResultSet}
 import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
+import java.lang.NullPointerException;
+import org.postgresql.util.PSQLException;
+
 
 class Client extends LazyLogging {
   var connection: Connection = null;
 
   private[this] def defaultConnecting(connString: String, user: String, passwd: String ) : Connection = {
-    print(connString, user, passwd)
     val result = DriverManager.getConnection(connString, user, passwd);
     return result;
   }
@@ -17,51 +19,82 @@ class Client extends LazyLogging {
   //connectFunction can be changed for tests
   def connect(dbname: String, dbuser: String = null, passwd: String = null, connectFunction: (String, String, String) => Connection = defaultConnecting) {
     //classOf[org.postgresql.Driver];
-    print(classOf[DriverManager])
-    val (host, user, password) = getConnectionData();
-    if (dbuser != null && passwd != null){
-      val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = connectFunction(connString, dbuser, passwd);
+    try{
+      val (host, user, password) = getConnectionData();
+      if (dbuser != null && passwd != null){
+        val connString = f"jdbc:postgresql://$host%s/$dbname%s";
+        connection = connectFunction(connString, dbuser, passwd);
+      }
+      else {
+        val connString = f"jdbc:postgresql://$host%s/$dbname%s";
+        connection = connectFunction(connString, user, password);
+      }
+      connection.setAutoCommit(false);
     }
-    else {
-      val connString = f"jdbc:postgresql://$host%s/$dbname%s";
-      connection = connectFunction(connString, user, password);
+    catch{
+      case ex: NullPointerException => {
+        logger.error(
+          "Connection was not established."
+        )
+      }
+      case ex: PSQLException => {
+        logger.error(
+          "Database threw an error while trying to connect. Connection was not established."
+        )
+      }
+      connection = null;
     }
-    connection.setAutoCommit(false);
   }
 
   def execute(query: String): ResultSet = {
-    if (connection != null) {
-      val statement = connection.createStatement(
-        ResultSet.TYPE_FORWARD_ONLY,
-        ResultSet.CONCUR_UPDATABLE)
-      val result = if (query.contains("RETURNING")) {
-        statement.executeQuery(query);
-      } else {
-        statement.executeUpdate(query);
-        null
+    try{
+      if (connection != null) {
+        val statement = connection.createStatement(
+          ResultSet.TYPE_FORWARD_ONLY,
+          ResultSet.CONCUR_UPDATABLE)
+        val result = if (query.contains("RETURNING")) {
+          statement.executeQuery(query);
+        } else {
+          statement.executeUpdate(query);
+          null
+        }
+        connection.commit();
+        return result;
       }
-      connection.commit();
-      return result;
+      else {
+        logger.error("Connection has not been established.");
+        return null;
+      }
     }
-    else {
-      logger.error("Connection was not established.");
-      return null;
+    catch{
+      case ex: PSQLException => {
+        logger.error("Database threw an error while executing query.")
+        return null;
+      }
     }
+
   }
 
   def fetch(query: String): ResultSet = {
-    if (connection != null) {
-      val result = connection.createStatement(
-        ResultSet.TYPE_SCROLL_INSENSITIVE,
-        ResultSet.CONCUR_READ_ONLY
-      ).executeQuery(query);
-      connection.commit();
-      return result;
+    try{
+      if (connection != null) {
+        val result = connection.createStatement(
+          ResultSet.TYPE_SCROLL_INSENSITIVE,
+          ResultSet.CONCUR_READ_ONLY
+        ).executeQuery(query);
+        connection.commit();
+        return result;
+      }
+      else {
+        logger.error("Connection has not been established.");
+        return null;
+      }
     }
-    else {
-      logger.error("Connection was not established.");
-      return null;
+    catch{
+      case ex: PSQLException => {
+        logger.error("Database threw an error while executing query.")
+        return null;
+      }
     }
   }
 
@@ -70,10 +103,14 @@ class Client extends LazyLogging {
       connection.rollback();
     else
 <<<<<<< HEAD
+<<<<<<< HEAD
       logger.error("Connection was not established.");
 =======
       println("Connection was not established.");
 >>>>>>> First Unit tests for Client
+=======
+      logger.error("Connection has not been established.");
+>>>>>>> More testing on Client
   }
 
   def close() {
@@ -81,10 +118,14 @@ class Client extends LazyLogging {
       connection.close();
     else
 <<<<<<< HEAD
+<<<<<<< HEAD
       logger.error("Connection was not established.");
 =======
       println("Connection was not established.");
 >>>>>>> First Unit tests for Client
+=======
+      logger.error("Connection has not been established in the first place.");
+>>>>>>> More testing on Client
   }
 
   def getConnectionData(): (String, String, String) = {
