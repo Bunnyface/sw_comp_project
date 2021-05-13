@@ -21,6 +21,7 @@ import { AppComponent } from './app.component';
 import { ReleasesComponent } from './releases/releases.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReleaseDetailComponent } from './release-detail/release-detail.component';
+import { }
 
 import { DataInputComponent } from './data-input/data-input.component';
 import { CompareComponent } from './compare/compare.component';
