@@ -9,3 +9,6 @@
 # Generated files
 playground/target
 playground/project/target
+scala/target
+scala/project/target
+/WExtraStuff/

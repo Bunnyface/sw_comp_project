@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Release } from '../release'
 import { ConfigService } from '../config.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { SwCompManagerModule } from '../shared/module.model';
+
 
 @Component({
   selector: 'app-release-detail',
@@ -9,10 +12,35 @@ import { ConfigService } from '../config.service';
 })
 export class ReleaseDetailComponent implements OnInit {
 
-  @Input() release: string;
-  constructor() { }
+  module: SwCompManagerModule;
+  edit: boolean = false
+
+  constructor(
+    private route: ActivatedRoute,
+    private configService: ConfigService,
+    private location: Location
+  ) { }
+
+  getRelease(): void {
+    const name = this.route.snapshot.paramMap.get('name');
+    this.configService.getRelease(name).subscribe(res => this.module = res);
+  }
+
+  onEdit(): void {
+    if (this.edit) {
+      this.edit = false;
+    }
+    else {
+      this.edit = true;
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
 
   ngOnInit(): void {
+    this.getRelease();
   }
 
 }

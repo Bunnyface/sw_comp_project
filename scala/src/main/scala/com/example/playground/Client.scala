@@ -17,30 +17,44 @@ class Client {
       val connString = f"jdbc:postgresql://$host%s/$dbname%s";
       connection = DriverManager.getConnection(connString, user, password);
     }
+    connection.setAutoCommit(false);
   }
 
-  def execute(query: String) {
+  def execute(query: String): ResultSet = {
     if (connection != null) {
-      val stm = connection.createStatement(
-        ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-      stm.executeUpdate(query);
-    }
-    else {
-      println("Connection was not established.");
-    }
-  }
-
-  def fetch(query: String): ResultSet = {
-    if (connection != null) {
-      val stm = connection.createStatement(
-        ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      val result = stm.executeQuery(query);
+      val result = connection.createStatement(
+        ResultSet.TYPE_FORWARD_ONLY, 
+        ResultSet.CONCUR_UPDATABLE
+      ).executeQuery(query);
+      connection.commit();
       return result;
     }
     else {
       println("Connection was not established.");
       return null;
     }
+  }
+
+  def fetch(query: String): ResultSet = {
+    if (connection != null) {
+      val result = connection.createStatement(
+        ResultSet.TYPE_SCROLL_INSENSITIVE, 
+        ResultSet.CONCUR_READ_ONLY
+      ).executeQuery(query);
+      connection.commit();
+      return result;
+    }
+    else {
+      println("Connection was not established.");
+      return null;
+    }
+  }
+
+  def rollback() {
+    if (connection != null) 
+      connection.rollback();
+    else 
+      println("Connection was not established.");
   }
 
   def close() {

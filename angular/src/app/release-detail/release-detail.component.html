@@ -1,5 +1,69 @@
-<div *ngIf="release" class="row">
+<!-- Module info-->
+<div class="row">
     <div class="col">
-        <code>{{release}}</code>
+        <h3>Module info</h3>
+    </div>
+</div>
+<div class="row" *ngIf="module">
+    <div class="col">
+        <table class="table table-sm module-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{module.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Module components-->
+<div class="row">
+    <div class="col">
+        <h3>Module components</h3>
+    </div>
+</div>
+<div class="row" *ngIf="module">
+    <div class="col">
+        <table class="table table-sm module-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Component</th>
+                    <th scole="col">Version</th>
+                    <th scole="col">Url</th>
+                    <th scole="col">License</th>
+                    <th scole="col">Copyright</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let component of module.components">
+                    <td>{{component.name}}</td>
+                    <td>{{component.version}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add components-->
+<div class="row" *ngIf="!edit">
+    <div class="col">
+        <button (click)="onEdit()" class="btn btn-link btn-sm">Add components to module</button>
+    </div>
+</div>
+
+<div *ngIf="edit">
+    <button class="btn btn-sm btn-link" (click)="onEdit()">Cancel</button>
+    <app-components [modulename]="module.name"></app-components>
+</div>
+
+<!-- Go back -->
+<div class="row">
+    <div class="col">
+        <button (click)="goBack()" class="btn btn-link btn-sm">Back to modules</button>
     </div>
 </div>

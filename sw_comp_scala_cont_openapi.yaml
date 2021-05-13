@@ -13,7 +13,7 @@ paths:
       description: Get infromation of all releases in the db.
       responses:
         200:
-          description: Successfull pull of release data.
+          description: Successful pull of release data.
           content:
             application/json:
               schema:
@@ -82,7 +82,7 @@ paths:
         409:
           description: The given releaseName is already in use.
 
-  /compareReleases/{releaseName1}:{releaseName2}:
+  /compareReleases/{releaseName1}:{releaseName2}: #TODO FIX WHEN UP TO DATE
     post:
       description: Compare two different releases and their packages.
 
@@ -116,3 +116,188 @@ paths:
           description: User has not been authenticated.
         403:
           description: User is not authorized to create new releases.
+
+  /insertModule:
+    put:
+      description: Insert module to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with module parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "name": "TestInsertModule"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+
+  /insertComponent:
+    put:
+      description: Insert component to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with component parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          { "name": "componentname",
+            "url": "urlforcomp.com",
+            "version": "1.2",
+            "license": "exlicence",
+            "copyright": "coppyright"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+
+  /insertSubComponent:
+    put:
+      description: Insert subcomponent to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "name": "subcomponentname",
+            "url": "urlforsubcomp.com",
+            "version": "1.2",
+            "license": "exlicence",
+            "copyright": "coppyright"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+
+  /insertComponentToModule:
+    put:
+      description: Insert component to module relation to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent to module relation parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "modulename": "TestInsertModule",
+            "componentname": "test",
+            "usage_type": "String",
+            "attr_value1": "String",
+            "attr_value2": "String",
+            "attr_value3": "String",
+            "date": "1.2.2021",
+            "comment_one": "String",
+            "comment_two": "String"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+
+  /insertSubToComponent:
+    put:
+      description: Insert subcomponent to component relation
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent to module relation parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "componentname": "nameofcomponent",
+            "subcomponentname": "nameofsubcomponent"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+
+  /components:
+      post:
+        description: Get info on all components in the db.
+        responses:
+          200:
+            description: Successful pull of component data.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: string
+          401:
+            description: User has not been authenticated.
+          403:
+            description: User is not authorized to view the results.
+          404:
+            description: No components were found in the database.

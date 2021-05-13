@@ -16,6 +16,8 @@ services:
     image: swcomp/scala
     build: ./scala
     hostname: scala
+    volumes:
+      - ./scala:/HelloWorld
     ports:
       - 8081:8081
     environment:
@@ -36,6 +38,7 @@ services:
     image: swcomp/postgres
     build: ./postgres
     hostname: postgres
+    command: postgres -c 'max_connections=200'
     environment:
       POSTGRES_USER: scalauser
       POSTGRES_PASSWORD: example

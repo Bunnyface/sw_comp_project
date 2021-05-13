@@ -1,15 +1,50 @@
-CREATE TABLE releases (
-    name VARCHAR(100) PRIMARY KEY,
-    version VARCHAR(100)
+CREATE TABLE component (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  url VARCHAR,
+  version VARCHAR NOT NULL,
+  license VARCHAR,
+  copyright VARCHAR,
+  row_version INTEGER DEFAULT 0
 );
 
-CREATE TABLE componentTable(
-  cname VARCHAR(100) PRIMARY KEY,
-  cver VARCHAR(100)
+CREATE TABLE sub_component (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  url VARCHAR,
+  version VARCHAR NOT NULL,
+  license VARCHAR,
+  copyright VARCHAR,
+  row_version INTEGER DEFAULT 0
 );
 
-CREATE TABLE junctionTable(
-  releasename VARCHAR(100),
-  componentname VARCHAR(100),
-  PRIMARY KEY (releasename, componentname)
+CREATE TABLE junction_table (
+  comp_id INTEGER NOT NULL,
+  subcomp_id INTEGER NOT NULL,
+  row_version INTEGER DEFAULT 0,
+  PRIMARY KEY(comp_id, subcomp_id),
+  FOREIGN KEY(comp_id) REFERENCES component(id),
+  FOREIGN KEY(subcomp_id) REFERENCES sub_component(id)
+);
+
+CREATE TABLE module (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  row_version INTEGER DEFAULT 0
+);
+
+CREATE TABLE module_component (
+  module_id INTEGER,
+  comp_id INTEGER,
+  usage_type VARCHAR,
+  attr_value1 VARCHAR,
+  attr_value2 VARCHAR,
+  attr_value3 VARCHAR,
+  date DATE,
+  comment_one VARCHAR,
+  comment_two VARCHAR,
+  row_version INTEGER DEFAULT 0,
+  PRIMARY KEY(module_id, comp_id),
+  FOREIGN KEY(module_id) REFERENCES module(id),
+  FOREIGN KEY(comp_id) REFERENCES component(id)
 );

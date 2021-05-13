@@ -1,58 +1,54 @@
 package com.example.playground
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ArrayBuffer
+import io.circe._
+import io.circe.syntax._
 
-object compFunction{
-  def compareTwoReleases(releaseNameOne: String, releaseNameTwo: String): Map[String, Array[String]] = {
-    var firstSet = createSqlQueryForCompare(releaseNameOne);
-    var secondSet = createSqlQueryForCompare(releaseNameTwo);
+import retrieveFunctions.{ valueToJson, getArray }
 
-    val sameComponents = getSameComps(firstSet, secondSet);
-    val firstExclusive = getExclusiveComps(firstSet, sameComponents);
-    val secondExclusive = getExclusiveComps(secondSet, sameComponents);
+object compareFunctions {
+  def compare(firstName: String, secondName: String): Json = {
+    val firstSet = getComponents(firstName);
+    val secondSet = getComponents(secondName);
 
-    return Map("Same components" -> sameComponents.toArray, "Exclusive to first" -> firstExclusive.toArray, "Exclusive to second" -> secondExclusive.toArray);
+    if (firstSet == null || secondSet == null) 
+      return null;
+
+    val sameComp = getSame(firstSet, secondSet);
+
+    return valueToJson(
+      Map(
+        "same" -> sameComp.toArray, 
+        "ex_first" -> getExclusive(firstSet, sameComp).toArray, 
+        "ex_second" -> getExclusive(secondSet, sameComp).toArray
+      )
+    )
   }
 
-  def createSqlQueryForCompare(releaseName: String): List[String] = {
-    var releaseNameQuotes = "\'" + releaseName + "\'";
-    var queryBase = s"""SELECT name, version, cname, cver FROM releases JOIN junctionTable ON releases.name = junctionTable.Releasename JOIN componentTable ON componentTable.cname = junctionTable.componentname WHERE name=$releaseNameQuotes""";
+  def getComponents(name: String): Array[Array[Any]] = {
+    val data = getArray(
+      "module AS m, module_component AS mc, component AS c", 
+      "c.name, c.version", 
+      f"m.id = mc.module_id AND c.id = mc.comp_id AND m.name='$name%s'"
+    )
 
-    var sqlClient = new Client();
-
-    sqlClient.connect("defaultdb", "scalauser", "example");
-
-    var resSet = sqlClient.fetch(queryBase);
-    var newList = new ListBuffer[String]();
-    while(resSet.next()){
-      newList += resSet.getString("cname");
-    }
-    sqlClient.close();
-    return newList.toList;
-
+    if (data.length > 0)
+      return data.toArray;
+    
+    return Array();
   }
 
-  def getSameComps(first: List[String], second: List[String]): List[String] = {
-    var newList = new ListBuffer[String]();
-
-    for (i <- first){
-      for (ib <- second){
-        if (i == ib){
-          newList += i;
-        }
-      }
-    }
-    return newList.toList;
+  def getSame(
+    first: Array[Array[Any]], 
+    second: Array[Array[Any]]
+  ): Array[Array[Any]] = {
+    return first.filter(row => second.contains(row));
   }
 
-  def getExclusiveComps(first: List[String], second: List[String]): List[String] = {
-    var newList = new ListBuffer[String]();
-
-    for (i <- first){
-      if(!second.contains(i)){
-        newList += i;
-      }
-    }
-    return newList.toList;
+  def getExclusive(
+    first: Array[Array[Any]], 
+    second: Array[Array[Any]]
+  ): Array[Array[Any]] = {
+    return first.filter(row => !second.contains(row));
   }
 }

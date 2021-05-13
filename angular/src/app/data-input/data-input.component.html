@@ -2,7 +2,10 @@
     <h2>Insert data</h2>
 </div>
 
-<div class="form-group">
-    <input type="file" accept=".json" id="file" class="form-control" (change)="onFileSelected($event)">
-</div>
-<p>{{ file ? "File uploaded." : "" }}</p>
+<form [formGroup]="fileForm" (ngSubmit)="onSubmit()">
+    <input formControlName="file" type="file" accept=".json" id="file" class="form-control" (change)="onFileSelected($event)">
+    <button class="btn btn-success" type="submit">Submit</button>
+</form>
+
+<app-insert-module></app-insert-module>
+<app-insert-component></app-insert-component>
