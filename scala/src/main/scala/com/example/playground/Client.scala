@@ -104,6 +104,7 @@ class Client extends LazyLogging {
     else
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       logger.error("Connection was not established.");
 =======
       println("Connection was not established.");
@@ -111,12 +112,16 @@ class Client extends LazyLogging {
 =======
       logger.error("Connection has not been established.");
 >>>>>>> More testing on Client
+=======
+      logger.error("Connection has not been established.");
+>>>>>>> ea6fc98518212fb84d0c5d8c4be47d447120b055
   }
 
   def close() {
     if (connection != null)
       connection.close();
     else
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       logger.error("Connection was not established.");
@@ -126,6 +131,9 @@ class Client extends LazyLogging {
 =======
       logger.error("Connection has not been established in the first place.");
 >>>>>>> More testing on Client
+=======
+      logger.error("Connection has not been established in the first place.");
+>>>>>>> ea6fc98518212fb84d0c5d8c4be47d447120b055
   }
 
   def getConnectionData(): (String, String, String) = {
