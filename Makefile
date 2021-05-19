@@ -28,9 +28,10 @@ remove-all-images:
 	docker volume rm $(docker images ls -q)
 
 integration-test:
-	docker build tests/integration/scala/ --tag pytest_image
+	docker build tests/integration/scala/ --tag scala_test
+	docker-compose build
 	docker-compose --file docker-compose.yml --file docker-compose.test.yml run scala_test
 
 build-test-image:
-	docker rmi pytest_image
-	docker build tests/integration/scala/ --tag pytest_image
+	docker rmi scala_test
+	docker build tests/integration/scala/ --tag scala_test
