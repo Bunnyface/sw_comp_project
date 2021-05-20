@@ -15,6 +15,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon, MatIconModule } from '@angular/material/icon'
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 import { AppComponent } from './app.component';
@@ -27,10 +30,10 @@ import { CompareComponent } from './compare/compare.component';
 import { AppRoutingModule } from './app-routing.module';
 import { InsertModuleComponent } from './insert-module/insert-module.component';
 import { InsertComponentComponent } from './insert-component/insert-component.component';
-import { ComponentsComponent } from './components/components.component';
 import { InsertCompToModComponent } from './insert-comp-to-mod/insert-comp-to-mod.component';
 import { CompsComponent } from './comps/comps.component';
 import { InsertFileComponent } from './insert-file/insert-file.component';
+import { LogComponent } from './log/log.component';
 
 
 @NgModule({
@@ -42,10 +45,10 @@ import { InsertFileComponent } from './insert-file/insert-file.component';
     CompareComponent,
     InsertModuleComponent,
     InsertComponentComponent,
-    ComponentsComponent,
     InsertCompToModComponent,
     CompsComponent,
-    InsertFileComponent
+    InsertFileComponent,
+    LogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { InsertFileComponent } from './insert-file/insert-file.component';
     MatFormFieldModule, MatInputModule,
     MatCardModule, MatExpansionModule,
     MatListModule, MatPaginatorModule,
-    MatMenuModule, MatIconModule
+    MatMenuModule, MatIconModule,
+    MatSnackBarModule, MatDialogModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

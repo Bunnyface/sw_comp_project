@@ -2,14 +2,16 @@
     <h1 class="mat-display-3">Modules</h1>
 </div>
 
+<div *ngIf="message">{{message}}</div>
+
 <!-- Filtering and options -->
-<div *ngIf="!compareSubmitted">
+<div *ngIf="!compareSubmitted && !addModuleMode">
     <div class="row">
         <mat-form-field class="col-md-11">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
         </mat-form-field>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Options" class="col-md-1">
-            <mat-icon>more_horizontal</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Options">
+            <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="onCompareMode(false)" *ngIf="!compareMode">
@@ -18,19 +20,17 @@
             <button mat-menu-item disabled *ngIf="compareMode">
                 <span>Compare Modules</span>
             </button>
-            <button mat-menu-item routerLink="/insert">
+            <button mat-menu-item routerLink="/insert-module">
                 <span>Add a Module</span>
             </button>
         </mat-menu>
     </div>
-
 
     <!-- Module table -->
     <div class="mat-elevation-z8 module-table">
         <div class="table-header" *ngIf="compareMode">
             <h2 class="mat-h2">Select two Modules to compare</h2>
         </div>
-        
         
         <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
@@ -57,11 +57,20 @@
                 <td mat-cell *matCellDef="let module" routerLink="/modules/{{module.name}}">{{module.components.length}}</td>
             </ng-container>
 
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10px;"> actions </th>
+                <td mat-cell *matCellDef="let module">
+                    <div class="actions">
+                        <button mat-button color="warn" (click)="onDelete(module.name)">Delete</button>
+                    </div>
+                </td>
+            </ng-container>
+
             <!-- Expanded content -->
             <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let module" [attr.colspan]="columns.length">
                     <div class="module-detail" [@detailExpand]="module == expandedModule ? 'expanded' : 'collapsed'">
-                        <!-- TODO: Add expanded content here and remove router link from above-->
+                        <!-- Expanded content can be added here -->
                     </div>
                 </td>
             </ng-container>
@@ -83,9 +92,12 @@
             <button class="col-md-2" mat-raised-button color="primary" (click)="onCompareSubmit()" *ngIf="modulesToCompare.length == 2">Compare</button>
             <button class="col-md-2" mat-raised-button disabled *ngIf="modulesToCompare.length < 2">Compare</button>
         </div>
-        
-        
     </div>
+</div>
+
+<div *ngIf="addModuleMode && !compareSubmitted">
+    <button mat-button color="primary" (click)="onCancel()">Back to Modules</button>
+    <app-insert-module></app-insert-module>
 </div>
 
 <div *ngIf="compareSubmitted">

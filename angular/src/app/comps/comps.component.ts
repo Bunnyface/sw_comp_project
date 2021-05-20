@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 import { SwCompManagerComponent } from '../shared/component.model';
 
 @Component({
@@ -19,7 +20,9 @@ import { SwCompManagerComponent } from '../shared/component.model';
 })
 export class CompsComponent implements OnInit {
   components: SwCompManagerComponent[];
-  columns: String[] = ["name", "version", "url", "license", "copyright"];
+  message: string;
+
+  columns: String[] = ["name", "version", "url", "license", "copyright", "actions"];
   dataSource = new MatTableDataSource<SwCompManagerComponent>();
   expandedComponent: SwCompManagerComponent | null;
   @ViewChild(MatSort) sort: MatSort;
@@ -29,7 +32,6 @@ export class CompsComponent implements OnInit {
     this.configService.getComponents().subscribe(res => {
       this.dataSource.data = res;
       this.dataSource.sort = this.sort;
-      console.log(this.dataSource.data);
     });
   }
 
@@ -37,7 +39,16 @@ export class CompsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  constructor(private configService: ConfigService)  { }
+  onDelete(name, version): void {
+    const path = `delete/component/${name}:${version}`;
+    const type = 'component';
+    this.configService.delete(path, type).subscribe(_ => {
+      this.message = this.loggerService.messages[this.loggerService.messages.length -1]
+    });
+    this.getComponents();
+  }
+
+  constructor(private configService: ConfigService, private loggerService: LoggerService)  { }
 
   ngOnInit(): void {
     this.getComponents();

@@ -1,8 +1,10 @@
+<div *ngIf="message">{{message}}</div>
+
 <div class="row">
     <div class="col">
         <form [formGroup]="newComponent" (ngSubmit)="onSubmit()">
             <mat-form-field>
-                <select matNativeControl placeholder="Component" formControlName="componentname">
+                <select matNativeControl placeholder="Component" formControlName="componentname" required>
                     <option *ngFor="let component of components" value="{{component.name}}">{{component.name}} {{component.version}}</option>
                 </select>
             </mat-form-field>
@@ -19,7 +21,7 @@
                 <input matInput placeholder="Attribute value 3" type="text" formControlName="attr_value3" id="attr_value3" />
             </mat-form-field>
             <mat-form-field [floatLabel]="options.value.floatLabel">
-                <input matInput placeholder="Date" type="date" formControlName="date" id="date" />
+                <input matInput placeholder="Date" type="date" formControlName="date" id="date" required />
             </mat-form-field>
             <mat-form-field [floatLabel]="options.value.floatLabel">
                 <input matInput placeholder="Comment 1" type="text" formControlName="comment_one" id="CommentOne" />
@@ -27,7 +29,7 @@
             <mat-form-field [floatLabel]="options.value.floatLabel">
                 <input matInput placeholder="Comment 2" type="text" formControlName="comment_two" id="CommentTwo" />
             </mat-form-field>
-            <button type="submit" [disabled]="!newComponent.valid" class="btn btn-primary mb-2">Submit</button>
+            <button type="submit" [disabled]="!newComponent.valid" mat-button color="primary">Submit</button>
         </form>
     </div>
 </div>

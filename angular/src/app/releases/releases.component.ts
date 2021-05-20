@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 import { SwCompManagerModule } from '../shared/module.model';
 
 
@@ -23,8 +24,9 @@ import { SwCompManagerModule } from '../shared/module.model';
 export class ReleasesComponent implements OnInit {
 
   modules: SwCompManagerModule[];
+  message: string;
 
-  columns: String[] = ["name", "components"];
+  columns: String[] = ["name", "components", "actions"];
   dataSource = new MatTableDataSource<SwCompManagerModule>();
   expandedModule: SwCompManagerModule | null;
 
@@ -65,18 +67,14 @@ export class ReleasesComponent implements OnInit {
     }
     else {
       this.compareMode = true;
-    this.columns.unshift("select");
+      this.columns.unshift("select");
     }
   }
 
   // When compare selection is submitted
   onCompareSubmit(): void {
     this.compareSubmitted = true;
-  }
-
-  // Set module addition mode on
-  onAddModule(): void {
-    this.addModuleMode = true;
+    this.message = "";
   }
 
   // Select modules to compare
@@ -94,9 +92,19 @@ export class ReleasesComponent implements OnInit {
   onCancel(): void {
     this.compareSubmitted = false;
     this.onCompareMode(true);
+    this.addModuleMode = false;
   }
 
-  constructor(private configService: ConfigService)  { }
+  onDelete(moduleName): void {
+    const path = `delete/module/${moduleName}`;
+    const type = 'module';
+    this.configService.delete(path, type).subscribe(_ => {
+      this.message = this.loggerService.messages[this.loggerService.messages.length -1]
+    });
+    this.getModules();
+  }
+
+  constructor(private configService: ConfigService, private loggerService: LoggerService)  { }
 
   ngOnInit(): void {
     this.getModules();

@@ -43,10 +43,8 @@ export class ReleaseDetailComponent implements OnInit {
     const name = this.route.snapshot.paramMap.get('name');
     this.configService.getRelease(name).subscribe(res => {
       this.module = res;
-      // this.columns = Object.keys(res.components[0]);
       this.dataSource.data = res.components;
       this.dataSource.sort = this.sort;
-      console.log(this.dataSource.data);
     });
   }
 
