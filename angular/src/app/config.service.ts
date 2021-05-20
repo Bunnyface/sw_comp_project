@@ -51,7 +51,9 @@ export class ConfigService {
   getComponents(): Observable<any> {
     const url = `${this.url}/components`;
     return this.http.post<any>(url, null)
-      .pipe(catchError(this.handleError<String[]>('getComponent', [])));
+      .pipe(
+        tap((_) => this.log('fetched components')),
+        catchError(this.handleError<String[]>('getComponent', [])));
   }
 
   // Insert data

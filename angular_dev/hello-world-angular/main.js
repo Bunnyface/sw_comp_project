@@ -2161,7 +2161,7 @@ class ConfigService {
     getComponents() {
         const url = `${this.url}/components`;
         return this.http.post(url, null)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComponent', [])));
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["tap"])((_) => this.log('fetched components')), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["catchError"])(this.handleError('getComponent', [])));
     }
     // Insert data
     insert(path, body, type) {
