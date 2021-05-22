@@ -42,20 +42,14 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   //Database mocking for client
 
   //In memory as if "db"
-<<<<<<< HEAD
 
   var hasConnection = false;
-=======
->>>>>>> More testing on Client
   val mockResultSet = mock[ResultSet];
   val mockStatement = mock[Statement];
   val mockConnection = mock[Connection];
   case class mockDriverManager(){
                           def getMockConnection(connection: String, user: String, pwd: String): Connection = {
-<<<<<<< HEAD
                             hasConnection = true;
-=======
->>>>>>> More testing on Client
                             return mockConnection;
                           };
                         }
@@ -65,7 +59,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   when(
     mockDriver.getMockConnection(
       "jdbc:postgresql://THE_HOST/DBNAME","USER","PASSWORD"
-<<<<<<< HEAD
     )
   ).thenReturn(mockConnection);
   when(
@@ -73,25 +66,12 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
       "jdbc:postgresql://THE_HOST/DBNAME","THE_USER","THE_PASSWD"
     )
   ).thenReturn(mockConnection);
-=======
-    )
-  ).thenReturn(mockConnection);
-  when(
-    mockDriver.getMockConnection(
-      "jdbc:postgresql://THE_HOST/DBNAME","THE_USER","THE_PASSWD"
-    )
-  ).thenReturn(mockConnection);
->>>>>>> More testing on Client
 
   when(mockConnection.createStatement(
     ResultSet.TYPE_FORWARD_ONLY,
     ResultSet.CONCUR_UPDATABLE
   )).thenReturn(mockStatement);
-<<<<<<< HEAD
   when(mockStatement.executeQuery("INSERT INTO modules  VALUES time, date, num, val RETURNING *;")).thenReturn(mockResultSet)
-=======
-  when(mockStatement.executeQuery("SELECT * FROM modules;")).thenReturn(mockResultSet)
->>>>>>> More testing on Client
 
   when(mockConnection.createStatement(
     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -104,11 +84,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     return result;
   }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> More testing on Client
   //Tests:
 
   test("connect(): Connection is established with the mock db with provided credentials."){
@@ -141,7 +116,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(clientToTest.execute("This is not a real query") == null)
   }
 
-<<<<<<< HEAD
   test("execute(): With connection returns ResultSet when query contains RETURNING"){
     fakeEnv();
     val clientToTest = new Client;
@@ -228,9 +202,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   /*
   I have no idea how to confirm this, but I guess it is not critical to test anyway.
   test("rollback(): Should rollback set query"){
-=======
-  test("execute(): With connection returns ResultSet"){
->>>>>>> More testing on Client
     fakeEnv();
     val clientToTest = new Client;
     clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
@@ -238,7 +209,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(result.isInstanceOf[ResultSet]);
     resetEnv();
   }
-<<<<<<< HEAD
   */
 
   test("close(): Without connection remains null."){
@@ -260,97 +230,6 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
       fail("Client didn't get a connection.")
     }
     resetEnv();
-=======
-
-  test("execute(): String that is not query should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.execute("Nonsense query");
-    assert(result == null);
-    resetEnv();
-
-  }
-
-  test("execute(): Querying null should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.execute(null);
-    assert(result == null);
-    resetEnv();
-  }
-
-  test("execute(): Querying empty string should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.execute("");
-    assert(result == null);
-    resetEnv();
-  }
-
-  test("fetch(): Without connection returns null"){
-    val clientToTest = new Client;
-    assert(clientToTest.fetch("This is not a real query") == null)
-  }
-
-  test("fetch(): With connection returns ResultSet"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.fetch("SELECT * FROM modules;");
-    assert(result.isInstanceOf[ResultSet]);
-    resetEnv();
-  }
-
-  test("fetch(): String that is not query should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.fetch("Nonsense query");
-    assert(result == null);
-    resetEnv();
-
-  }
-
-  test("fetch(): Querying null should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.fetch(null);
-    assert(result == null);
-    resetEnv();
-  }
-
-  test("fetch(): Querying empty string should fail"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.fetch("");
-    assert(result == null);
-    resetEnv();
-  }
-  /* These are not done
-  test("rollback(): Without connection returns null"){
-    val clientToTest = new Client;
-    assert(clientToTest.rollback() == null)
-  }
-
-  test("rollback(): Should rollback set query"){
-    fakeEnv();
-    val clientToTest = new Client;
-    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
-    val result = clientToTest.fetch("SELECT * FROM modules;");
-    assert(result.isInstanceOf[ResultSet]);
-    resetEnv();
-  }
-
-
-  test("close(): Without connection logs error"){
-    val clientToTest = new Client;
-    assert(clientToTest.connection == null)
->>>>>>> More testing on Client
   }
   */
 
