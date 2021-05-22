@@ -126,7 +126,7 @@ class Client extends LazyLogging {
     if (connection != null)
       connection.rollback();
     else
-      logger.error("Connection has not been established.");
+      logger.error("Trying to rollback without existing connection.");
   }
   /**
  * Close the established connection, must be always done at the end of query
