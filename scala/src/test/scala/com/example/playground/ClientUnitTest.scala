@@ -11,6 +11,7 @@ import org.mockito.Matchers._
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.sql.{Connection, DriverManager, ResultSet, Statement}
 
 =======
@@ -23,6 +24,10 @@ import java.sql.{Connection, DriverManager, ResultSet}
 import java.sql.{Connection, DriverManager, ResultSet, Statement}
 
 >>>>>>> More testing on Client
+=======
+import java.sql.{Connection, DriverManager, ResultSet, Statement}
+
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
 
 class ClientUnitTest extends FunSuite with MockitoSugar{
 
@@ -58,6 +63,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
   val mockResultSet = mock[ResultSet];
   val mockStatement = mock[Statement];
   val mockConnection = mock[Connection];
@@ -65,6 +73,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
                           def getMockConnection(connection: String, user: String, pwd: String): Connection = {
                             return mockConnection;
                           };
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> First Unit tests for Client
@@ -88,10 +97,13 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
                             return mockConnection;
                           };
 >>>>>>> More testing on Client
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
                         }
   val mockDriver = mock[mockDriverManager];
 
   //accepted
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -129,6 +141,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   /*
 =======
 >>>>>>> More testing on Client
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
   when(
     mockDriver.getMockConnection(
       "jdbc:postgresql://THE_HOST/DBNAME","USER","PASSWORD"
@@ -155,6 +169,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   def connectingFunction(connString: String, user: String, passwd: String ) : Connection = {
     val result = mockDriver.getMockConnection(connString, user, passwd);
 <<<<<<< HEAD
+<<<<<<< HEAD
     print(result.isInstanceOf[Connection])
 <<<<<<< HEAD
 >>>>>>> First Unit tests for Client
@@ -162,6 +177,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
     return result;
   }
 
@@ -170,6 +187,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
@@ -180,6 +198,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
   //Tests:
 
   test("connect(): Connection is established with the mock db with provided credentials."){
@@ -200,6 +220,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
  /*
@@ -210,6 +231,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 =======
 
 >>>>>>> More testing on Client
+=======
+
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
   test("connect(): Connection is declined when name of the database is not correct"){
     fakeEnv();
     val clientToTest = new Client;
@@ -219,6 +243,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
   }
 
 
@@ -350,6 +377,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     }
     resetEnv();
   }
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> First Unit tests for Client
@@ -503,6 +531,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     resetEnv();
   }
 >>>>>>> Commit before rebasing.
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
 
   test("getConnectionData(): Should return set of strings"){
     fakeEnv();
@@ -519,6 +549,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     println(one)
 >>>>>>> First Unit tests for Client
@@ -527,6 +558,8 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
 >>>>>>> First Unit tests for Client
 =======
 >>>>>>> More testing on Client
+=======
+>>>>>>> ad35f6ef182fc425c4634246e3b6c9ad19c5dc18
     assert(one == "THE_HOST" && two == "THE_USER" && three == "THE_PASSWD")
     resetEnv();
   }
