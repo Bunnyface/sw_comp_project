@@ -48,7 +48,7 @@ class Client extends LazyLogging {
 
   def execute(query: String): ResultSet = {
     try{
-      if (connection != null) {
+      if (connection != null && query != null) {
         val statement = connection.createStatement(
           ResultSet.TYPE_FORWARD_ONLY,
           ResultSet.CONCUR_UPDATABLE)
@@ -62,7 +62,12 @@ class Client extends LazyLogging {
         return result;
       }
       else {
-        logger.error("Connection has not been established.");
+        if(connection == null){
+          logger.error("Connection has not been established.");
+        }
+        if(query == null){
+          logger.error("Execute failed due to null query.");
+        }
         return null;
       }
     }
