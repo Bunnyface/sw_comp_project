@@ -48,7 +48,7 @@ class Client extends LazyLogging {
 
   def execute(query: String): ResultSet = {
     try{
-      if (connection != null) {
+      if (connection != null && query != null) {
         val statement = connection.createStatement(
           ResultSet.TYPE_FORWARD_ONLY,
           ResultSet.CONCUR_UPDATABLE)
@@ -62,7 +62,12 @@ class Client extends LazyLogging {
         return result;
       }
       else {
-        logger.error("Connection has not been established.");
+        if(connection == null){
+          logger.error("Connection has not been established.");
+        }
+        if(query == null){
+          logger.error("Execute failed due to null query.");
+        }
         return null;
       }
     }
@@ -101,39 +106,14 @@ class Client extends LazyLogging {
   def rollback() {
     if (connection != null)
       connection.rollback();
-    else
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      logger.error("Connection was not established.");
-=======
-      println("Connection was not established.");
->>>>>>> First Unit tests for Client
-=======
-      logger.error("Connection has not been established.");
->>>>>>> More testing on Client
-=======
-      logger.error("Connection has not been established.");
->>>>>>> ea6fc98518212fb84d0c5d8c4be47d447120b055
+    else logger.error("Connection has not been established.");
   }
 
   def close() {
     if (connection != null)
       connection.close();
-    else
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      logger.error("Connection was not established.");
-=======
-      println("Connection was not established.");
->>>>>>> First Unit tests for Client
-=======
-      logger.error("Connection has not been established in the first place.");
->>>>>>> More testing on Client
-=======
-      logger.error("Connection has not been established in the first place.");
->>>>>>> ea6fc98518212fb84d0c5d8c4be47d447120b055
+    else logger.error("There is no connection to close.");
+
   }
 
   def getConnectionData(): (String, String, String) = {
