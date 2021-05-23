@@ -423,13 +423,13 @@ def test_compare():
 
     close_db_connection(conn)
 
-#def test_optimistic_locking():
-#    threshold = 2
-#    tests = 5
-#    thread_num = 4
-#
-#    passed = 0
-#    for _ in range(tests):
-#        passed += 1 if perform_parallel_test(thread_num) else 0
-#
-#    assert(passed >= threshold)
+def test_optimistic_locking():
+    threshold = 2
+    tests = 5
+    thread_num = 4
+
+    passed = 0
+    for _ in range(tests):
+        passed += 1 if perform_parallel_test(thread_num) else 0
+
+    assert(passed >= threshold)
