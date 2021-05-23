@@ -12,7 +12,7 @@ services:
     build: ./tests/integration/scala
     depends_on:
       scala:
-        condition: service_healthy
+        condition: service_started
     volumes:
       - ./tests/integration/scala:/app
     environment:
