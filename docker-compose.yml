@@ -19,7 +19,7 @@ services:
     build: ./scala
     hostname: scala
     volumes:
-      - .scala/src/:/HelloWorld/src
+      - ./scala/src/:/scalamain/src
     ports:
       - 8081:8081
     environment:
