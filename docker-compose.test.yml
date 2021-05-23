@@ -1,6 +1,6 @@
 services:
   sut:
-    build: /tests/integration
+    build: ./tests/integration
     depends_on:
       angular:
         condition: service_started
