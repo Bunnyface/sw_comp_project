@@ -1,29 +1,15 @@
-<!--
-<div class="row">
-    <div class="col">
-        <h3>New module</h3>
-    </div>
+<div>
+    <h1 class="mat-display-3">New Module</h1>
 </div>
-<div class="row">
-    <div class="col">
-        <form [formGroup]="module" (ngSubmit)="onSubmit()">
-            <div class="form-group mb-2">
-                <label for="name">Module name:</label>
-                <input type="text" formControlName="name" class="form-control">
-            </div>
-            <button type="submit" [disabled]="!module.valid" class="btn btn-primary mb-2">Submit</button>
-        </form>
-    </div>
-</div>
--->
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title>New Module</mat-panel-title>
-    </mat-expansion-panel-header>
+<button mat-button color="primary" routerLink="/modules">Back to Modules</button>
+
+<div *ngIf="message">{{message}}</div>
+
+<mat-card>
     <form [formGroup]="module" (ngSubmit)="onSubmit()">
         <mat-form-field [floatLabel]="options.value.floatLabel">
-            <input matInput placeholder="Name" type="text" formControlName="name" />
+            <input matInput placeholder="Module name" type="text" formControlName="name" required />
         </mat-form-field>
         <button mat-button color="primary" type="submit" [disabled]="!module.valid">Submit</button>
     </form>
-</mat-expansion-panel>
+</mat-card>

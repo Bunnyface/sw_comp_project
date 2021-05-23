@@ -1,5 +1,5 @@
 table {
-    width: 100%;
+  width: 100%;
 }
 
 .module-table {
@@ -47,4 +47,9 @@ tr.module-row:not(.expanded-row):active {
 
 .button-group > button {
   margin: 2px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
 }

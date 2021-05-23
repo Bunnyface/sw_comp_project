@@ -37,7 +37,7 @@ export class InsertFileComponent implements OnInit {
 
   addData(body) {
     const path = "insertMany";
-    this.configService.insert(path, body).subscribe(res => {
+    this.configService.insertFile(path, body, this.fileName).subscribe(res => {
       console.log(res);
       this.onDelete();
     });
