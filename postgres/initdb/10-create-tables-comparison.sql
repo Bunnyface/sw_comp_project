@@ -31,7 +31,7 @@ CREATE TABLE junction_table (
 
 CREATE TABLE module (
   id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL,
+  name VARCHAR NOT NULL UNIQUE,
   row_version INTEGER DEFAULT 0
 );
 
