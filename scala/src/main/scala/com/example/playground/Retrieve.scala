@@ -8,12 +8,23 @@ import io.circe.syntax._
 import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
+/**
+ * Class for retrieving database objects
+ */
 object retrieveFunctions extends LazyLogging {
+  /**
+   * get all modules from database
+   * @return json of all modules
+   */
   def queryNames(): Json = {
     val resList = getArray("module", "name");
     return valueToJson(resList.flatten);
   }
-
+  /**
+   * Get info on single module
+   * @param moduleName name of the module
+   * @return json of moduleinfo
+   */
   def queryRelease(moduleName: String): Json = {
     val fetched = try {
       getMapArray("module", "id, name", f"name='$moduleName%s'")(0);
@@ -34,7 +45,10 @@ object retrieveFunctions extends LazyLogging {
       fetched ++ Map("components" -> componentData)
     )
   }
-
+  /**
+   * get all components from database
+   * @return json of all components
+   */
   def queryComponents(): Json = {
     val fetched = try {
       getMapArray("component", "*");
@@ -43,7 +57,10 @@ object retrieveFunctions extends LazyLogging {
     }
     return valueToJson(fetched);
   }
-
+  /**
+   * get everything from database
+   * @return structured json with everything in database
+   */
   def retrieveEverything(): Json = {
     val subComp = getMapArray("sub_component");
     val juncTable = getMapArray("junction_table");
@@ -81,6 +98,13 @@ object retrieveFunctions extends LazyLogging {
 
   // UTILITY FUNCTIONS
 
+  /**
+   * Function to get specific data from database in resultset format
+   * @param table table to query from
+   * @param columns columns to query
+   * @param cond query conditions
+   * @return a resultset object of the query
+   */
   def get(
            table: String,
            columns: String = "*",
@@ -107,6 +131,13 @@ object retrieveFunctions extends LazyLogging {
     return null;
   }
 
+  /**
+   * Function to get specific data from database in array format
+   * @param table table to query from
+   * @param columns columns to query
+   * @param cond query conditions
+   * @return a array object of the query
+   */
   def getArray(
                 table: String,
                 columns: String = "*",
@@ -116,7 +147,13 @@ object retrieveFunctions extends LazyLogging {
       get(table, columns, cond)
     )
   }
-
+  /**
+   * Function to get specific data from database in maparray format
+   * @param table table to query from
+   * @param columns columns to query
+   * @param cond query conditions
+   * @return a maparray object of the query
+   */
   def getMapArray(
                    table: String,
                    columns: String = "*",
@@ -127,6 +164,11 @@ object retrieveFunctions extends LazyLogging {
     )
   }
 
+  /**
+   * Convert resultset to array
+   * @param result resultset to convert
+   * @return array version of resultset
+   */
   def resultSetToArray(result: ResultSet): Array[Array[Any]] = {
     if (result == null)
       return null
@@ -146,7 +188,11 @@ object retrieveFunctions extends LazyLogging {
 
     return tableValues
   }
-
+  /**
+   * Convert resultset to maparray
+   * @param result resultset to convert
+   * @return maparray version of resultset
+   */
   def resultSetToMapArray(result: ResultSet): Array[Map[String, Any]] = {
     if (result == null)
       return null
@@ -168,14 +214,28 @@ object retrieveFunctions extends LazyLogging {
     return tableValues
   }
 
+  /**
+   * Converts array to json
+   * @param array array to convert
+   * @return json version of the array
+   */
   def arrayToJson(array: Array[Any]): Json = {
     return array.map(v => valueToJson(v)).asJson
   }
-
+  /**
+   * Converts maparray to json
+   * @param map maparray to convert
+   * @return json version of the maparray
+   */
   def mapToJson(map: Map[_, _]): Json = {
     return map.map({ case (k, v) => k.toString() -> valueToJson(v) }).asJson
   }
 
+  /**
+   * Convert any type of value to json version
+   * @param value the value to convert
+   * @return json version of the value
+   */
   def valueToJson(value: Any): Json = {
     value match {
       case value: String => Json.fromString(value)
@@ -187,6 +247,11 @@ object retrieveFunctions extends LazyLogging {
     }
   }
 
+  /**
+   * Get module id based on name
+   * @param name module name
+   * @return id of the module
+   */
   def getModuleId(name: String): String = {
     val resSet = get("module", "id", f"name = '$name%s'");
     if(resSet.next()) {
@@ -195,7 +260,11 @@ object retrieveFunctions extends LazyLogging {
     }
     return ""
   }
-
+  /**
+   * Get component id based on name
+   * @param name component name
+   * @return id of the component
+   */
   def getCompId(name: String): String = {
     val resSet = get("component", "id", f"name = '$name%s'");
     if(resSet.next()) {
@@ -204,7 +273,11 @@ object retrieveFunctions extends LazyLogging {
     }
     return ""
   }
-
+  /**
+   * Get subcomponent id based on name
+   * @param name subcomponent name
+   * @return id of the subcomponent
+   */
   def getSubId(name: String): String = {
     val resSet = get("sub_component", "id", f"name = '$name%s'");
     if(resSet.next()) {

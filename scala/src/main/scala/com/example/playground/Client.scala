@@ -4,10 +4,17 @@ import java.sql.{Connection, DriverManager, ResultSet}
 import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
-
+/**
+ * The client for connecting to the database
+ */
 class Client extends LazyLogging {
   var connection: Connection = null;
-
+/**
+ * Initialize connection to the database
+ * @param dbnmame name of the database
+ * @param dbuser the username for the database, if none given, environmental variables used
+ * @param passwd password for the database, if none given, environmental variables used
+ */
   def connect(dbname: String, dbuser: String = null, passwd: String = null) {
     classOf[org.postgresql.Driver];
     val (host, user, password) = getConnectionData();
@@ -21,7 +28,10 @@ class Client extends LazyLogging {
     }
     connection.setAutoCommit(false);
   }
-
+  /**
+ * Execute a database update or query
+ * @param query the SQL query string
+ */
   def execute(query: String): ResultSet = {
     if (connection != null) {
       val statement = connection.createStatement(
@@ -41,7 +51,10 @@ class Client extends LazyLogging {
       return null;
     }
   }
-
+  /**
+ * Execute a database query
+ * @param query the SQL query string
+ */
   def fetch(query: String): ResultSet = {
     if (connection != null) {
       val result = connection.createStatement(
@@ -56,21 +69,27 @@ class Client extends LazyLogging {
       return null;
     }
   }
-
+  /**
+ * Execute a sql-rollback in case of database conflicts
+ */
   def rollback() {
     if (connection != null) 
       connection.rollback();
     else 
       logger.error("Connection was not established.");
   }
-
+  /**
+ * Close the established connection, must be always done at the end of query
+ */
   def close() {
     if (connection != null) 
       connection.close();
     else 
       logger.error("Connection was not established.");
   }
-
+  /**
+ * Get environmental variables for sql connection
+ */
   def getConnectionData(): (String, String, String) = {
     val host = sys.env("PSQLHOST");
     val user = sys.env("PSQLUSER");
