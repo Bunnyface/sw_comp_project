@@ -86,6 +86,7 @@ object Main extends App with LazyLogging {
 
 
   def insertMany: Endpoint[IO, Json] = put("insertMany" :: jsonBody[Array[Json]]) { reqBody: Array[Json] =>
+    logger.debug("Inserting many");
     val response = sendFunctions.insertMany(reqBody);
     if (response != null)
       Ok(response);
