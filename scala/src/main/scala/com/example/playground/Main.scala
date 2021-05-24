@@ -42,10 +42,17 @@ object Main extends App with LazyLogging {
                             condVal: String
                           );
 
+  /**
+   * Simple funtion to give docker a healthprobe
+   * @return
+   */
   def healthcheck: Endpoint[IO, String] = get(pathEmpty) {
     Ok("OK")
   }
 
+  /**
+   * Endpoint that returns all modules
+   */
   def releases: Endpoint[IO, Json] = post("releases") {
     logger.debug("Getting releases");
     try {
@@ -59,7 +66,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that returns info on a single module
+   */
   def releaseInfo: Endpoint[IO, Json] = post("releases" :: path[String]) { relName: String =>
     logger.debug(s"Getting releaseinfo for: $relName");
     try {
@@ -76,7 +85,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that returns all components
+   */
   def components: Endpoint[IO, Json] = post("components") {
     logger.debug("Getting components");
     try {
@@ -89,7 +100,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that returns everything in database in structured json
+   */
   def getEverything: Endpoint[IO, Json] = post("moduleData") {
     logger.debug("Fetching everything");
     try {
@@ -102,7 +115,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that returns a comparison of components between two modules
+   */
   def compare: Endpoint[IO, Json] = post("compare" :: jsonBody[CompareRequest]) { req: CompareRequest =>
     logger.debug("Fetching everything");
     try {
@@ -120,6 +135,9 @@ object Main extends App with LazyLogging {
     }
   }
 
+  /**
+   * Endpoint that inserts the payload to database
+   */
   def insert: Endpoint[IO, Json] = put("insert" :: path[String] :: jsonBody[InsertRequest]) { (table: String, req: InsertRequest) =>
     logger.debug(s"Inserting to $table");
     try {
@@ -137,7 +155,9 @@ object Main extends App with LazyLogging {
     }
   }
 
-
+  /**
+   * Endpoint that inserts the payload to database, capable of inserting multiple objects
+   */
   def insertMany: Endpoint[IO, Json] = put("insertMany" :: jsonBody[Array[Json]]) { reqBody: Array[Json] =>
     logger.debug(s"Inserting multiple");
     try {
@@ -155,7 +175,9 @@ object Main extends App with LazyLogging {
     }
   }
 
-
+  /**
+   * Endpoint that inserts a module to the database
+   */
   def insertModule: Endpoint[IO, Json] = put("insertModule":: jsonBody[dbmodels.module]) { ( req: dbmodels.module) =>
     logger.debug(s"Inserting module");
     try {
@@ -173,6 +195,9 @@ object Main extends App with LazyLogging {
     }
   }
 
+  /**
+   * Endpoint that inserts a component to the database
+   */
   def insertComponent: Endpoint[IO, Json] = put("insertComponent":: jsonBody[dbmodels.component]) { ( req: dbmodels.component) =>
     logger.debug(s"Inserting component");
     try {
@@ -190,6 +215,9 @@ object Main extends App with LazyLogging {
     }
   }
 
+  /**
+   * Endpoint that inserts a subcomponent to the database
+   */
   def insertSubComponent: Endpoint[IO, Json] = put("insertSubComponent":: jsonBody[dbmodels.subComponent]) { ( req: dbmodels.subComponent) =>
     logger.debug(s"Inserting subcomponent");
     try {
@@ -207,6 +235,9 @@ object Main extends App with LazyLogging {
     }
   }
 
+  /**
+   * Endpoint that inserts a component to database and adds a relation to a module
+   */
   def insertComponentToModule: Endpoint[IO, Json] = put("insertComponentToModule":: jsonBody[dbmodels.componentToModule]) { ( req: dbmodels.componentToModule) =>
     logger.debug(s"Inserting component to module");
     try {
@@ -224,6 +255,9 @@ object Main extends App with LazyLogging {
     }
   }
 
+  /**
+   * Endpoint that inserts a subcomponent to database and adds a relation to a component
+   */
   def insertSubToComponent: Endpoint[IO, Json] = put("insertSubToComponent":: jsonBody[dbmodels.junction]) { ( req: dbmodels.junction) =>
     logger.debug(s"Inserting subcomponent to component");
     try {
@@ -240,7 +274,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that updates a database object
+   */
   def update: Endpoint[IO, Json] = post("update" :: jsonBody[UpdateRequest]) { req: UpdateRequest =>
     logger.debug(s"Updating a row");
     try {
@@ -260,7 +296,9 @@ object Main extends App with LazyLogging {
       }
     }
   }
-
+  /**
+   * Endpoint that deletes a database object via id
+   */
   def deleteWithId: Endpoint[IO, Json] = delete("delete" :: path[String] :: path[Int]) {
     (table: String, id: Int) =>
       logger.debug(s"Deleting with id: $id");
@@ -278,7 +316,9 @@ object Main extends App with LazyLogging {
         }
       }
   }
-
+  /**
+   * Endpoint that deletes a database object via object name
+   */
   def deleteWithName: Endpoint[IO, Json] = delete("delete" :: path[String] :: path[String]) {
     (table: String, identifier: String) =>
       logger.debug(s"Deleting with name: $identifier");
@@ -296,20 +336,27 @@ object Main extends App with LazyLogging {
         }
       }
   }
-
+  /**
+   * policy for cors
+   */
   val policy: Cors.Policy = Cors.Policy(
     allowsOrigin = _ => Some("*"),
     allowsMethods= _ => Some(Seq("POST", "PUT")),
     allowsHeaders = headers => Some(headers)
   )
 
+  /**
+   * Defines the service that is served. Descibes all the endpoints
+   */
   def service: Service[Request, Response] = Bootstrap
     .serve[Text.Plain](healthcheck)
     .serve[Application.Json](compare :+: insert :+: update :+: releases :+: releaseInfo :+: insertMany
       :+: components :+: insertModule :+: insertComponent :+: insertSubComponent :+: insertComponentToModule 
       :+: insertSubToComponent :+: getEverything :+: deleteWithId :+: deleteWithName)
     .toService
-
+  /**
+   * Defines cors for the service
+   */
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
   Await.ready(Http.server.serve(":8081", corsService))
 }

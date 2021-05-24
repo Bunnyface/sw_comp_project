@@ -6,7 +6,16 @@ import io.circe.syntax._
 
 import retrieveFunctions.{ valueToJson, getArray }
 
+/**
+ * Object for storing functions for comparing modules
+ */
 object compareFunctions {
+  /**
+   * Main function that compares to modules
+   * @param firstName name of the first module to compare
+   * @param secondName name of the first module to compare
+   * @return Json with same and exclusive components in modules
+   */
   def compare(firstName: String, secondName: String): Json = {
     val firstSet = getComponents(firstName);
     val secondSet = getComponents(secondName);
@@ -25,6 +34,11 @@ object compareFunctions {
     )
   }
 
+  /**
+   * Util function to get module data
+   * @param name name of the module
+   * @return array of module data
+   */
   def getComponents(name: String): Array[Array[Any]] = {
     val data = getArray(
       "module AS m, module_component AS mc, component AS c", 
@@ -38,6 +52,12 @@ object compareFunctions {
     return Array();
   }
 
+  /**
+   * Compare arrays to see same components
+   * @param first array of the first components
+   * @param second array of the second components
+   * @return array of same components
+   */
   def getSame(
     first: Array[Array[Any]], 
     second: Array[Array[Any]]
@@ -45,6 +65,12 @@ object compareFunctions {
     return first.filter(row => second.contains(row));
   }
 
+  /**
+   * Get compnents that are exclusive to a module
+   * @param first array of the first components
+   * @param second array of the second components
+   * @return array of exclusive components
+   */
   def getExclusive(
     first: Array[Array[Any]], 
     second: Array[Array[Any]]

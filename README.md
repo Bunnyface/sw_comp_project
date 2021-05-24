@@ -40,16 +40,12 @@ this can be found in the folder angular_dev
 > 
 > *make build-angular_nginx*
 
-##TODO BUILD BOTH?
-
 After the image has been built, it can be ran using either the docker-compose
 found within this product, or can be imported to other systems if needed.
 
 If the docker-compose is used, the angular service is available at the adress:
 0.0.0.0:8081. It servers traditional HTTP server that can be used as a GUI for the
 rest of the service.
-
-##TODO MORE INFO ON ANGULAR?
 
 ###Scala container
 
@@ -76,6 +72,9 @@ The files needed to build this image are in the folder *scala*.
 > - Delete: The functions used to delete data from the database
 > - Comparison: The functions used to compare different models from 
 > the database
+
+There is also the logback.xml, found in /src/main/resources file which 
+defines the logging level for the Scala container
 
 ###Postgres container
 
