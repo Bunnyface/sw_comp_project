@@ -9,8 +9,17 @@ import bulkModels._
 import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
-
+/**
+ * Class for inserting data to database
+ */
 object sendFunctions extends LazyLogging {
+  /**
+   * Insert anything to database
+   * @param table table to insert to
+   * @param columns columns to insert
+   * @param data data to insert
+   * @return array of inserted data
+   */
   def insert(
     table: String,
     columns: Array[String],
@@ -44,6 +53,13 @@ object sendFunctions extends LazyLogging {
     return result;
   }
 
+  /**
+   * Simplified version of insert for specific insertions
+   * @param table table to insert to
+   * @param columns columns to insert
+   * @param data data to insert
+   * @return array of inserted data in jsons
+   */
   def queryInsert(
                    table: String,
                    columns: Array[String],
@@ -57,6 +73,15 @@ object sendFunctions extends LazyLogging {
     ).map(v => valueToJson(v));
   }
 
+  /**
+   * Update database object
+   * @param table table name to update
+   * @param newValCol columns of new values
+   * @param newVal new values
+   * @param condCol columns which conditions match
+   * @param condVal conditions of matching
+   * @return json of updated data
+   */
   def queryUpdate(
                    table: String,
                    newValCol: String,
@@ -95,6 +120,11 @@ object sendFunctions extends LazyLogging {
     return null;
   }
 
+  /**
+   * Insert a module to database
+   * @param mod module to insert
+   * @return array of json inserted
+   */
   def insertModule(mod: dbmodels.module): Array[Json]= {
     logger.debug("Insert Module")
     val res = queryInsert(
@@ -105,6 +135,11 @@ object sendFunctions extends LazyLogging {
     return res
   }
 
+  /**
+   * insert a component to database
+   * @param comp component to insert
+   * @return array of json inserted
+   */
   def insertComponent(comp: dbmodels.component): Array[Json]= {
     logger.debug("Insert Component")
     val res = queryInsert(
@@ -114,6 +149,12 @@ object sendFunctions extends LazyLogging {
     )
     return res
   }
+
+  /**
+   * insert a subcomponent to database
+   * @param comp subcomponent to insert
+   * @return array of json inserted
+   */
   def insertSubComponent(comp: dbmodels.subComponent): Array[Json]= {
     logger.debug("Insert subComponent")
     val res = queryInsert(
@@ -124,6 +165,11 @@ object sendFunctions extends LazyLogging {
     return res
   }
 
+  /**
+   * Insert component with relation to module to database
+   * @param comp component to insert
+   * @return array of json inserted
+   */
   def insertComponentToModel(comp: dbmodels.componentToModule): Array[Json]= {
     logger.debug("Insert ComponentToModel")
     val mod_id = getModuleId(comp.modulename)
@@ -153,6 +199,12 @@ object sendFunctions extends LazyLogging {
     )
     return res
   }
+
+  /**
+   * Insert subcomponent with relation to component to database
+   * @param comp subcomponent to insert
+   * @return array of json inserted
+   */
   def insertSubToComp(comp: dbmodels.junction): Array[Json]= {
     logger.debug("Insert SubToComp")
     val comp_id = getCompId(comp.componentname)
@@ -170,6 +222,11 @@ object sendFunctions extends LazyLogging {
     return res
   }
 
+  /**
+   * Format values as string for database insertion
+   * @param value value to convert
+   * @return string version on value
+   */
   def getValueFormat(value: Any): String = {
     value match {
       case value: Int => value.toString()
@@ -178,6 +235,11 @@ object sendFunctions extends LazyLogging {
     }
   }
 
+  /**
+   * Insert multiple to database
+   * @param data objects to insert in json
+   * @return json of inserted data
+   */
   def insertMany(data: Array[Json]): Json = {
     val parsed = data.map(el => 
       insertElement(
@@ -189,6 +251,12 @@ object sendFunctions extends LazyLogging {
     return null
   }
 
+  /**
+   * insert element to table
+   * @param table table name to insert to
+   * @param el element to insert
+   * @return map of inserted values
+   */
   def insertElementRow(table: String, el: Map[String, Any]): Map[String, Any] = {
     insert(
       table, 
@@ -197,6 +265,11 @@ object sendFunctions extends LazyLogging {
     )(0)
   }
 
+  /**
+   * Parse json data to element data for insertElementRow
+   * @param data json to parse
+   * @return element data
+   */
   def parseIntoElement(data: Json): Any = {
     data.as[module] match {
       case Left(error) =>
@@ -224,7 +297,6 @@ object sendFunctions extends LazyLogging {
     }
     return null
   }
-
   def insertElement(data: Any, higherOrderID: Int = -1): Any = {
     data match {
       case data: module => {

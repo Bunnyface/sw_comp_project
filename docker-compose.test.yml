@@ -7,6 +7,8 @@ services:
     networks:
       - sw_network
   scala_test:
+    container_name: python_container
+    image: scala_test
     build: ./tests/integration/scala
     depends_on:
       scala:

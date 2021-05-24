@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, retry, map, tap } from 'rxjs/operators';
 
 import { SwCompManagerModule } from './shared/module.model';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +17,27 @@ export class ConfigService {
   getModules(): Observable<any> {
     const url = `${this.url}/releases`;
     return this.http.post<any>(url, null)
-      .pipe(catchError(this.handleError<String[]>('getModules', [])));
+      .pipe(
+        tap(_ => this.log('fetched modules')),
+        catchError(this.handleError<String[]>('getModules', [])));
   }
 
   // Get full info on all modules
   getFullModules(): Observable<any> {
     const url = `${this.url}/moduleData`;
     return this.http.post<any>(url, null)
-      .pipe(catchError(this.handleError<String[]>('getFullModules', [])));
+      .pipe(
+        tap(_ => this.log('fetched modules')),
+        catchError(this.handleError<String[]>('getFullModules', [])));
   }
 
   // Get details of selected release
   getRelease(name: string): Observable<any> {
     const url = `${this.url}/releases/${name}`;
     return this.http.post(url, null)
-      .pipe(catchError(this.handleError<any>(`getRelease id=${name}`)));
+      .pipe(
+        tap(_ => this.log(`fetched details of module with name ${name}`)),
+        catchError(this.handleError<any>(`getRelease id=${name}`)));
   }
 
   // Get comparison of two selected releases
@@ -44,25 +51,58 @@ export class ConfigService {
   getComponents(): Observable<any> {
     const url = `${this.url}/components`;
     return this.http.post<any>(url, null)
-      .pipe(catchError(this.handleError<String[]>('getComponent', [])));
+      .pipe(
+        tap((_) => this.log('fetched components')),
+        catchError(this.handleError<String[]>('getComponent', [])));
   }
 
   // Insert data
-  insert(path: string, body: object): Observable<any> {
+  insert(path: string, body: object, type: string): Observable<any> {
     const url = `${this.url}/${path}`;
     return this.http.put(url, body)
-    .pipe(catchError(this.handleError<any>('insert')));
+    .pipe(
+      tap((newItem) => this.log(`added ${type} with name ${newItem[0].name}`)),
+      catchError(this.handleError<any>('insert')));
   }
 
+  insertFile(path: string, body: object, fileName: string): Observable<any> {
+    const url = `${this.url}/${path}`;
+    return this.http.put(url, body)
+    .pipe(
+      tap((newItem) => this.log(`added file with name ${fileName}`)),
+      catchError(this.handleError<any>('insertFile')));
+  }
+
+  insertCompToMod(path: string, body: object): Observable<any> {
+    const url = `${this.url}/${path}`;
+    return this.http.put(url, body)
+    .pipe(
+      tap((newItem) => this.log(`added component with id ${newItem[0].comp_id} to module with id ${newItem[0].module_id}`)),
+      catchError(this.handleError<any>('insertCompToMod')));
+  }
+
+
+  // Delete data
+  delete(path: String, type: string): Observable<any> {
+    const url = `${this.url}/${path}`;
+    return this.http.delete(url)
+    .pipe(
+      tap((newItem) => this.log(`deleted ${type} with name ${newItem[0].name}`)),
+      catchError(this.handleError<any>('delete')));
+  }
+
+  private log(message: string) {
+    this.loggerService.add(message);
+  }
 
   // Error handling
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.log(error); // log to console
-      console.log(`${operation} failed: ${error.message}`); // user-friendly message
-      return of(result as T); // return a safe value to keep app running
+      console.log(error);
+      this.log(`${operation} failed: ${error.message}`);
+      return of(result as T);
     }
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loggerService: LoggerService) { }
 }

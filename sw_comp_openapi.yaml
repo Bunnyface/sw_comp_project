@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'SW component manager API'
+  description: 'The API for Software release component management software.'
+  contact:
+    name: Kaisa
+    email: kaisa.sormunen@tuni.fi
+
+paths:
+  /releases:
+    post:
+      description: Get infromation of all releases in the db.
+      responses:
+        200:
+          description: Successful pull of release data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        404:
+          description: No releases were found in the database.
+        500:
+          description: Internal server error
+
+  /releases/{releaseName}:
+    post:
+      description: Get information of releases from db.
+      parameters:
+        - name: releaseName
+          in: path
+          required: true
+          description: Define one release to get.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull pull of release data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        400:
+          description: The given resourceName is invalid.
+        404:
+          description: A release with the specified releaseName was not found.
+        500:
+          description: Internal server error
+
+  /compare:
+    post:
+      description: Compare two different releases and their packages. Keys used in json are First & second
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with component parameters
+            schema:
+              type: json
+      example:
+        {
+          "first": "TestModule",
+          "second": "DemoModule"
+        }
+
+      responses:
+        200:
+          description: Successfull retrieval and comparison of data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        400:
+          description: One or both of the given releaseName are invalid.
+        500:
+          description: Internal server error
+
+  /insertModule:
+    put:
+      description: Insert module to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with module parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "name": "TestInsertModule"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+        500:
+          description: Internal server error
+
+  /insertComponent:
+    put:
+      description: Insert component to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with component parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "name": "componentname",
+            "url": "urlforcomp.com",
+            "version": "1.2",
+            "license": "exlicence",
+            "copyright": "coppyright"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+        500:
+          description: Internal server error
+
+  /insertSubComponent:
+    put:
+      description: Insert subcomponent to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "name": "subcomponentname",
+            "url": "urlforsubcomp.com",
+            "version": "1.2",
+            "license": "exlicence",
+            "copyright": "coppyright"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+        500:
+          description: Internal server error
+
+  /insertComponentToModule:
+    put:
+      description: Insert component to module relation to db
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent to module relation parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "modulename": "TestInsertModule",
+            "componentname": "test",
+            "usage_type": "String",
+            "attr_value1": "String",
+            "attr_value2": "String",
+            "attr_value3": "String",
+            "date": "1.2.2021",
+            "comment_one": "String",
+            "comment_two": "String"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+        500:
+          description: Internal server error
+
+  /insertSubToComponent:
+    put:
+      description: Insert subcomponent to component relation
+
+      parameters:
+        - name: jsonBody
+            in: body
+            required: true
+            description: Json with subComponent to module relation parameters
+            schema:
+              type: json
+
+      example:
+        body:
+          {
+            "componentname": "nameofcomponent",
+            "subcomponentname": "nameofsubcomponent"
+          }
+
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: json
+                items:
+                  type: string
+        400:
+          description: Request body was invalid
+        500:
+          description: Internal server error
+
+  /components:
+      post:
+        description: Get info on all components in the db.
+        responses:
+          200:
+            description: Successful pull of component data.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: string
+          404:
+            description: No components were found in the database.
+          500:
+            description: Internal server error
+
+  /delete/{table}/{id}:
+    delete:
+      description: delete a row in database based on id
+      responses:
+        200:
+          description: Successfull deletion of row
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+        404:
+          description: Row was not found in database.
+        500:
+            description: Internal server error
+
+  /delete/{table}/{name}:{version}:
+    delete:
+      description: delete a row in database based on name and version,
+                  if version is not given, will delete if no other versions present
+      responses:
+        200:
+          description: Successfull deletion of row
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+        404:
+          description: Row was not found in database.
+        500:
+          description: Internal server error

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 
 @Component({
   selector: 'app-insert-module',
@@ -15,6 +16,8 @@ export class InsertModuleComponent implements OnInit {
     name: new FormControl('')
   });
 
+  message: string;
+  
   onSubmit(): void {
     this.addModule(this.module.value);
     this.module.reset();
@@ -22,11 +25,14 @@ export class InsertModuleComponent implements OnInit {
 
   addModule(body): void {
     const path = 'insertModule';
-    this.configService.insert(path, body).subscribe();
-    console.log(body);
+    const type = 'module'
+    this.configService.insert(path, body, type).subscribe(res => {
+      console.log(res)
+      this.message = this.loggerService.messages[this.loggerService.messages.length -1]
+    });
   }
 
-  constructor(private configService: ConfigService, fb: FormBuilder) { 
+  constructor(private configService: ConfigService, fb: FormBuilder, private loggerService: LoggerService) { 
     this.options = fb.group({
       subComponent: false,
       floatLabel: 'auto'

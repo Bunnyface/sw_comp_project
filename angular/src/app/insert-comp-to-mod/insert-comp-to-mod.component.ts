@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '../config.service';
+import { LoggerService } from '../logger.service';
 import { SwCompManagerComponent } from '../shared/component.model';
 
 @Component({
@@ -10,6 +11,7 @@ import { SwCompManagerComponent } from '../shared/component.model';
 })
 export class InsertCompToModComponent implements OnInit {
 
+  message: string;
   @Input() modulename;
   components: Array<SwCompManagerComponent>;
 
@@ -38,11 +40,12 @@ export class InsertCompToModComponent implements OnInit {
   addComponent(body) {
     const path = "insertComponentToModule";
     body.modulename = this.modulename;
-    console.log(body);
-    this.configService.insert(path, body).subscribe();
+    this.configService.insertCompToMod(path, body).subscribe(res => {
+      this.message = this.loggerService.messages[this.loggerService.messages.length -1]
+    });
   }
 
-  constructor(private configService: ConfigService, fb: FormBuilder) { 
+  constructor(private configService: ConfigService, fb: FormBuilder, private loggerService: LoggerService) { 
     this.options = fb.group({
       subComponent: false,
       floatLabel: 'auto'

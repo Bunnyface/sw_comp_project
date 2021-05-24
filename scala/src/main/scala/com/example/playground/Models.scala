@@ -1,5 +1,8 @@
 package com.example.playground
 
+/**
+ * Class to store database model objects, used when inserting single objects to database
+ */
 object dbmodels {
   case class module (
     name: String
@@ -58,6 +61,9 @@ object dbmodels {
   );
 }
 
+/**
+ * Database modles used when inserting in bulk
+ */
 object bulkModels {
   case class module (
     name: String,

@@ -1,5 +1,6 @@
 services:
   angular:
+    container_name: angular_container
     image: swcomp/angular_nginx
     build: ./angular_dev
     hostname: angular
@@ -13,11 +14,12 @@ services:
       - "scala"
 
   scala:
+    container_name: scala_container
     image: swcomp/scala
     build: ./scala
     hostname: scala
     volumes:
-      - ./scala:/HelloWorld
+      - ./scala/src/:/scalamain/src
     ports:
       - 8081:8081
     environment:
@@ -32,9 +34,10 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
       interval: 30s
       timeout: 10s
-      retries: 5
+      retries: 10
 
   postgres:
+    container_name: postgres_container
     image: swcomp/postgres
     build: ./postgres
     hostname: postgres
