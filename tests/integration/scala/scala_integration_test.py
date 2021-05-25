@@ -21,9 +21,9 @@ MODULETOCOMP_TABLE_NAME = os.getenv('MODULETOCOMP_TABLE')
 COMPONENT_TABLE_NAME = os.getenv('COMP_TABLE')
 
 class Expected:
-    def __init__(self, code, body):
+    def __init__(self, code, result):
         self.code = code
-        self.body = body
+        self.result = result
 
 # --------------- Utils ---------------
 
@@ -76,13 +76,16 @@ def perform_test(url, method, expected, message=None, payload=None):
     received = perform_request(url, method, payload)
     body = parse_to_json(received.text)
     assert(expected.code == received.status_code)
-    if "components" in body:
-        if isinstance(body["components"], list):
-            for x in range(len(body["components"])):
-                logging.warning(f"date is : {expected.body['components'][x]}")
-                assert(expected.body["components"][x] == body["components"][x])
+    if not callable(expected.result):
+        if "components" in body:
+            if isinstance(body["components"], list):
+                for x in range(len(body["components"])):
+                    logging.warning(f"date is : {expected.result['components'][x]}")
+                    assert(expected.result["components"][x] == body["components"][x])
+        else:
+            assert expected.result == body
     else:
-        assert expected.body== body
+        expected.result(body)
 
 
 def perform_parallel_test(thread_num=4):
@@ -214,12 +217,130 @@ def test_releases():
 #    for x in range(20):
 #        test_releases()
 
+
+def test_insert_many():
+    conn = get_db_connection()
+
+    payload = [
+        {
+            "name": "test_name",
+            "components": [
+                {
+                    "copyright": "test_copyright",
+                    "name": "test_component",
+                    "url": "test_url",
+                    "comment_one": "comment 1",
+                    "sub_components": [
+                        {
+                            "copyright": "test_copyright",
+                            "name": "test_sub_component",
+                            "url": "test_url",
+                            "license": "test_licence",
+                            "version": "2.12"
+                        }
+                    ],
+                    "license": "test_license",
+                    "version": "version 1",
+                    "attr_value2": "text 2",
+                    "date": "2021-01-01",
+                    "usage_type": "test_type",
+                    "attr_value3": "text 3",
+                    "attr_value1": "text 1",
+                    "comment_two": "comment 2"
+                }
+            ]
+        }
+    ]
+
+    exp = list(payload)[0]
+    exp["row_version"] = 0
+    exp["id"] = fetch(conn, "SELECT id FROM module ORDER BY id DESC LIMIT 1;", "row", "list")[0] + 1
+    exp["components"][0]["row_version"] = 0
+    exp["components"][0]["comp_id"] = fetch(conn, "SELECT id FROM component ORDER BY id DESC LIMIT 1;", "row", "list")[0] + 1
+    exp["components"][0]["id"] = exp["components"][0]["comp_id"]
+    exp["components"][0]["module_id"] = exp["id"]
+    exp["components"][0]["sub_components"][0]["row_version"] = 0
+    exp["components"][0]["sub_components"][0]["id"] = fetch(
+        conn, "SELECT id FROM sub_component ORDER BY id DESC LIMIT 1;", "row", "list")[0] + 1
+    exp = [exp]
+
+    perform_test(
+        "/insertMany",
+        "PUT",
+        Expected(200, exp),
+        "Inserting a module containing a component and a sub-component using insertMany endpoint",
+        payload
+    )
+
+    def check(res):
+        assert payload[0]["name"] in res 
+
+    perform_test(
+        "/releases",
+        "POST",
+        Expected(200, check),
+        "Checking whether the module was added to the database"
+    )
+
+    payload = [
+        {
+            "name": "name",
+            "components": ["invalid"]
+        }
+    ]
+
+    perform_test(
+        "/insertMany",
+        "PUT",
+        Expected(400, ''),
+        "Inserting an invalid module using insertMane endpoint",
+        payload
+    )
+
+    close_db_connection(conn)
+
+
+def test_get_everything():
+    fields = {
+        "module": [
+            "name", "components"
+        ],
+        "component": [
+            "comment_one", "attr_value2", "date", "usage_type", "attr_value3", "attr_value1", 
+            "comment_two", "copyright", "name", "url", "license", "version", "sub_components"
+        ],
+        "sub_component": [
+            "copyright", "name", "url", "license", "version"
+        ]
+    }
+
+    def check(res):
+        for module in res:
+            assert set(module.keys()) == set(fields["module"])
+            
+            if len(module["components"]) > 0:
+                for component in module["components"]:
+                    assert set(component.keys()) == set(fields["component"])
+                    
+                    if len(component["sub_components"]) > 0:
+                        for sub_component in component["sub_components"]:
+                            assert set(sub_component.keys()) == set(fields["sub_component"])
+
+    perform_test(
+        "/moduleData",
+        "POST",
+        Expected(200, check),
+        "Fetching all the data available about modules, components and sub-components"
+    )
+
+
 def test_insert():
     conn = get_db_connection()
 
     # Test 1: Insert a new component
     payload = {"columns":["name"], "data":[["newName"]]}
-    exp = [{"id": 3, "name": "newName", "row_version": 0}]
+    exp = [{"name": "newName", "row_version": 0}]
+    exp[0]["id"] = fetch(conn, "SELECT id FROM module ORDER BY id DESC LIMIT 1", "row", "list")[0] + 1
     perform_test(
         "/insert/module",
         "PUT",

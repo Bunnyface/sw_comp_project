@@ -245,8 +245,10 @@ object sendFunctions extends LazyLogging {
       insertElement(
         parseIntoElement(el)
       )
-    )
-    return valueToJson(parsed)
+    ).filter(el => el != null)
+    if (parsed.length > 0)
+      return valueToJson(parsed)
+    return null
   }
 
   /**
@@ -341,8 +343,8 @@ object sendFunctions extends LazyLogging {
             ))
         return row
       }
+      case default => null
     }
-    return null
   }
 
   def getClassMap(cc: Product): Map[String, Any] = {
