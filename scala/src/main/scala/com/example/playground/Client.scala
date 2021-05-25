@@ -138,7 +138,6 @@ class Client extends LazyLogging {
       logger.error("There is no connection to close.");
   }
 
-  }
   /**
  * Get environmental variables for sql connection
  */
