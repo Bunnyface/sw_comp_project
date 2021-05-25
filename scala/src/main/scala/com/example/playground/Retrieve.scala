@@ -9,6 +9,11 @@ import com.typesafe.scalalogging.Logger
 import com.typesafe.scalalogging.LazyLogging
 
 object retrieveFunctions extends LazyLogging {
+
+  private lazy val defaultConnecting = (client: Client) => client.connect("defaultdb");
+  var overrideConnecting : Option[Client => Unit] = None
+  def connectClient = overrideConnecting.getOrElse(defaultConnecting)
+
   def queryNames(): Json = {
     val resList = getArray("module", "name");
     return valueToJson(resList.flatten);
@@ -54,12 +59,12 @@ object retrieveFunctions extends LazyLogging {
           .flatMap(j => j.get("subcomp_id"))
         val subs = subComp.filter(sub => related.contains(sub("id")))
           .map(sub => sub -- Set("id", "row_version"))
-        
+
         comp ++ Map("sub_components" -> subs)
       });
-    
+
     val modToComp = getMapArray("module_component");
-    
+
     val modules = getMapArray("module")
       .map(mod => {
         val related = modToComp.filter(j => j("module_id") == mod("id"))
@@ -68,9 +73,9 @@ object retrieveFunctions extends LazyLogging {
           .map(row => row.-("module_id"))
         val comps = components.filter(comp => related.contains(comp("id")))
 
-        (mod -- Set("id", "row_version")) ++ 
-          Map("components" -> 
-            comps.map(comp => 
+        (mod -- Set("id", "row_version")) ++
+          Map("components" ->
+            comps.map(comp =>
               comp ++ additional.filter(j => j("comp_id") == comp("id"))(0) -- Seq("comp_id", "id", "row_version")
             )
           )
@@ -93,7 +98,7 @@ object retrieveFunctions extends LazyLogging {
     }
 
     val sqlClient = new Client();
-    sqlClient.connect("defaultdb");
+    connectClient(sqlClient);
 
     try {
       val result = sqlClient.fetch(query);

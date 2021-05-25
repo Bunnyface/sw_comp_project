@@ -250,6 +250,4 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
   }
 
 
-
-
 }
