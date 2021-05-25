@@ -125,6 +125,15 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     resetEnv();
   }
 
+  test("execute(): With connection returns null if query doesn't contain RETURNING"){
+    fakeEnv();
+    val clientToTest = new Client;
+    clientToTest.connect("DBNAME", "USER", "PASSWORD", connectingFunction);
+    val result = clientToTest.execute("INSERT INTO modules  VALUES time, date, num, val;");
+    assert(result == null);
+    resetEnv();
+  }
+
   test("execute(): String that is not query should fail"){
     fakeEnv();
     val clientToTest = new Client;
@@ -200,7 +209,7 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(clientToTest.connection == null)
   }
   /*
-  I have no idea how to confirm this, but I guess it is not critical to test anyway.
+  This implementation is incomplete.
   test("rollback(): Should rollback set query"){
     fakeEnv();
     val clientToTest = new Client;
@@ -216,7 +225,9 @@ class ClientUnitTest extends FunSuite with MockitoSugar{
     assert(clientToTest.connection == null)
   }
 
-  /*cant figure this out either
+  /*This implementation is incomplete. It works as an integration test, but
+  apparently relies on the sql container to provide the information and fails
+  without it.
   test("close(): Should close existing connection"){
     fakeEnv();
     val clientToTest = new Client;

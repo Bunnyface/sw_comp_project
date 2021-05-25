@@ -13,8 +13,20 @@ import com.typesafe.scalalogging.LazyLogging
  */
 object retrieveFunctions extends LazyLogging {
 
+  /*
+   * Default connecting function
+   * @param client Client to connect
+   */
   private lazy val defaultConnecting = (client: Client) => client.connect("defaultdb");
+
+  /*
+   * Way to import alternative connecting method.
+   */
   var overrideConnecting : Option[Client => Unit] = None
+
+  /*
+   * Deciding which connecting method to use.
+   */
   def connectClient = overrideConnecting.getOrElse(defaultConnecting)
 
   /**
