@@ -26,3 +26,5 @@ lazy val root = (project in file("."))
       "com.typesafe.scala-logging" %% "scala-logging" % loggingVersion
     )
   )
+  
+  Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.AllLibraryJars
