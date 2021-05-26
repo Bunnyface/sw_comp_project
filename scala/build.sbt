@@ -5,6 +5,8 @@ val postgresqlVersion = "42.2.18"
 val sprayVersion = "1.3.6"
 val logbackVersion = "1.2.3"
 val loggingVersion = "3.9.3"
+val mockitoVersion = "1.5.12"
+
 
 lazy val root = (project in file("."))
   .settings(
@@ -19,7 +21,10 @@ lazy val root = (project in file("."))
       "org.scalatest"      %% "scalatest"    % scalatestVersion % "test",
       "org.postgresql" % "postgresql" % postgresqlVersion,
       "io.spray" %%  "spray-json" % sprayVersion,
+      "org.mockito" %% "mockito-scala" % mockitoVersion % "test",
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % loggingVersion
     )
   )
+  
+  set root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.AllLibraryJars
