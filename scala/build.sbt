@@ -27,4 +27,4 @@ lazy val root = (project in file("."))
     )
   )
   
-  Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.AllLibraryJars
+  set root / Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.AllLibraryJars
